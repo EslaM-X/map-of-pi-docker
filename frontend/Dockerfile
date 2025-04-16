@@ -11,7 +11,7 @@ COPY ./package-lock.json /app/package-lock.json
 
 WORKDIR /app
 
-RUN npm install
+RUN npm ci
 
 # Copy the resources needed to build the app
 COPY ./src /app/src

@@ -57,6 +57,10 @@ export const addOrUpdateUserSettings = async (
       updateData.findme = formData.findme;
     }
 
+    if (formData.search_filters) {
+      updateData.search_filters = JSON.parse(formData.search_filters);
+    }
+
     if (existingUserSettings) {
       const updatedUserSettings = await UserSettings.findOneAndUpdate(
         { user_settings_id: authUser.pi_uid },

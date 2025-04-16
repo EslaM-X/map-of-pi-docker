@@ -4,20 +4,23 @@ import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 
 import ConfirmDialog from '@/components/shared/confirm';
-import { OutlineBtn } from '@/components/shared/Forms/Buttons/Buttons';
+import { Button, OutlineBtn } from '@/components/shared/Forms/Buttons/Buttons';
 import TrustMeter from '@/components/shared/Review/TrustMeter';
 import ToggleCollapse from '@/components/shared/Seller/ToggleCollapse';
 import Skeleton from '@/components/skeleton/skeleton';
-import { ISeller, IUserSettings, IUser } from '@/constants/types';
-import { fetchSingleSeller } from '@/services/sellerApi';
+import { ISeller, IUserSettings, IUser, SellerItem } from '@/constants/types';
+import { fetchSellerItems, fetchSingleSeller } from '@/services/sellerApi';
 import { fetchSingleUserSettings } from '@/services/userSettingsApi';
+import { fetchToggle } from '@/services/toggleApi';
 import { checkAndAutoLoginUser } from '@/utils/auth';
 
 import { AppContext } from '../../../../../../context/AppContextProvider';
 import logger from '../../../../../../logger.config.mjs';
+import { ListItem, ShopItem } from '@/components/shared/Seller/ShopItem';
+import { Select, TextArea } from '@/components/shared/Forms/Inputs/Inputs';
 
 export default function BuyFromSellerForm({ params }: { params: { id: string } }) {
   const SUBHEADER = "font-bold mb-2";
@@ -32,9 +35,20 @@ export default function BuyFromSellerForm({ params }: { params: { id: string } }
   const [sellerShopInfo, setSellerShopInfo] = useState<ISeller | null>(null);
   const [sellerSettings, setSellerSettings] = useState<IUserSettings | null>(null);
   const [sellerInfo, setSellerInfo] = useState<IUser | null>(null);
+  const [dbSellerItems, setDbSellerItems] = useState<SellerItem[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { currentUser, autoLoginUser } = useContext(AppContext);
+  const [pickedItems, setPickedItems] = useState<{ id: string; quantity: number }[]>([]);
+  const [isOnlineShoppingEnabled, setOnlineShoppingEnabled] = useState(false);
+
+  const observer = useRef<IntersectionObserver | null>(null);
+
+  const handleShopItemRef = (node: HTMLElement | null) => {
+    if (node && observer.current) {
+      observer.current.observe(node);
+    }
+  };
 
   useEffect(() => {
     checkAndAutoLoginUser(currentUser, autoLoginUser);
@@ -76,10 +90,39 @@ export default function BuyFromSellerForm({ params }: { params: { id: string } }
       }
     };
 
+    const getToggleData = async () => {
+      try {
+        const toggle = await fetchToggle('onlineShoppingFeature');
+        setOnlineShoppingEnabled(toggle.enabled);
+      } catch (error) {
+        logger.error('Error fetching toggle:', error);
+      }
+    };
+
     getSellerData();
     getSellerSettings();
-    
+    getToggleData();
   }, []);
+
+  // Fetch seller items
+  useEffect(() => {
+    const getSellerItems = async (seller_id: string) => {
+      try {
+        const items = await fetchSellerItems(seller_id);
+        if (items) {
+          setDbSellerItems(items);
+        } else {
+          setDbSellerItems(null);
+        }
+      } catch (error) {
+        logger.error('Error fetching seller items data:', error);
+      }
+    };
+    
+    if (sellerShopInfo){
+      getSellerItems(sellerShopInfo.seller_id);
+    }
+  }, [sellerShopInfo]);
 
   const translateSellerCategory = (category: string): string => {
     switch (category) {
@@ -93,6 +136,21 @@ export default function BuyFromSellerForm({ params }: { params: { id: string } }
         return '';
     }
   };
+
+  const translatedFulfillmentMethod = [
+    {
+      value: 'pickup',
+      name: t(
+        'SCREEN.SELLER_REGISTRATION.FULFILLMENT_METHOD_TYPE.FULFILLMENT_METHOD_TYPE_OPTIONS.COLLECTION_BY_BUYER',
+      ),
+    },
+    {
+      value: 'delivery',
+      name: t(
+        'SCREEN.SELLER_REGISTRATION.FULFILLMENT_METHOD_TYPE.FULFILLMENT_METHOD_TYPE_OPTIONS.DELIVERED_TO_BUYER',
+      ),
+    },
+  ];
 
   // loading condition
   if (loading) {
@@ -117,7 +175,7 @@ export default function BuyFromSellerForm({ params }: { params: { id: string } }
               alt="seller logo" 
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              style={{ objectFit: 'cover', maxHeight: '200px', maxWidth: '100%' }}
+              style={{ objectFit: 'contain', maxHeight: '200px', maxWidth: '100%' }}
             />
           </div>
           <div className="my-auto">
@@ -162,6 +220,59 @@ export default function BuyFromSellerForm({ params }: { params: { id: string } }
             </Link>
           </div>
         </div>
+
+        {/* Online Shopping */}
+        {isOnlineShoppingEnabled && (
+          <ToggleCollapse
+            header={t('SCREEN.SELLER_REGISTRATION.SELLER_ONLINE_SHOPPING_LABEL')}
+            open={false}>
+            <div className="max-h-[600px] overflow-y-auto p-1 mb-7 mt-3">
+              {dbSellerItems && dbSellerItems.length > 0 && 
+                dbSellerItems.map((item) => (
+                  <ListItem
+                    key={item._id}
+                    item={item}
+                    pickedItems={pickedItems}
+                    setPickedItems={setPickedItems}
+                    refCallback={handleShopItemRef} // Attach observer
+                  /> 
+                ))            
+              }
+            </div>
+            <div>
+              <h2 className={SUBHEADER}>{t('SCREEN.SELLER_REGISTRATION.FULFILLMENT_METHOD_TYPE.FULFILLMENT_METHOD_TYPE_LABEL')}</h2>
+              <Select
+                name="fulfillment_method"
+                options={translatedFulfillmentMethod}
+                value={sellerShopInfo.fulfillment_method}
+                disabled={true}
+              />
+              <h2 className={SUBHEADER}>{t('SCREEN.SELLER_REGISTRATION.FULFILLMENT_INSTRUCTIONS_LABEL')}</h2>
+              <TextArea
+                name="fulfillment_description"
+                type="text"
+                value={sellerShopInfo.fulfillment_description}
+                disabled
+              />
+              <h2 className={SUBHEADER}>{t('Buyer Fulfillment Details')}</h2>
+              <TextArea
+                name="buying_details"
+                type="text"
+              />
+            </div>
+            <div className="mb-4 mt-3 ml-auto w-min">
+              <Button
+                label={t('Checkout')}
+                disabled={pickedItems.length === 0}
+                styles={{
+                  color: '#ffc153',
+                  height: '40px',
+                  padding: '15px 20px',
+                }}
+              />
+            </div>
+          </ToggleCollapse>
+        )}
 
         <ToggleCollapse
           header={t('SCREEN.BUY_FROM_SELLER.SELLER_CONTACT_DETAILS_LABEL')}>
