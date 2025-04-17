@@ -24,6 +24,8 @@ export const env = {
   MONGODB_HOST: process.env.MONGODB_HOST || '',
   MONGODB_APP_DATABASE_NAME: process.env.MONGODB_APP_DATABASE_NAME || '',
   MONGODB_OPTION_PARAMS: process.env.MONGODB_OPTION_PARAMS || '',
+  MONGODB_MIN_POOL_SIZE: Number(process.env.MONGODB_MIN_POOL_SIZE) || 1,
+  MONGODB_MAX_POOL_SIZE: Number(process.env.MONGODB_MAX_POOL_SIZE) || 5,
   SENTRY_DSN: process.env.SENTRY_DSN || '',
   DEVELOPMENT_URL: process.env.DEVELOPMENT_URL || '',
   PRODUCTION_URL: process.env.PRODUCTION_URL || '',
