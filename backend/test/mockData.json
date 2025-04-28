@@ -155,6 +155,38 @@
       "phone_number": "121-121-1212",
       "findme": "deviceGPS",
       "trust_meter_rating": 50
+    },
+    {
+      "user_settings_id": "0m0m0m-0m0m-0m0m",
+      "user_name": "Test Thirteen",
+      "email": "test-thirteen@test.com",
+      "phone_number": "131-131-1313",
+      "findme": "deviceGPS",
+      "trust_meter_rating": 0
+    },
+    {
+      "user_settings_id": "0n0n0n-0n0n-0n0n",
+      "user_name": "Test Fourteen",
+      "email": "test-fourteen@test.com",
+      "phone_number": "141-141-1414",
+      "findme": "deviceGPS",
+      "trust_meter_rating": 0
+    },
+    {
+      "user_settings_id": "0o0o0o-0o0o-0o0o",
+      "user_name": "Test Fifteen",
+      "email": "test-fifteen@test.com",
+      "phone_number": "151-151-1515",
+      "findme": "deviceGPS",
+      "trust_meter_rating": 0
+    },
+    {
+      "user_settings_id": "0p0p0p-0p0p-0p0p",
+      "user_name": "Test Sixteen",
+      "email": "test-sixteen@test.com",
+      "phone_number": "161-161-1616",
+      "findme": "deviceGPS",
+      "trust_meter_rating": 0
     }
   ],
   "sellers": [
