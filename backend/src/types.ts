@@ -51,6 +51,8 @@ export interface ISeller extends Document {
   order_online_enabled_pref: boolean;
   fulfillment_method: FulfillmentType;
   fulfillment_description?: string;
+  pre_restriction_seller_type?: SellerType | null;
+	isPreRestricted: boolean;
 }
 
 export interface ISellerItem extends Document {
@@ -108,7 +110,16 @@ export type PartialReview = {
 
 export interface IReviewFeedbackOutput extends IReviewFeedback, PartialReview {}
 
-export type SanctionedSeller = Pick<ISeller, 'seller_id' | 'name' | 'address' | 'sell_map_center'> & { sanctioned_location: string };
+export type SanctionedSeller = Pick<ISeller, 'seller_id' | 'name' | 'address' | 'sell_map_center'> & { 
+  sanctioned_location: string,
+  pre_restriction_seller_type?: SellerType | null 
+};
+
+export type SanctionedSellerStatus = {
+  seller_id: string;
+  pre_restriction_seller_type: SellerType | null;
+  isSanctionedRegion: boolean;
+}
 
 export interface IToggle extends Document {
   name: string;

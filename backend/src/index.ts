@@ -1,10 +1,11 @@
 import dotenv from "dotenv";
 
+import { scheduleCronJobs } from "./cron";
 import "./config/sentryConnection";
-import logger from "./config/loggingConfig";
 import { connectDB } from "./config/dbConnection";
 import app from "./utils/app";
 import { env } from "./utils/env";
+import logger from "./config/loggingConfig";
 
 dotenv.config();
 
@@ -31,5 +32,7 @@ const startServer = async () => {
 
 // Start the server setup process
 startServer();
+// Start the scheduled cron job(s)
+scheduleCronJobs();
 
 export default app;

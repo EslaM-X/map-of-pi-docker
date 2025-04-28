@@ -85,7 +85,7 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-crypto/sha256-js@5.2.0", "@aws-crypto/sha256-js@^5.2.0":
+"@aws-crypto/sha256-js@^5.2.0", "@aws-crypto/sha256-js@5.2.0":
   version "5.2.0"
   resolved "https://registry.npmjs.org/@aws-crypto/sha256-js/-/sha256-js-5.2.0.tgz"
   integrity sha512-FFQQyu7edu4ufvIZ+OadFpHHOt+eSTBaYaki44c+akjg7qZg9oOQeLlk77F6tSYqjDAFClrHJk9tMf0HdVyOvA==
@@ -174,7 +174,7 @@
     "@smithy/util-waiter" "^3.1.3"
     tslib "^2.6.2"
 
-"@aws-sdk/client-sso-oidc@3.651.1":
+"@aws-sdk/client-sso-oidc@^3.649.0", "@aws-sdk/client-sso-oidc@3.651.1":
   version "3.651.1"
   resolved "https://registry.npmjs.org/@aws-sdk/client-sso-oidc/-/client-sso-oidc-3.651.1.tgz"
   integrity sha512-PKwAyTJW8pgaPIXm708haIZWBAwNycs25yNcD7OQ3NLcmgGxvrx6bSlhPEGcvwdTYwQMJsdx8ls+khlYbLqTvQ==
@@ -263,7 +263,7 @@
     "@smithy/util-utf8" "^3.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-sts@3.651.1":
+"@aws-sdk/client-sts@^3.649.0", "@aws-sdk/client-sts@^3.651.1", "@aws-sdk/client-sts@3.651.1":
   version "3.651.1"
   resolved "https://registry.npmjs.org/@aws-sdk/client-sts/-/client-sts-3.651.1.tgz"
   integrity sha512-4X2RqLqeDuVLk+Omt4X+h+Fa978Wn+zek/AM4HSPi4C5XzRBEFLRRtOQUvkETvIjbEwTYQhm0LdgzcBH4bUqIg==
@@ -584,7 +584,7 @@
     "@smithy/types" "^3.4.0"
     tslib "^2.6.2"
 
-"@aws-sdk/types@3.649.0", "@aws-sdk/types@^3.222.0":
+"@aws-sdk/types@^3.222.0", "@aws-sdk/types@3.649.0":
   version "3.649.0"
   resolved "https://registry.npmjs.org/@aws-sdk/types/-/types-3.649.0.tgz"
   integrity sha512-PuPw8RysbhJNlaD2d/PzOTf8sbf4Dsn2b7hwyGh7YVG3S75yTpxSAZxrnhKsz9fStgqFmnw/jUfV/G+uQAeTVw==
@@ -644,12 +644,13 @@
     "@smithy/types" "^3.4.0"
     tslib "^2.6.2"
 
-"@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.24.7":
-  version "7.24.7"
-  resolved "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.24.7.tgz"
-  integrity sha512-BcYH1CVJBO9tvyIZ2jVeXgSIMvGZ2FDRvDdOIVQyuklNKSsx+eppDEBq/g47Ayw+RqNFE+URvOShmf+f/qwAlA==
+"@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.24.7", "@babel/code-frame@^7.26.2":
+  version "7.26.2"
+  resolved "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.26.2.tgz"
+  integrity sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==
   dependencies:
-    "@babel/highlight" "^7.24.7"
+    "@babel/helper-validator-identifier" "^7.25.9"
+    js-tokens "^4.0.0"
     picocolors "^1.0.0"
 
 "@babel/compat-data@^7.25.2":
@@ -657,7 +658,7 @@
   resolved "https://registry.npmjs.org/@babel/compat-data/-/compat-data-7.25.4.tgz"
   integrity sha512-+LGRog6RAsCJrrrg/IO6LGmpphNe5DiK30dGjCoxxeGv49B10/3XYGxPsAwrDlMFcFEvdAUavDT8r9k/hSyQqQ==
 
-"@babel/core@^7.11.6", "@babel/core@^7.12.3", "@babel/core@^7.23.9":
+"@babel/core@^7.0.0", "@babel/core@^7.0.0-0", "@babel/core@^7.11.6", "@babel/core@^7.12.3", "@babel/core@^7.23.9", "@babel/core@^7.8.0", "@babel/core@>=7.0.0-beta.0 <8":
   version "7.25.2"
   resolved "https://registry.npmjs.org/@babel/core/-/core-7.25.2.tgz"
   integrity sha512-BBt3opiCOxUr9euZ5/ro/Xv8/V7yJ5bjYMqG/C1YAo8MIKAnumZalCN+msbci3Pigy4lIQfPUpfMM27HMGaYEA==
@@ -730,15 +731,15 @@
     "@babel/traverse" "^7.24.7"
     "@babel/types" "^7.24.7"
 
-"@babel/helper-string-parser@^7.24.8":
-  version "7.24.8"
-  resolved "https://registry.npmjs.org/@babel/helper-string-parser/-/helper-string-parser-7.24.8.tgz"
-  integrity sha512-pO9KhhRcuUyGnJWwyEgnRJTSIZHiT+vMD0kPeD+so0l7mxkMT19g3pjY9GTnHySck/hDzq+dtW/4VgnMkippsQ==
+"@babel/helper-string-parser@^7.25.9":
+  version "7.25.9"
+  resolved "https://registry.npmjs.org/@babel/helper-string-parser/-/helper-string-parser-7.25.9.tgz"
+  integrity sha512-4A/SCr/2KLd5jrtOMFzaKjVtAei3+2r/NChoBNoZ3EyP/+GlhoaEGoWOZUmFmoITP7zOJyHIMm+DYRd8o3PvHA==
 
-"@babel/helper-validator-identifier@^7.24.7":
-  version "7.24.7"
-  resolved "https://registry.npmjs.org/@babel/helper-validator-identifier/-/helper-validator-identifier-7.24.7.tgz"
-  integrity sha512-rR+PBcQ1SMQDDyF6X0wxtG8QyLCgUB0eRAGguqRLfkCA87l7yAP7ehq8SNj96OOGTO8OBV70KhuFYcIkHXOg0w==
+"@babel/helper-validator-identifier@^7.24.7", "@babel/helper-validator-identifier@^7.25.9":
+  version "7.25.9"
+  resolved "https://registry.npmjs.org/@babel/helper-validator-identifier/-/helper-validator-identifier-7.25.9.tgz"
+  integrity sha512-Ed61U6XJc3CVRfkERJWDz4dJwKe7iLmmJsbOGu9wSloNSFttHV0I8g6UAgb7qnK5ly5bGLPd4oXZlxCdANBOWQ==
 
 "@babel/helper-validator-option@^7.24.8":
   version "7.24.8"
@@ -746,29 +747,19 @@
   integrity sha512-xb8t9tD1MHLungh/AIoWYN+gVHaB9kwlu8gffXGSt3FFEIT7RjS+xWbc2vUD1UTZdIpKj/ab3rdqJ7ufngyi2Q==
 
 "@babel/helpers@^7.25.0":
-  version "7.25.6"
-  resolved "https://registry.npmjs.org/@babel/helpers/-/helpers-7.25.6.tgz"
-  integrity sha512-Xg0tn4HcfTijTwfDwYlvVCl43V6h4KyVVX2aEm4qdO/PC6L2YvzLHFdmxhoeSA3eslcE6+ZVXHgWwopXYLNq4Q==
+  version "7.27.0"
+  resolved "https://registry.npmjs.org/@babel/helpers/-/helpers-7.27.0.tgz"
+  integrity sha512-U5eyP/CTFPuNE3qk+WZMxFkp/4zUzdceQlfzf7DdGdhp+Fezd7HD+i8Y24ZuTMKX3wQBld449jijbGq6OdGNQg==
   dependencies:
-    "@babel/template" "^7.25.0"
-    "@babel/types" "^7.25.6"
+    "@babel/template" "^7.27.0"
+    "@babel/types" "^7.27.0"
 
-"@babel/highlight@^7.24.7":
-  version "7.24.7"
-  resolved "https://registry.npmjs.org/@babel/highlight/-/highlight-7.24.7.tgz"
-  integrity sha512-EStJpq4OuY8xYfhGVXngigBJRWxftKX9ksiGDnmlY3o7B/V7KIAc9X4oiK87uPJSc/vs5L869bem5fhZa8caZw==
+"@babel/parser@^7.1.0", "@babel/parser@^7.14.7", "@babel/parser@^7.20.7", "@babel/parser@^7.23.9", "@babel/parser@^7.25.0", "@babel/parser@^7.25.6", "@babel/parser@^7.27.0":
+  version "7.27.0"
+  resolved "https://registry.npmjs.org/@babel/parser/-/parser-7.27.0.tgz"
+  integrity sha512-iaepho73/2Pz7w2eMS0Q5f83+0RKI7i4xmiYeBmDzfRVbQtTOG7Ts0S4HzJVsTMGI9keU8rNfuZr8DKfSt7Yyg==
   dependencies:
-    "@babel/helper-validator-identifier" "^7.24.7"
-    chalk "^2.4.2"
-    js-tokens "^4.0.0"
-    picocolors "^1.0.0"
-
-"@babel/parser@^7.1.0", "@babel/parser@^7.14.7", "@babel/parser@^7.20.7", "@babel/parser@^7.23.9", "@babel/parser@^7.25.0", "@babel/parser@^7.25.6":
-  version "7.25.6"
-  resolved "https://registry.npmjs.org/@babel/parser/-/parser-7.25.6.tgz"
-  integrity sha512-trGdfBdbD0l1ZPmcJ83eNxB9rbEax4ALFTF7fN386TMYbeCQbyme5cOEXQhbGXKebwGaB/J52w1mrklMcbgy6Q==
-  dependencies:
-    "@babel/types" "^7.25.6"
+    "@babel/types" "^7.27.0"
 
 "@babel/plugin-syntax-async-generators@^7.8.4":
   version "7.8.4"
@@ -889,14 +880,14 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.24.8"
 
-"@babel/template@^7.25.0", "@babel/template@^7.3.3":
-  version "7.25.0"
-  resolved "https://registry.npmjs.org/@babel/template/-/template-7.25.0.tgz"
-  integrity sha512-aOOgh1/5XzKvg1jvVz7AVrx2piJ2XBi227DHmbY6y+bM9H2FlN+IfecYu4Xl0cNiiVejlsCri89LUsbj8vJD9Q==
+"@babel/template@^7.25.0", "@babel/template@^7.27.0", "@babel/template@^7.3.3":
+  version "7.27.0"
+  resolved "https://registry.npmjs.org/@babel/template/-/template-7.27.0.tgz"
+  integrity sha512-2ncevenBqXI6qRMukPlXwHKHchC7RyMuu4xv5JBXRfOGVcTy1mXCD12qrp7Jsoxll1EV3+9sE4GugBVRjT2jFA==
   dependencies:
-    "@babel/code-frame" "^7.24.7"
-    "@babel/parser" "^7.25.0"
-    "@babel/types" "^7.25.0"
+    "@babel/code-frame" "^7.26.2"
+    "@babel/parser" "^7.27.0"
+    "@babel/types" "^7.27.0"
 
 "@babel/traverse@^7.24.7", "@babel/traverse@^7.25.2":
   version "7.25.6"
@@ -911,21 +902,20 @@
     debug "^4.3.1"
     globals "^11.1.0"
 
-"@babel/types@^7.0.0", "@babel/types@^7.20.7", "@babel/types@^7.24.7", "@babel/types@^7.25.0", "@babel/types@^7.25.2", "@babel/types@^7.25.6", "@babel/types@^7.3.3":
-  version "7.25.6"
-  resolved "https://registry.npmjs.org/@babel/types/-/types-7.25.6.tgz"
-  integrity sha512-/l42B1qxpG6RdfYf343Uw1vmDjeNhneUXtzhojE7pDgfpEypmRhI6j1kr17XCVv4Cgl9HdAiQY2x0GwKm7rWCw==
+"@babel/types@^7.0.0", "@babel/types@^7.20.7", "@babel/types@^7.24.7", "@babel/types@^7.25.2", "@babel/types@^7.25.6", "@babel/types@^7.27.0", "@babel/types@^7.3.3":
+  version "7.27.0"
+  resolved "https://registry.npmjs.org/@babel/types/-/types-7.27.0.tgz"
+  integrity sha512-H45s8fVLYjbhFH62dIJ3WtmJ6RSPt/3DRO0ZcT2SUiYiQyz3BLVb9ADEnLl91m74aQPS3AzzeajZHYOalWe3bg==
   dependencies:
-    "@babel/helper-string-parser" "^7.24.8"
-    "@babel/helper-validator-identifier" "^7.24.7"
-    to-fast-properties "^2.0.0"
+    "@babel/helper-string-parser" "^7.25.9"
+    "@babel/helper-validator-identifier" "^7.25.9"
 
 "@bcoe/v8-coverage@^0.2.3":
   version "0.2.3"
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@colors/colors@1.6.0", "@colors/colors@^1.6.0":
+"@colors/colors@^1.6.0", "@colors/colors@1.6.0":
   version "1.6.0"
   resolved "https://registry.npmjs.org/@colors/colors/-/colors-1.6.0.tgz"
   integrity sha512-Ir+AOibqzrIsL6ajt3Rz3LskB7OiMVHqltZmspbW/TJuTVuyOMirVqAkjfY6JISiLHgyNqicAC8AyHHGzNd/dA==
@@ -1121,7 +1111,7 @@
     jest-haste-map "^29.7.0"
     slash "^3.0.0"
 
-"@jest/transform@^29.7.0":
+"@jest/transform@^29.0.0", "@jest/transform@^29.7.0":
   version "29.7.0"
   resolved "https://registry.npmjs.org/@jest/transform/-/transform-29.7.0.tgz"
   integrity sha512-ok/BTPFzFKVMwO5eOHRrvnBVHdRy9IrsrW1GpMaQ9MCnilNLXQKmAX8s1YXDFaai9xJpac2ySzV0YeRRECr2Vw==
@@ -1142,7 +1132,7 @@
     slash "^3.0.0"
     write-file-atomic "^4.0.2"
 
-"@jest/types@^29.6.3":
+"@jest/types@^29.0.0", "@jest/types@^29.6.3":
   version "29.6.3"
   resolved "https://registry.npmjs.org/@jest/types/-/types-29.6.3.tgz"
   integrity sha512-u3UPsIilWKOM3F9CXtrG8LEJmNxwoCQC/XVj4IKYXvvpx7QIi/Kg1LI5uDmDpKlac62NUtX7eLjRh+jVZcLOzw==
@@ -1178,14 +1168,6 @@
   resolved "https://registry.npmjs.org/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.5.0.tgz"
   integrity sha512-gv3ZRaISU3fjPAgNsriBRqGWQL6quFx04YMPW/zD8XMLsU32mhCCbfbO6KZFLjvYpCZ8zyDEgqsgf+PwPaM7GQ==
 
-"@jridgewell/trace-mapping@0.3.9":
-  version "0.3.9"
-  resolved "https://registry.npmjs.org/@jridgewell/trace-mapping/-/trace-mapping-0.3.9.tgz"
-  integrity sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==
-  dependencies:
-    "@jridgewell/resolve-uri" "^3.0.3"
-    "@jridgewell/sourcemap-codec" "^1.4.10"
-
 "@jridgewell/trace-mapping@^0.3.12", "@jridgewell/trace-mapping@^0.3.18", "@jridgewell/trace-mapping@^0.3.24", "@jridgewell/trace-mapping@^0.3.25":
   version "0.3.25"
   resolved "https://registry.npmjs.org/@jridgewell/trace-mapping/-/trace-mapping-0.3.25.tgz"
@@ -1194,212 +1176,304 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@jridgewell/trace-mapping@0.3.9":
+  version "0.3.9"
+  resolved "https://registry.npmjs.org/@jridgewell/trace-mapping/-/trace-mapping-0.3.9.tgz"
+  integrity sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==
+  dependencies:
+    "@jridgewell/resolve-uri" "^3.0.3"
+    "@jridgewell/sourcemap-codec" "^1.4.10"
+
 "@jsdevtools/ono@^7.1.3":
   version "7.1.3"
   resolved "https://registry.npmjs.org/@jsdevtools/ono/-/ono-7.1.3.tgz"
   integrity sha512-4JQNk+3mVzK3xh2rqd6RB4J46qUR19azEHBneZyTZM+c456qOrbbM/5xcR8huNCCcbVt7+UmizG6GuUvPvKUYg==
 
-"@mongodb-js/saslprep@^1.1.5":
+"@mongodb-js/saslprep@^1.1.9":
   version "1.1.9"
   resolved "https://registry.npmjs.org/@mongodb-js/saslprep/-/saslprep-1.1.9.tgz"
   integrity sha512-tVkljjeEaAhCqTzajSdgbQ6gE6f3oneVwa3iXR6csiEwXXOFsiC6Uh9iAjAhXPtqa/XMDHWjjeNH/77m/Yq2dw==
   dependencies:
     sparse-bitfield "^3.0.3"
 
-"@opentelemetry/api-logs@0.52.1":
-  version "0.52.1"
-  resolved "https://registry.npmjs.org/@opentelemetry/api-logs/-/api-logs-0.52.1.tgz"
-  integrity sha512-qnSqB2DQ9TPP96dl8cDubDvrUyWc0/sK81xHTK8eSUspzDM3bsewX903qclQFvVhgStjRWdC5bLb3kQqMkfV5A==
+"@opentelemetry/api-logs@0.53.0":
+  version "0.53.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/api-logs/-/api-logs-0.53.0.tgz"
+  integrity sha512-8HArjKx+RaAI8uEIgcORbZIPklyh1YLjPSBus8hjRmvLi6DeFzgOcdZ7KwPabKj8mXF8dX0hyfAyGfycz0DbFw==
   dependencies:
     "@opentelemetry/api" "^1.0.0"
 
-"@opentelemetry/api@^1.0.0", "@opentelemetry/api@^1.8", "@opentelemetry/api@^1.9.0":
+"@opentelemetry/api-logs@0.57.1":
+  version "0.57.1"
+  resolved "https://registry.npmjs.org/@opentelemetry/api-logs/-/api-logs-0.57.1.tgz"
+  integrity sha512-I4PHczeujhQAQv6ZBzqHYEUiggZL4IdSMixtVD3EYqbdrjujE7kRfI5QohjlPoJm8BvenoW5YaTMWRrbpot6tg==
+  dependencies:
+    "@opentelemetry/api" "^1.3.0"
+
+"@opentelemetry/api-logs@0.57.2":
+  version "0.57.2"
+  resolved "https://registry.npmjs.org/@opentelemetry/api-logs/-/api-logs-0.57.2.tgz"
+  integrity sha512-uIX52NnTM0iBh84MShlpouI7UKqkZ7MrUszTmaypHBu4r7NofznSnQRfJ+uUeDtQDj6w8eFGg5KBLDAwAPz1+A==
+  dependencies:
+    "@opentelemetry/api" "^1.3.0"
+
+"@opentelemetry/api@^1.0.0", "@opentelemetry/api@^1.1.0", "@opentelemetry/api@^1.3.0", "@opentelemetry/api@^1.7.0", "@opentelemetry/api@^1.8", "@opentelemetry/api@^1.9.0", "@opentelemetry/api@>=1.0.0 <1.10.0":
   version "1.9.0"
   resolved "https://registry.npmjs.org/@opentelemetry/api/-/api-1.9.0.tgz"
   integrity sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==
 
-"@opentelemetry/context-async-hooks@^1.25.1":
-  version "1.26.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/context-async-hooks/-/context-async-hooks-1.26.0.tgz"
-  integrity sha512-HedpXXYzzbaoutw6DFLWLDket2FwLkLpil4hGCZ1xYEIMTcivdfwEOISgdbLEWyG3HW52gTq2V9mOVJrONgiwg==
+"@opentelemetry/context-async-hooks@^1.30.1":
+  version "1.30.1"
+  resolved "https://registry.npmjs.org/@opentelemetry/context-async-hooks/-/context-async-hooks-1.30.1.tgz"
+  integrity sha512-s5vvxXPVdjqS3kTLKMeBMvop9hbWkwzBpu+mUO2M7sZtlkyDJGwFe33wRKnbaYDo8ExRVBIIdwIGrqpxHuKttA==
 
-"@opentelemetry/core@1.25.1":
-  version "1.25.1"
-  resolved "https://registry.npmjs.org/@opentelemetry/core/-/core-1.25.1.tgz"
-  integrity sha512-GeT/l6rBYWVQ4XArluLVB6WWQ8flHbdb6r2FCHC3smtdOAbrJBIv35tpV/yp9bmYUJf+xmZpu9DRTIeJVhFbEQ==
+"@opentelemetry/core@^1.1.0", "@opentelemetry/core@^1.26.0", "@opentelemetry/core@^1.30.1", "@opentelemetry/core@^1.8.0", "@opentelemetry/core@1.30.1":
+  version "1.30.1"
+  resolved "https://registry.npmjs.org/@opentelemetry/core/-/core-1.30.1.tgz"
+  integrity sha512-OOCM2C/QIURhJMuKaekP3TRBxBKxG/TWWA0TL2J6nXUtDnuCtccy49LUJF8xPFXMX+0LMcxFpCo8M9cGY1W6rQ==
   dependencies:
-    "@opentelemetry/semantic-conventions" "1.25.1"
+    "@opentelemetry/semantic-conventions" "1.28.0"
 
-"@opentelemetry/core@1.26.0", "@opentelemetry/core@^1.1.0", "@opentelemetry/core@^1.25.1", "@opentelemetry/core@^1.8.0":
-  version "1.26.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/core/-/core-1.26.0.tgz"
-  integrity sha512-1iKxXXE8415Cdv0yjG3G6hQnB5eVEsJce3QaawX8SjDn0mAS0ZM8fAbZZJD4ajvhC15cePvosSCut404KrIIvQ==
-  dependencies:
-    "@opentelemetry/semantic-conventions" "1.27.0"
-
-"@opentelemetry/instrumentation-connect@0.38.0":
-  version "0.38.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-connect/-/instrumentation-connect-0.38.0.tgz"
-  integrity sha512-2/nRnx3pjYEmdPIaBwtgtSviTKHWnDZN3R+TkRUnhIVrvBKVcq+I5B2rtd6mr6Fe9cHlZ9Ojcuh7pkNh/xdWWg==
+"@opentelemetry/instrumentation-amqplib@^0.46.0":
+  version "0.46.1"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-amqplib/-/instrumentation-amqplib-0.46.1.tgz"
+  integrity sha512-AyXVnlCf/xV3K/rNumzKxZqsULyITJH6OVLiW6730JPRqWA7Zc9bvYoVNpN6iOpTU8CasH34SU/ksVJmObFibQ==
   dependencies:
     "@opentelemetry/core" "^1.8.0"
-    "@opentelemetry/instrumentation" "^0.52.0"
-    "@opentelemetry/semantic-conventions" "^1.22.0"
+    "@opentelemetry/instrumentation" "^0.57.1"
+    "@opentelemetry/semantic-conventions" "^1.27.0"
+
+"@opentelemetry/instrumentation-connect@0.43.0":
+  version "0.43.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-connect/-/instrumentation-connect-0.43.0.tgz"
+  integrity sha512-Q57JGpH6T4dkYHo9tKXONgLtxzsh1ZEW5M9A/OwKrZFyEpLqWgjhcZ3hIuVvDlhb426iDF1f9FPToV/mi5rpeA==
+  dependencies:
+    "@opentelemetry/core" "^1.8.0"
+    "@opentelemetry/instrumentation" "^0.57.0"
+    "@opentelemetry/semantic-conventions" "^1.27.0"
     "@types/connect" "3.4.36"
 
-"@opentelemetry/instrumentation-express@0.41.1":
-  version "0.41.1"
-  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-express/-/instrumentation-express-0.41.1.tgz"
-  integrity sha512-uRx0V3LPGzjn2bxAnV8eUsDT82vT7NTwI0ezEuPMBOTOsnPpGhWdhcdNdhH80sM4TrWrOfXm9HGEdfWE3TRIww==
+"@opentelemetry/instrumentation-dataloader@0.16.0":
+  version "0.16.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-dataloader/-/instrumentation-dataloader-0.16.0.tgz"
+  integrity sha512-88+qCHZC02up8PwKHk0UQKLLqGGURzS3hFQBZC7PnGwReuoKjHXS1o29H58S+QkXJpkTr2GACbx8j6mUoGjNPA==
+  dependencies:
+    "@opentelemetry/instrumentation" "^0.57.0"
+
+"@opentelemetry/instrumentation-express@0.47.0":
+  version "0.47.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-express/-/instrumentation-express-0.47.0.tgz"
+  integrity sha512-XFWVx6k0XlU8lu6cBlCa29ONtVt6ADEjmxtyAyeF2+rifk8uBJbk1La0yIVfI0DoKURGbaEDTNelaXG9l/lNNQ==
   dependencies:
     "@opentelemetry/core" "^1.8.0"
-    "@opentelemetry/instrumentation" "^0.52.0"
-    "@opentelemetry/semantic-conventions" "^1.22.0"
+    "@opentelemetry/instrumentation" "^0.57.0"
+    "@opentelemetry/semantic-conventions" "^1.27.0"
 
-"@opentelemetry/instrumentation-fastify@0.38.0":
-  version "0.38.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-fastify/-/instrumentation-fastify-0.38.0.tgz"
-  integrity sha512-HBVLpTSYpkQZ87/Df3N0gAw7VzYZV3n28THIBrJWfuqw3Or7UqdhnjeuMIPQ04BKk3aZc0cWn2naSQObbh5vXw==
+"@opentelemetry/instrumentation-fastify@0.44.1":
+  version "0.44.1"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-fastify/-/instrumentation-fastify-0.44.1.tgz"
+  integrity sha512-RoVeMGKcNttNfXMSl6W4fsYoCAYP1vi6ZAWIGhBY+o7R9Y0afA7f9JJL0j8LHbyb0P0QhSYk+6O56OwI2k4iRQ==
   dependencies:
     "@opentelemetry/core" "^1.8.0"
-    "@opentelemetry/instrumentation" "^0.52.0"
-    "@opentelemetry/semantic-conventions" "^1.22.0"
+    "@opentelemetry/instrumentation" "^0.57.0"
+    "@opentelemetry/semantic-conventions" "^1.27.0"
 
-"@opentelemetry/instrumentation-fs@0.14.0":
-  version "0.14.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-fs/-/instrumentation-fs-0.14.0.tgz"
-  integrity sha512-pVc8P5AgliC1DphyyBUgsxXlm2XaPH4BpYvt7rAZDMIqUpRk8gs19SioABtKqqxvFzg5jPtgJfJsdxq0Y+maLw==
+"@opentelemetry/instrumentation-fs@0.19.0":
+  version "0.19.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-fs/-/instrumentation-fs-0.19.0.tgz"
+  integrity sha512-JGwmHhBkRT2G/BYNV1aGI+bBjJu4fJUD/5/Jat0EWZa2ftrLV3YE8z84Fiij/wK32oMZ88eS8DI4ecLGZhpqsQ==
   dependencies:
     "@opentelemetry/core" "^1.8.0"
-    "@opentelemetry/instrumentation" "^0.52.0"
+    "@opentelemetry/instrumentation" "^0.57.0"
 
-"@opentelemetry/instrumentation-graphql@0.42.0":
-  version "0.42.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-graphql/-/instrumentation-graphql-0.42.0.tgz"
-  integrity sha512-N8SOwoKL9KQSX7z3gOaw5UaTeVQcfDO1c21csVHnmnmGUoqsXbArK2B8VuwPWcv6/BC/i3io+xTo7QGRZ/z28Q==
+"@opentelemetry/instrumentation-generic-pool@0.43.0":
+  version "0.43.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-generic-pool/-/instrumentation-generic-pool-0.43.0.tgz"
+  integrity sha512-at8GceTtNxD1NfFKGAuwtqM41ot/TpcLh+YsGe4dhf7gvv1HW/ZWdq6nfRtS6UjIvZJOokViqLPJ3GVtZItAnQ==
   dependencies:
-    "@opentelemetry/instrumentation" "^0.52.0"
+    "@opentelemetry/instrumentation" "^0.57.0"
 
-"@opentelemetry/instrumentation-hapi@0.40.0":
-  version "0.40.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-hapi/-/instrumentation-hapi-0.40.0.tgz"
-  integrity sha512-8U/w7Ifumtd2bSN1OLaSwAAFhb9FyqWUki3lMMB0ds+1+HdSxYBe9aspEJEgvxAqOkrQnVniAPTEGf1pGM7SOw==
+"@opentelemetry/instrumentation-graphql@0.47.0":
+  version "0.47.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-graphql/-/instrumentation-graphql-0.47.0.tgz"
+  integrity sha512-Cc8SMf+nLqp0fi8oAnooNEfwZWFnzMiBHCGmDFYqmgjPylyLmi83b+NiTns/rKGwlErpW0AGPt0sMpkbNlzn8w==
+  dependencies:
+    "@opentelemetry/instrumentation" "^0.57.0"
+
+"@opentelemetry/instrumentation-hapi@0.45.1":
+  version "0.45.1"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-hapi/-/instrumentation-hapi-0.45.1.tgz"
+  integrity sha512-VH6mU3YqAKTePPfUPwfq4/xr049774qWtfTuJqVHoVspCLiT3bW+fCQ1toZxt6cxRPYASoYaBsMA3CWo8B8rcw==
   dependencies:
     "@opentelemetry/core" "^1.8.0"
-    "@opentelemetry/instrumentation" "^0.52.0"
-    "@opentelemetry/semantic-conventions" "^1.22.0"
+    "@opentelemetry/instrumentation" "^0.57.0"
+    "@opentelemetry/semantic-conventions" "^1.27.0"
 
-"@opentelemetry/instrumentation-http@0.52.1":
-  version "0.52.1"
-  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-http/-/instrumentation-http-0.52.1.tgz"
-  integrity sha512-dG/aevWhaP+7OLv4BQQSEKMJv8GyeOp3Wxl31NHqE8xo9/fYMfEljiZphUHIfyg4gnZ9swMyWjfOQs5GUQe54Q==
+"@opentelemetry/instrumentation-http@0.57.1":
+  version "0.57.1"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-http/-/instrumentation-http-0.57.1.tgz"
+  integrity sha512-ThLmzAQDs7b/tdKI3BV2+yawuF09jF111OFsovqT1Qj3D8vjwKBwhi/rDE5xethwn4tSXtZcJ9hBsVAlWFQZ7g==
   dependencies:
-    "@opentelemetry/core" "1.25.1"
-    "@opentelemetry/instrumentation" "0.52.1"
-    "@opentelemetry/semantic-conventions" "1.25.1"
+    "@opentelemetry/core" "1.30.1"
+    "@opentelemetry/instrumentation" "0.57.1"
+    "@opentelemetry/semantic-conventions" "1.28.0"
+    forwarded-parse "2.1.2"
     semver "^7.5.2"
 
-"@opentelemetry/instrumentation-ioredis@0.42.0":
-  version "0.42.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-ioredis/-/instrumentation-ioredis-0.42.0.tgz"
-  integrity sha512-P11H168EKvBB9TUSasNDOGJCSkpT44XgoM6d3gRIWAa9ghLpYhl0uRkS8//MqPzcJVHr3h3RmfXIpiYLjyIZTw==
+"@opentelemetry/instrumentation-ioredis@0.47.0":
+  version "0.47.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-ioredis/-/instrumentation-ioredis-0.47.0.tgz"
+  integrity sha512-4HqP9IBC8e7pW9p90P3q4ox0XlbLGme65YTrA3UTLvqvo4Z6b0puqZQP203YFu8m9rE/luLfaG7/xrwwqMUpJw==
   dependencies:
-    "@opentelemetry/instrumentation" "^0.52.0"
+    "@opentelemetry/instrumentation" "^0.57.0"
     "@opentelemetry/redis-common" "^0.36.2"
-    "@opentelemetry/semantic-conventions" "^1.23.0"
+    "@opentelemetry/semantic-conventions" "^1.27.0"
 
-"@opentelemetry/instrumentation-koa@0.42.0":
-  version "0.42.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-koa/-/instrumentation-koa-0.42.0.tgz"
-  integrity sha512-H1BEmnMhho8o8HuNRq5zEI4+SIHDIglNB7BPKohZyWG4fWNuR7yM4GTlR01Syq21vODAS7z5omblScJD/eZdKw==
+"@opentelemetry/instrumentation-kafkajs@0.7.0":
+  version "0.7.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-kafkajs/-/instrumentation-kafkajs-0.7.0.tgz"
+  integrity sha512-LB+3xiNzc034zHfCtgs4ITWhq6Xvdo8bsq7amR058jZlf2aXXDrN9SV4si4z2ya9QX4tz6r4eZJwDkXOp14/AQ==
+  dependencies:
+    "@opentelemetry/instrumentation" "^0.57.0"
+    "@opentelemetry/semantic-conventions" "^1.27.0"
+
+"@opentelemetry/instrumentation-knex@0.44.0":
+  version "0.44.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-knex/-/instrumentation-knex-0.44.0.tgz"
+  integrity sha512-SlT0+bLA0Lg3VthGje+bSZatlGHw/vwgQywx0R/5u9QC59FddTQSPJeWNw29M6f8ScORMeUOOTwihlQAn4GkJQ==
+  dependencies:
+    "@opentelemetry/instrumentation" "^0.57.0"
+    "@opentelemetry/semantic-conventions" "^1.27.0"
+
+"@opentelemetry/instrumentation-koa@0.47.0":
+  version "0.47.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-koa/-/instrumentation-koa-0.47.0.tgz"
+  integrity sha512-HFdvqf2+w8sWOuwtEXayGzdZ2vWpCKEQv5F7+2DSA74Te/Cv4rvb2E5So5/lh+ok4/RAIPuvCbCb/SHQFzMmbw==
   dependencies:
     "@opentelemetry/core" "^1.8.0"
-    "@opentelemetry/instrumentation" "^0.52.0"
-    "@opentelemetry/semantic-conventions" "^1.22.0"
+    "@opentelemetry/instrumentation" "^0.57.0"
+    "@opentelemetry/semantic-conventions" "^1.27.0"
 
-"@opentelemetry/instrumentation-mongodb@0.46.0":
+"@opentelemetry/instrumentation-lru-memoizer@0.44.0":
+  version "0.44.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-lru-memoizer/-/instrumentation-lru-memoizer-0.44.0.tgz"
+  integrity sha512-Tn7emHAlvYDFik3vGU0mdwvWJDwtITtkJ+5eT2cUquct6nIs+H8M47sqMJkCpyPe5QIBJoTOHxmc6mj9lz6zDw==
+  dependencies:
+    "@opentelemetry/instrumentation" "^0.57.0"
+
+"@opentelemetry/instrumentation-mongodb@0.51.0":
+  version "0.51.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-mongodb/-/instrumentation-mongodb-0.51.0.tgz"
+  integrity sha512-cMKASxCX4aFxesoj3WK8uoQ0YUrRvnfxaO72QWI2xLu5ZtgX/QvdGBlU3Ehdond5eb74c2s1cqRQUIptBnKz1g==
+  dependencies:
+    "@opentelemetry/instrumentation" "^0.57.0"
+    "@opentelemetry/semantic-conventions" "^1.27.0"
+
+"@opentelemetry/instrumentation-mongoose@0.46.0":
   version "0.46.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-mongodb/-/instrumentation-mongodb-0.46.0.tgz"
-  integrity sha512-VF/MicZ5UOBiXrqBslzwxhN7TVqzu1/LN/QDpkskqM0Zm0aZ4CVRbUygL8d7lrjLn15x5kGIe8VsSphMfPJzlA==
-  dependencies:
-    "@opentelemetry/instrumentation" "^0.52.0"
-    "@opentelemetry/sdk-metrics" "^1.9.1"
-    "@opentelemetry/semantic-conventions" "^1.22.0"
-
-"@opentelemetry/instrumentation-mongoose@0.40.0":
-  version "0.40.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-mongoose/-/instrumentation-mongoose-0.40.0.tgz"
-  integrity sha512-niRi5ZUnkgzRhIGMOozTyoZIvJKNJyhijQI4nF4iFSb+FUx2v5fngfR+8XLmdQAO7xmsD8E5vEGdDVYVtKbZew==
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-mongoose/-/instrumentation-mongoose-0.46.0.tgz"
+  integrity sha512-mtVv6UeaaSaWTeZtLo4cx4P5/ING2obSqfWGItIFSunQBrYROfhuVe7wdIrFUs2RH1tn2YYpAJyMaRe/bnTTIQ==
   dependencies:
     "@opentelemetry/core" "^1.8.0"
-    "@opentelemetry/instrumentation" "^0.52.0"
-    "@opentelemetry/semantic-conventions" "^1.22.0"
+    "@opentelemetry/instrumentation" "^0.57.0"
+    "@opentelemetry/semantic-conventions" "^1.27.0"
 
-"@opentelemetry/instrumentation-mysql2@0.40.0":
-  version "0.40.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-mysql2/-/instrumentation-mysql2-0.40.0.tgz"
-  integrity sha512-0xfS1xcqUmY7WE1uWjlmI67Xg3QsSUlNT+AcXHeA4BDUPwZtWqF4ezIwLgpVZfHOnkAEheqGfNSWd1PIu3Wnfg==
+"@opentelemetry/instrumentation-mysql@0.45.0":
+  version "0.45.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-mysql/-/instrumentation-mysql-0.45.0.tgz"
+  integrity sha512-tWWyymgwYcTwZ4t8/rLDfPYbOTF3oYB8SxnYMtIQ1zEf5uDm90Ku3i6U/vhaMyfHNlIHvDhvJh+qx5Nc4Z3Acg==
   dependencies:
-    "@opentelemetry/instrumentation" "^0.52.0"
-    "@opentelemetry/semantic-conventions" "^1.22.0"
+    "@opentelemetry/instrumentation" "^0.57.0"
+    "@opentelemetry/semantic-conventions" "^1.27.0"
+    "@types/mysql" "2.15.26"
+
+"@opentelemetry/instrumentation-mysql2@0.45.0":
+  version "0.45.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-mysql2/-/instrumentation-mysql2-0.45.0.tgz"
+  integrity sha512-qLslv/EPuLj0IXFvcE3b0EqhWI8LKmrgRPIa4gUd8DllbBpqJAvLNJSv3cC6vWwovpbSI3bagNO/3Q2SuXv2xA==
+  dependencies:
+    "@opentelemetry/instrumentation" "^0.57.0"
+    "@opentelemetry/semantic-conventions" "^1.27.0"
     "@opentelemetry/sql-common" "^0.40.1"
 
-"@opentelemetry/instrumentation-mysql@0.40.0":
-  version "0.40.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-mysql/-/instrumentation-mysql-0.40.0.tgz"
-  integrity sha512-d7ja8yizsOCNMYIJt5PH/fKZXjb/mS48zLROO4BzZTtDfhNCl2UM/9VIomP2qkGIFVouSJrGr/T00EzY7bPtKA==
+"@opentelemetry/instrumentation-nestjs-core@0.44.0":
+  version "0.44.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-nestjs-core/-/instrumentation-nestjs-core-0.44.0.tgz"
+  integrity sha512-t16pQ7A4WYu1yyQJZhRKIfUNvl5PAaF2pEteLvgJb/BWdd1oNuU1rOYt4S825kMy+0q4ngiX281Ss9qiwHfxFQ==
   dependencies:
-    "@opentelemetry/instrumentation" "^0.52.0"
-    "@opentelemetry/semantic-conventions" "^1.22.0"
-    "@types/mysql" "2.15.22"
+    "@opentelemetry/instrumentation" "^0.57.0"
+    "@opentelemetry/semantic-conventions" "^1.27.0"
 
-"@opentelemetry/instrumentation-nestjs-core@0.39.0":
-  version "0.39.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-nestjs-core/-/instrumentation-nestjs-core-0.39.0.tgz"
-  integrity sha512-mewVhEXdikyvIZoMIUry8eb8l3HUjuQjSjVbmLVTt4NQi35tkpnHQrG9bTRBrl3403LoWZ2njMPJyg4l6HfKvA==
+"@opentelemetry/instrumentation-pg@0.50.0":
+  version "0.50.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-pg/-/instrumentation-pg-0.50.0.tgz"
+  integrity sha512-TtLxDdYZmBhFswm8UIsrDjh/HFBeDXd4BLmE8h2MxirNHewLJ0VS9UUddKKEverb5Sm2qFVjqRjcU+8Iw4FJ3w==
   dependencies:
-    "@opentelemetry/instrumentation" "^0.52.0"
-    "@opentelemetry/semantic-conventions" "^1.23.0"
-
-"@opentelemetry/instrumentation-pg@0.43.0":
-  version "0.43.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-pg/-/instrumentation-pg-0.43.0.tgz"
-  integrity sha512-og23KLyoxdnAeFs1UWqzSonuCkePUzCX30keSYigIzJe/6WSYA8rnEI5lobcxPEzg+GcU06J7jzokuEHbjVJNw==
-  dependencies:
-    "@opentelemetry/instrumentation" "^0.52.0"
-    "@opentelemetry/semantic-conventions" "^1.22.0"
+    "@opentelemetry/core" "^1.26.0"
+    "@opentelemetry/instrumentation" "^0.57.0"
+    "@opentelemetry/semantic-conventions" "1.27.0"
     "@opentelemetry/sql-common" "^0.40.1"
     "@types/pg" "8.6.1"
-    "@types/pg-pool" "2.0.4"
+    "@types/pg-pool" "2.0.6"
 
-"@opentelemetry/instrumentation-redis-4@0.41.0":
-  version "0.41.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-redis-4/-/instrumentation-redis-4-0.41.0.tgz"
-  integrity sha512-H7IfGTqW2reLXqput4yzAe8YpDC0fmVNal95GHMLOrS89W+qWUKIqxolSh63hJyfmwPSFwXASzj7wpSk8Az+Dg==
+"@opentelemetry/instrumentation-redis-4@0.46.0":
+  version "0.46.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-redis-4/-/instrumentation-redis-4-0.46.0.tgz"
+  integrity sha512-aTUWbzbFMFeRODn3720TZO0tsh/49T8H3h8vVnVKJ+yE36AeW38Uj/8zykQ/9nO8Vrtjr5yKuX3uMiG/W8FKNw==
   dependencies:
-    "@opentelemetry/instrumentation" "^0.52.0"
+    "@opentelemetry/instrumentation" "^0.57.0"
     "@opentelemetry/redis-common" "^0.36.2"
-    "@opentelemetry/semantic-conventions" "^1.22.0"
+    "@opentelemetry/semantic-conventions" "^1.27.0"
 
-"@opentelemetry/instrumentation@0.52.1", "@opentelemetry/instrumentation@^0.49 || ^0.50 || ^0.51 || ^0.52.0", "@opentelemetry/instrumentation@^0.52.0", "@opentelemetry/instrumentation@^0.52.1":
-  version "0.52.1"
-  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation/-/instrumentation-0.52.1.tgz"
-  integrity sha512-uXJbYU/5/MBHjMp1FqrILLRuiJCs3Ofk0MeRDk8g1S1gD47U8X3JnSwcMO1rtRo1x1a7zKaQHaoYu49p/4eSKw==
+"@opentelemetry/instrumentation-tedious@0.18.0":
+  version "0.18.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-tedious/-/instrumentation-tedious-0.18.0.tgz"
+  integrity sha512-9zhjDpUDOtD+coeADnYEJQ0IeLVCj7w/hqzIutdp5NqS1VqTAanaEfsEcSypyvYv5DX3YOsTUoF+nr2wDXPETA==
   dependencies:
-    "@opentelemetry/api-logs" "0.52.1"
-    "@types/shimmer" "^1.0.2"
+    "@opentelemetry/instrumentation" "^0.57.0"
+    "@opentelemetry/semantic-conventions" "^1.27.0"
+    "@types/tedious" "^4.0.14"
+
+"@opentelemetry/instrumentation-undici@0.10.0":
+  version "0.10.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation-undici/-/instrumentation-undici-0.10.0.tgz"
+  integrity sha512-vm+V255NGw9gaSsPD6CP0oGo8L55BffBc8KnxqsMuc6XiAD1L8SFNzsW0RHhxJFqy9CJaJh+YiJ5EHXuZ5rZBw==
+  dependencies:
+    "@opentelemetry/core" "^1.8.0"
+    "@opentelemetry/instrumentation" "^0.57.0"
+
+"@opentelemetry/instrumentation@^0.49 || ^0.50 || ^0.51 || ^0.52.0 || ^0.53.0":
+  version "0.53.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation/-/instrumentation-0.53.0.tgz"
+  integrity sha512-DMwg0hy4wzf7K73JJtl95m/e0boSoWhH07rfvHvYzQtBD3Bmv0Wc1x733vyZBqmFm8OjJD0/pfiUg1W3JjFX0A==
+  dependencies:
+    "@opentelemetry/api-logs" "0.53.0"
+    "@types/shimmer" "^1.2.0"
     import-in-the-middle "^1.8.1"
     require-in-the-middle "^7.1.1"
     semver "^7.5.2"
     shimmer "^1.2.1"
 
-"@opentelemetry/instrumentation@^0.46.0":
-  version "0.46.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation/-/instrumentation-0.46.0.tgz"
-  integrity sha512-a9TijXZZbk0vI5TGLZl+0kxyFfrXHhX6Svtz7Pp2/VBlCSKrazuULEyoJQrOknJyFWNMEmbbJgOciHCCpQcisw==
+"@opentelemetry/instrumentation@^0.57.0", "@opentelemetry/instrumentation@^0.57.1":
+  version "0.57.2"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation/-/instrumentation-0.57.2.tgz"
+  integrity sha512-BdBGhQBh8IjZ2oIIX6F2/Q3LKm/FDDKi6ccYKcBTeilh6SNdNKveDOLk73BkSJjQLJk6qe4Yh+hHw1UPhCDdrg==
   dependencies:
-    "@types/shimmer" "^1.0.2"
-    import-in-the-middle "1.7.1"
+    "@opentelemetry/api-logs" "0.57.2"
+    "@types/shimmer" "^1.2.0"
+    import-in-the-middle "^1.8.1"
+    require-in-the-middle "^7.1.1"
+    semver "^7.5.2"
+    shimmer "^1.2.1"
+
+"@opentelemetry/instrumentation@0.57.1":
+  version "0.57.1"
+  resolved "https://registry.npmjs.org/@opentelemetry/instrumentation/-/instrumentation-0.57.1.tgz"
+  integrity sha512-SgHEKXoVxOjc20ZYusPG3Fh+RLIZTSa4x8QtD3NfgAUDyqdFFS9W1F2ZVbZkqDCdyMcQG02Ok4duUGLHJXHgbA==
+  dependencies:
+    "@opentelemetry/api-logs" "0.57.1"
+    "@types/shimmer" "^1.2.0"
+    import-in-the-middle "^1.8.1"
     require-in-the-middle "^7.1.1"
     semver "^7.5.2"
     shimmer "^1.2.1"
@@ -1409,40 +1483,37 @@
   resolved "https://registry.npmjs.org/@opentelemetry/redis-common/-/redis-common-0.36.2.tgz"
   integrity sha512-faYX1N0gpLhej/6nyp6bgRjzAKXn5GOEMYY7YhciSfCoITAktLUtQ36d24QEWNA1/WA1y6qQunCe0OhHRkVl9g==
 
-"@opentelemetry/resources@1.26.0", "@opentelemetry/resources@^1.25.1":
-  version "1.26.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/resources/-/resources-1.26.0.tgz"
-  integrity sha512-CPNYchBE7MBecCSVy0HKpUISEeJOniWqcHaAHpmasZ3j9o6V3AyBzhRc90jdmemq0HOxDr6ylhUbDhBqqPpeNw==
+"@opentelemetry/resources@^1.30.1", "@opentelemetry/resources@1.30.1":
+  version "1.30.1"
+  resolved "https://registry.npmjs.org/@opentelemetry/resources/-/resources-1.30.1.tgz"
+  integrity sha512-5UxZqiAgLYGFjS4s9qm5mBVo433u+dSPUFWVWXmLAD4wB65oMCoXaJP1KJa9DIYYMeHu3z4BZcStG3LC593cWA==
   dependencies:
-    "@opentelemetry/core" "1.26.0"
-    "@opentelemetry/semantic-conventions" "1.27.0"
+    "@opentelemetry/core" "1.30.1"
+    "@opentelemetry/semantic-conventions" "1.28.0"
 
-"@opentelemetry/sdk-metrics@^1.9.1":
-  version "1.26.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/sdk-metrics/-/sdk-metrics-1.26.0.tgz"
-  integrity sha512-0SvDXmou/JjzSDOjUmetAAvcKQW6ZrvosU0rkbDGpXvvZN+pQF6JbK/Kd4hNdK4q/22yeruqvukXEJyySTzyTQ==
+"@opentelemetry/sdk-trace-base@^1.22", "@opentelemetry/sdk-trace-base@^1.30.1":
+  version "1.30.1"
+  resolved "https://registry.npmjs.org/@opentelemetry/sdk-trace-base/-/sdk-trace-base-1.30.1.tgz"
+  integrity sha512-jVPgBbH1gCy2Lb7X0AVQ8XAfgg0pJ4nvl8/IiQA6nxOsPvS+0zMJaFSs2ltXe0J6C8dqjcnpyqINDJmU30+uOg==
   dependencies:
-    "@opentelemetry/core" "1.26.0"
-    "@opentelemetry/resources" "1.26.0"
+    "@opentelemetry/core" "1.30.1"
+    "@opentelemetry/resources" "1.30.1"
+    "@opentelemetry/semantic-conventions" "1.28.0"
 
-"@opentelemetry/sdk-trace-base@^1.22", "@opentelemetry/sdk-trace-base@^1.25.1":
-  version "1.26.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/sdk-trace-base/-/sdk-trace-base-1.26.0.tgz"
-  integrity sha512-olWQldtvbK4v22ymrKLbIcBi9L2SpMO84sCPY54IVsJhP9fRsxJT194C/AVaAuJzLE30EdhhM1VmvVYR7az+cw==
-  dependencies:
-    "@opentelemetry/core" "1.26.0"
-    "@opentelemetry/resources" "1.26.0"
-    "@opentelemetry/semantic-conventions" "1.27.0"
+"@opentelemetry/semantic-conventions@^1.27.0", "@opentelemetry/semantic-conventions@^1.28.0":
+  version "1.30.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/semantic-conventions/-/semantic-conventions-1.30.0.tgz"
+  integrity sha512-4VlGgo32k2EQ2wcCY3vEU28A0O13aOtHz3Xt2/2U5FAh9EfhD6t6DqL5Z6yAnRCntbTFDU4YfbpyzSlHNWycPw==
 
-"@opentelemetry/semantic-conventions@1.25.1":
-  version "1.25.1"
-  resolved "https://registry.npmjs.org/@opentelemetry/semantic-conventions/-/semantic-conventions-1.25.1.tgz"
-  integrity sha512-ZDjMJJQRlyk8A1KZFCc+bCbsyrn1wTwdNt56F7twdfUfnHUZUq77/WfONCj8p72NZOyP7pNTdUWSTYC3GTbuuQ==
-
-"@opentelemetry/semantic-conventions@1.27.0", "@opentelemetry/semantic-conventions@^1.17.0", "@opentelemetry/semantic-conventions@^1.22.0", "@opentelemetry/semantic-conventions@^1.23.0", "@opentelemetry/semantic-conventions@^1.25.1":
+"@opentelemetry/semantic-conventions@1.27.0":
   version "1.27.0"
   resolved "https://registry.npmjs.org/@opentelemetry/semantic-conventions/-/semantic-conventions-1.27.0.tgz"
   integrity sha512-sAay1RrB+ONOem0OZanAR1ZI/k7yDpnOQSQmTMuGImUQb2y8EbSaCJ94FQluM74xoU03vlb2d2U90hZluL6nQg==
+
+"@opentelemetry/semantic-conventions@1.28.0":
+  version "1.28.0"
+  resolved "https://registry.npmjs.org/@opentelemetry/semantic-conventions/-/semantic-conventions-1.28.0.tgz"
+  integrity sha512-lp4qAiMTD4sNWW4DbKLBkfiMZ4jbAboJIGOQr5DvciMRI494OapieI9qiODpOt0XBr1LjIDy1xAGAnVs5supTA==
 
 "@opentelemetry/sql-common@^0.40.1":
   version "0.40.1"
@@ -1451,13 +1522,13 @@
   dependencies:
     "@opentelemetry/core" "^1.1.0"
 
-"@prisma/instrumentation@5.18.0":
-  version "5.18.0"
-  resolved "https://registry.npmjs.org/@prisma/instrumentation/-/instrumentation-5.18.0.tgz"
-  integrity sha512-r074avGkpPXItk+josQPhufZEmGhUCb16PQx4ITPS40vWTpTPET4VsgCBZB2alIN6SS7pRFod2vz2M2HHEEylQ==
+"@prisma/instrumentation@5.22.0":
+  version "5.22.0"
+  resolved "https://registry.npmjs.org/@prisma/instrumentation/-/instrumentation-5.22.0.tgz"
+  integrity sha512-LxccF392NN37ISGxIurUljZSh1YWnphO34V5a0+T7FVQG2u9bhAXRTJpgmQ3483woVhkraQZFF7cbRrpbw/F4Q==
   dependencies:
     "@opentelemetry/api" "^1.8"
-    "@opentelemetry/instrumentation" "^0.49 || ^0.50 || ^0.51 || ^0.52.0"
+    "@opentelemetry/instrumentation" "^0.49 || ^0.50 || ^0.51 || ^0.52.0 || ^0.53.0"
     "@opentelemetry/sdk-trace-base" "^1.22"
 
 "@sentry/core@7.114.0":
@@ -1468,13 +1539,10 @@
     "@sentry/types" "7.114.0"
     "@sentry/utils" "7.114.0"
 
-"@sentry/core@8.28.0":
-  version "8.28.0"
-  resolved "https://registry.npmjs.org/@sentry/core/-/core-8.28.0.tgz"
-  integrity sha512-+If9uubvpZpvaQQw4HLiKPhrSS9/KcoA/AcdQkNm+5CVwAoOmDPtyYfkPBgfo2hLZnZQqR1bwkz/PrNoOm+gqA==
-  dependencies:
-    "@sentry/types" "8.28.0"
-    "@sentry/utils" "8.28.0"
+"@sentry/core@8.55.0":
+  version "8.55.0"
+  resolved "https://registry.npmjs.org/@sentry/core/-/core-8.55.0.tgz"
+  integrity sha512-6g7jpbefjHYs821Z+EBJ8r4Z7LT5h80YSWRJaylGS4nW5W5Z2KXzpdnyFarv37O7QjauzVC2E+PABmpkw5/JGA==
 
 "@sentry/integrations@^7.114.0":
   version "7.114.0"
@@ -1486,61 +1554,61 @@
     "@sentry/utils" "7.114.0"
     localforage "^1.8.1"
 
-"@sentry/node@8.28.0", "@sentry/node@^8.26.0":
-  version "8.28.0"
-  resolved "https://registry.npmjs.org/@sentry/node/-/node-8.28.0.tgz"
-  integrity sha512-444hx0S7EAYDdq3g2U37qHFC/WFErgf8ZvXqhWfoCI4RweHHntdFbz3azexYnO61iUsmSAnFAX6htJtAG2zNdA==
+"@sentry/node@^8.26.0", "@sentry/node@8.55.0":
+  version "8.55.0"
+  resolved "https://registry.npmjs.org/@sentry/node/-/node-8.55.0.tgz"
+  integrity sha512-h10LJLDTRAzYgay60Oy7moMookqqSZSviCWkkmHZyaDn+4WURnPp5SKhhfrzPRQcXKrweiOwDSHBgn1tweDssg==
   dependencies:
     "@opentelemetry/api" "^1.9.0"
-    "@opentelemetry/context-async-hooks" "^1.25.1"
-    "@opentelemetry/core" "^1.25.1"
-    "@opentelemetry/instrumentation" "^0.52.1"
-    "@opentelemetry/instrumentation-connect" "0.38.0"
-    "@opentelemetry/instrumentation-express" "0.41.1"
-    "@opentelemetry/instrumentation-fastify" "0.38.0"
-    "@opentelemetry/instrumentation-fs" "0.14.0"
-    "@opentelemetry/instrumentation-graphql" "0.42.0"
-    "@opentelemetry/instrumentation-hapi" "0.40.0"
-    "@opentelemetry/instrumentation-http" "0.52.1"
-    "@opentelemetry/instrumentation-ioredis" "0.42.0"
-    "@opentelemetry/instrumentation-koa" "0.42.0"
-    "@opentelemetry/instrumentation-mongodb" "0.46.0"
-    "@opentelemetry/instrumentation-mongoose" "0.40.0"
-    "@opentelemetry/instrumentation-mysql" "0.40.0"
-    "@opentelemetry/instrumentation-mysql2" "0.40.0"
-    "@opentelemetry/instrumentation-nestjs-core" "0.39.0"
-    "@opentelemetry/instrumentation-pg" "0.43.0"
-    "@opentelemetry/instrumentation-redis-4" "0.41.0"
-    "@opentelemetry/resources" "^1.25.1"
-    "@opentelemetry/sdk-trace-base" "^1.25.1"
-    "@opentelemetry/semantic-conventions" "^1.25.1"
-    "@prisma/instrumentation" "5.18.0"
-    "@sentry/core" "8.28.0"
-    "@sentry/opentelemetry" "8.28.0"
-    "@sentry/types" "8.28.0"
-    "@sentry/utils" "8.28.0"
-    import-in-the-middle "^1.11.0"
-  optionalDependencies:
-    opentelemetry-instrumentation-fetch-node "1.2.3"
+    "@opentelemetry/context-async-hooks" "^1.30.1"
+    "@opentelemetry/core" "^1.30.1"
+    "@opentelemetry/instrumentation" "^0.57.1"
+    "@opentelemetry/instrumentation-amqplib" "^0.46.0"
+    "@opentelemetry/instrumentation-connect" "0.43.0"
+    "@opentelemetry/instrumentation-dataloader" "0.16.0"
+    "@opentelemetry/instrumentation-express" "0.47.0"
+    "@opentelemetry/instrumentation-fastify" "0.44.1"
+    "@opentelemetry/instrumentation-fs" "0.19.0"
+    "@opentelemetry/instrumentation-generic-pool" "0.43.0"
+    "@opentelemetry/instrumentation-graphql" "0.47.0"
+    "@opentelemetry/instrumentation-hapi" "0.45.1"
+    "@opentelemetry/instrumentation-http" "0.57.1"
+    "@opentelemetry/instrumentation-ioredis" "0.47.0"
+    "@opentelemetry/instrumentation-kafkajs" "0.7.0"
+    "@opentelemetry/instrumentation-knex" "0.44.0"
+    "@opentelemetry/instrumentation-koa" "0.47.0"
+    "@opentelemetry/instrumentation-lru-memoizer" "0.44.0"
+    "@opentelemetry/instrumentation-mongodb" "0.51.0"
+    "@opentelemetry/instrumentation-mongoose" "0.46.0"
+    "@opentelemetry/instrumentation-mysql" "0.45.0"
+    "@opentelemetry/instrumentation-mysql2" "0.45.0"
+    "@opentelemetry/instrumentation-nestjs-core" "0.44.0"
+    "@opentelemetry/instrumentation-pg" "0.50.0"
+    "@opentelemetry/instrumentation-redis-4" "0.46.0"
+    "@opentelemetry/instrumentation-tedious" "0.18.0"
+    "@opentelemetry/instrumentation-undici" "0.10.0"
+    "@opentelemetry/resources" "^1.30.1"
+    "@opentelemetry/sdk-trace-base" "^1.30.1"
+    "@opentelemetry/semantic-conventions" "^1.28.0"
+    "@prisma/instrumentation" "5.22.0"
+    "@sentry/core" "8.55.0"
+    "@sentry/opentelemetry" "8.55.0"
+    import-in-the-middle "^1.11.2"
 
-"@sentry/opentelemetry@8.28.0":
-  version "8.28.0"
-  resolved "https://registry.npmjs.org/@sentry/opentelemetry/-/opentelemetry-8.28.0.tgz"
-  integrity sha512-xClK/fa2Y9AMoaV6f7sWfoHAz56actn2RN3UuYAfxlgmNEfZEa0tc78x4XygCT+2b83QbUb+qf1q4+1ft+HEsQ==
+"@sentry/opentelemetry@8.55.0":
+  version "8.55.0"
+  resolved "https://registry.npmjs.org/@sentry/opentelemetry/-/opentelemetry-8.55.0.tgz"
+  integrity sha512-UvatdmSr3Xf+4PLBzJNLZ2JjG1yAPWGe/VrJlJAqyTJ2gKeTzgXJJw8rp4pbvNZO8NaTGEYhhO+scLUj0UtLAQ==
   dependencies:
-    "@sentry/core" "8.28.0"
-    "@sentry/types" "8.28.0"
-    "@sentry/utils" "8.28.0"
+    "@sentry/core" "8.55.0"
 
 "@sentry/profiling-node@^8.26.0":
-  version "8.28.0"
-  resolved "https://registry.npmjs.org/@sentry/profiling-node/-/profiling-node-8.28.0.tgz"
-  integrity sha512-VJFj0XxodeRm+mRJlLYMEmn6HKnYkEm07Zb2mdhG979bQwt2VRoPd+Cv4M6irEfmFoRD1OAR9HX0/p9ClcWzXg==
+  version "8.55.0"
+  resolved "https://registry.npmjs.org/@sentry/profiling-node/-/profiling-node-8.55.0.tgz"
+  integrity sha512-rYrlxbMlfQLHhkBUEC7bviuja1rojCb4+TtXi4NGnB4PppZeveGeuVTdJDWt3Ed6IBd20EEYoXv4+0aETbEnpw==
   dependencies:
-    "@sentry/core" "8.28.0"
-    "@sentry/node" "8.28.0"
-    "@sentry/types" "8.28.0"
-    "@sentry/utils" "8.28.0"
+    "@sentry/core" "8.55.0"
+    "@sentry/node" "8.55.0"
     detect-libc "^2.0.2"
     node-abi "^3.61.0"
 
@@ -1549,24 +1617,12 @@
   resolved "https://registry.npmjs.org/@sentry/types/-/types-7.114.0.tgz"
   integrity sha512-tsqkkyL3eJtptmPtT0m9W/bPLkU7ILY7nvwpi1hahA5jrM7ppoU0IMaQWAgTD+U3rzFH40IdXNBFb8Gnqcva4w==
 
-"@sentry/types@8.28.0":
-  version "8.28.0"
-  resolved "https://registry.npmjs.org/@sentry/types/-/types-8.28.0.tgz"
-  integrity sha512-hOfqfd92/AzBrEdMgmmV1VfOXJbIfleFTnerRl0mg/+CcNgP/6+Fdonp354TD56ouWNF2WkOM6sEKSXMWp6SEQ==
-
 "@sentry/utils@7.114.0":
   version "7.114.0"
   resolved "https://registry.npmjs.org/@sentry/utils/-/utils-7.114.0.tgz"
   integrity sha512-319N90McVpupQ6vws4+tfCy/03AdtsU0MurIE4+W5cubHME08HtiEWlfacvAxX+yuKFhvdsO4K4BB/dj54ideg==
   dependencies:
     "@sentry/types" "7.114.0"
-
-"@sentry/utils@8.28.0":
-  version "8.28.0"
-  resolved "https://registry.npmjs.org/@sentry/utils/-/utils-8.28.0.tgz"
-  integrity sha512-smhk7PJpvDMQ2DB5p2qn9UeoUHdU41IgjMmS2xklZpa8tjzBTxDeWpGvrX2fuH67D9bAJuLC/XyZjJCHLoEW5g==
-  dependencies:
-    "@sentry/types" "8.28.0"
 
 "@sinclair/typebox@^0.27.8":
   version "0.27.8"
@@ -2275,10 +2331,17 @@
   dependencies:
     "@types/express" "*"
 
-"@types/mysql@2.15.22":
-  version "2.15.22"
-  resolved "https://registry.npmjs.org/@types/mysql/-/mysql-2.15.22.tgz"
-  integrity sha512-wK1pzsJVVAjYCSZWQoWHziQZbNggXFDUEIGf54g4ZM/ERuP86uGdWeKZWMYlqTPMZfHJJvLPyogXGvCOg87yLQ==
+"@types/mysql@2.15.26":
+  version "2.15.26"
+  resolved "https://registry.npmjs.org/@types/mysql/-/mysql-2.15.26.tgz"
+  integrity sha512-DSLCOXhkvfS5WNNPbfn2KdICAmk8lLc+/PNvnPnF7gOdMZCxopXduqv0OQ13y/yA/zXTSikZZqVgybUxOEg6YQ==
+  dependencies:
+    "@types/node" "*"
+
+"@types/node-schedule@^2.1.7":
+  version "2.1.7"
+  resolved "https://registry.npmjs.org/@types/node-schedule/-/node-schedule-2.1.7.tgz"
+  integrity sha512-G7Z3R9H7r3TowoH6D2pkzUHPhcJrDF4Jz1JOQ80AX0K2DWTHoN9VC94XzFAPNMdbW9TBzMZ3LjpFi7RYdbxtXA==
   dependencies:
     "@types/node" "*"
 
@@ -2296,23 +2359,14 @@
   dependencies:
     "@types/node" "*"
 
-"@types/pg-pool@2.0.4":
-  version "2.0.4"
-  resolved "https://registry.npmjs.org/@types/pg-pool/-/pg-pool-2.0.4.tgz"
-  integrity sha512-qZAvkv1K3QbmHHFYSNRYPkRjOWRLBYrL4B9c+wG0GSVGBw0NtJwPcgx/DSddeDJvRGMHCEQ4VMEVfuJ/0gZ3XQ==
+"@types/pg-pool@2.0.6":
+  version "2.0.6"
+  resolved "https://registry.npmjs.org/@types/pg-pool/-/pg-pool-2.0.6.tgz"
+  integrity sha512-TaAUE5rq2VQYxab5Ts7WZhKNmuN78Q6PiFonTDdpbx8a1H0M1vhy3rhiMjl+e2iHmogyMw7jZF4FrE6eJUy5HQ==
   dependencies:
     "@types/pg" "*"
 
-"@types/pg@*":
-  version "8.11.8"
-  resolved "https://registry.npmjs.org/@types/pg/-/pg-8.11.8.tgz"
-  integrity sha512-IqpCf8/569txXN/HoP5i1LjXfKZWL76Yr2R77xgeIICUbAYHeoaEZFhYHo2uDftecLWrTJUq63JvQu8q3lnDyA==
-  dependencies:
-    "@types/node" "*"
-    pg-protocol "*"
-    pg-types "^4.0.1"
-
-"@types/pg@8.6.1":
+"@types/pg@*", "@types/pg@8.6.1":
   version "8.6.1"
   resolved "https://registry.npmjs.org/@types/pg/-/pg-8.6.1.tgz"
   integrity sha512-1Kc4oAGzAl7uqUStZCDvaLFqZrW9qWSjXOmBfdgyBP5La7Us6Mg4GBvRlSoaZMhQF/zSj1C8CtKMBkoiT8eL8w==
@@ -2348,7 +2402,7 @@
     "@types/node" "*"
     "@types/send" "*"
 
-"@types/shimmer@^1.0.2":
+"@types/shimmer@^1.2.0":
   version "1.2.0"
   resolved "https://registry.npmjs.org/@types/shimmer/-/shimmer-1.2.0.tgz"
   integrity sha512-UE7oxhQLLd9gub6JKIAhDq06T0F6FnztwMNRvYgjeQSBeMc1ZG/tA47EwfduvkuQS8apbkM/lpLpWsaCeYsXVg==
@@ -2394,6 +2448,13 @@
     "@types/express" "*"
     "@types/serve-static" "*"
 
+"@types/tedious@^4.0.14":
+  version "4.0.14"
+  resolved "https://registry.npmjs.org/@types/tedious/-/tedious-4.0.14.tgz"
+  integrity sha512-KHPsfX/FoVbUGbyYvk1q9MMQHLPeRZhRJZdO45Q4YjvFkv4hMNghCWTvy7rdKessBsmtz4euWCWAB6/tVpI1Iw==
+  dependencies:
+    "@types/node" "*"
+
 "@types/triple-beam@^1.3.2":
   version "1.3.5"
   resolved "https://registry.npmjs.org/@types/triple-beam/-/triple-beam-1.3.5.tgz"
@@ -2431,11 +2492,6 @@ accepts@~1.3.8:
     mime-types "~2.1.34"
     negotiator "0.6.3"
 
-acorn-import-assertions@^1.9.0:
-  version "1.9.0"
-  resolved "https://registry.npmjs.org/acorn-import-assertions/-/acorn-import-assertions-1.9.0.tgz"
-  integrity sha512-cmMwop9x+8KFhxvKrKfPYmN6/pKTYYHBqLa0DfvVZcKMJWNyWLnaqND7dx/qn66R7ewM1UX5XMaDVP5wlVTaVA==
-
 acorn-import-attributes@^1.9.5:
   version "1.9.5"
   resolved "https://registry.npmjs.org/acorn-import-attributes/-/acorn-import-attributes-1.9.5.tgz"
@@ -2448,10 +2504,10 @@ acorn-walk@^8.1.1:
   dependencies:
     acorn "^8.11.0"
 
-acorn@^8.11.0, acorn@^8.4.1, acorn@^8.8.2:
-  version "8.12.1"
-  resolved "https://registry.npmjs.org/acorn/-/acorn-8.12.1.tgz"
-  integrity sha512-tcpGyI9zbizT9JbV6oYE477V6mTlXvvi0T0G3SNIYE2apm/G5huBa1+K89VGeovbg+jycCrfhl3ADxErOuO6Jg==
+acorn@^8, acorn@^8.11.0, acorn@^8.14.0, acorn@^8.4.1:
+  version "8.14.0"
+  resolved "https://registry.npmjs.org/acorn/-/acorn-8.14.0.tgz"
+  integrity sha512-cl669nCJTZBsL97OF4kUQm5g5hC2uihk0NxY3WENAC0TYdILVkAyHymAntgxGkl7K+t0cXIrH5siy5S4XkFycA==
 
 agent-base@^7.0.2:
   version "7.1.1"
@@ -2471,13 +2527,6 @@ ansi-regex@^5.0.1:
   version "5.0.1"
   resolved "https://registry.npmjs.org/ansi-regex/-/ansi-regex-5.0.1.tgz"
   integrity sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==
-
-ansi-styles@^3.2.1:
-  version "3.2.1"
-  resolved "https://registry.npmjs.org/ansi-styles/-/ansi-styles-3.2.1.tgz"
-  integrity sha512-VT0ZI6kZRdTh8YyJw3SMbYm/u+NqfsAxEpWO0Pf9sq8/e94WxxOpPKx9FR1FlyCtOVDNOQ+8ntlqFxiRc+r5qA==
-  dependencies:
-    color-convert "^1.9.0"
 
 ansi-styles@^4.0.0, ansi-styles@^4.1.0:
   version "4.3.0"
@@ -2549,9 +2598,9 @@ asynckit@^0.4.0:
   integrity sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==
 
 axios@^1.7.4:
-  version "1.7.7"
-  resolved "https://registry.npmjs.org/axios/-/axios-1.7.7.tgz"
-  integrity sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==
+  version "1.9.0"
+  resolved "https://registry.npmjs.org/axios/-/axios-1.9.0.tgz"
+  integrity sha512-re4CqKTJaURpzbLHtIi6XpDv20/CnpXOtjRY5/CU32L8gU8ek9UIivcfvSWvmKEngmVbrUtPpdDwWDWL7DNHvg==
   dependencies:
     follow-redirects "^1.15.6"
     form-data "^4.0.0"
@@ -2562,7 +2611,7 @@ b4a@^1.6.4:
   resolved "https://registry.npmjs.org/b4a/-/b4a-1.6.6.tgz"
   integrity sha512-5Tk1HLk6b6ctmjIkAcU/Ujv/1WqiDl0F0JdRCR80VsOcUlHcu7pWeWRlOqQLHfDEsVx9YH/aif5AG4ehoCtTmg==
 
-babel-jest@^29.7.0:
+babel-jest@^29.0.0, babel-jest@^29.7.0:
   version "29.7.0"
   resolved "https://registry.npmjs.org/babel-jest/-/babel-jest-29.7.0.tgz"
   integrity sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==
@@ -2645,7 +2694,7 @@ binary-extensions@^2.0.0:
   resolved "https://registry.npmjs.org/binary-extensions/-/binary-extensions-2.3.0.tgz"
   integrity sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==
 
-body-parser@1.20.3, body-parser@^1.20.2:
+body-parser@^1.20.2, body-parser@1.20.3:
   version "1.20.3"
   resolved "https://registry.npmjs.org/body-parser/-/body-parser-1.20.3.tgz"
   integrity sha512-7rAxByjUMqQ3/bHJy7D6OGXvx/MMc4IqBn/X0fcM1QUcAItpZrBEYhWGem+tzXH90c+G01ypMcYJBO9Y30203g==
@@ -2665,7 +2714,7 @@ body-parser@1.20.3, body-parser@^1.20.2:
 
 bottleneck@^2.19.5:
   version "2.19.5"
-  resolved "https://registry.yarnpkg.com/bottleneck/-/bottleneck-2.19.5.tgz#5df0b90f59fd47656ebe63c78a98419205cadd91"
+  resolved "https://registry.npmjs.org/bottleneck/-/bottleneck-2.19.5.tgz"
   integrity sha512-VHiNCbI1lKdl44tGrhNfU3lup0Tj/ZBMJB5/2ZbNXRCPuRCO7ed2mgcK4r17y+KB2EfuYuRaVlwNbAeaWGSpbw==
 
 bowser@^2.11.0:
@@ -2695,7 +2744,7 @@ braces@^3.0.3, braces@~3.0.2:
   dependencies:
     fill-range "^7.1.1"
 
-browserslist@^4.23.1:
+browserslist@^4.23.1, "browserslist@>= 4.21.0":
   version "4.23.3"
   resolved "https://registry.npmjs.org/browserslist/-/browserslist-4.23.3.tgz"
   integrity sha512-btwCFJVjI4YWDNfau8RhZ+B1Q/VLoUITrm3RlP6y1tYGWIOa+InuYiRGXUBXo8nA1qKmHMyLB/iVQg5TT4eFoA==
@@ -2719,10 +2768,10 @@ bser@2.1.1:
   dependencies:
     node-int64 "^0.4.0"
 
-bson@^6.7.0:
-  version "6.8.0"
-  resolved "https://registry.npmjs.org/bson/-/bson-6.8.0.tgz"
-  integrity sha512-iOJg8pr7wq2tg/zSlCCHMi3hMm5JTOxLTagf3zxhcenHsFp+c6uOs6K7W5UE7A4QIJGtqh/ZovFNMP4mOPJynQ==
+bson@^6.10.1, bson@^6.10.3:
+  version "6.10.3"
+  resolved "https://registry.npmjs.org/bson/-/bson-6.10.3.tgz"
+  integrity sha512-MTxGsqgYTwfshYWTRdmZRC+M7FnG1b4y7RO7p2k3X24Wq0yv1m77Wsj0BzlPzd/IowgESfsruQCUToa7vbOpPQ==
 
 buffer-crc32@~0.2.3:
   version "0.2.13"
@@ -2795,15 +2844,6 @@ caniuse-lite@^1.0.30001646:
   resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001658.tgz"
   integrity sha512-N2YVqWbJELVdrnsW5p+apoQyYt51aBMSsBZki1XZEfeBCexcM/sf4xiAHcXQBkuOwJBXtWF7aW1sYX6tKebPHw==
 
-chalk@^2.4.2:
-  version "2.4.2"
-  resolved "https://registry.npmjs.org/chalk/-/chalk-2.4.2.tgz"
-  integrity sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==
-  dependencies:
-    ansi-styles "^3.2.1"
-    escape-string-regexp "^1.0.5"
-    supports-color "^5.3.0"
-
 chalk@^4.0.0, chalk@^4.0.2:
   version "4.1.2"
   resolved "https://registry.npmjs.org/chalk/-/chalk-4.1.2.tgz"
@@ -2861,7 +2901,7 @@ collect-v8-coverage@^1.0.0:
   resolved "https://registry.npmjs.org/collect-v8-coverage/-/collect-v8-coverage-1.0.2.tgz"
   integrity sha512-lHl4d5/ONEbLlJvaJNtsF/Lz+WvB07u2ycqTYbdrq7UypDXailES4valYb2eWiJFxZlVmpGekfqoxQhzyFdT4Q==
 
-color-convert@^1.9.0, color-convert@^1.9.3:
+color-convert@^1.9.3:
   version "1.9.3"
   resolved "https://registry.npmjs.org/color-convert/-/color-convert-1.9.3.tgz"
   integrity sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==
@@ -2875,15 +2915,15 @@ color-convert@^2.0.1:
   dependencies:
     color-name "~1.1.4"
 
-color-name@1.1.3:
-  version "1.1.3"
-  resolved "https://registry.npmjs.org/color-name/-/color-name-1.1.3.tgz"
-  integrity sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw==
-
 color-name@^1.0.0, color-name@~1.1.4:
   version "1.1.4"
   resolved "https://registry.npmjs.org/color-name/-/color-name-1.1.4.tgz"
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
+
+color-name@1.1.3:
+  version "1.1.3"
+  resolved "https://registry.npmjs.org/color-name/-/color-name-1.1.3.tgz"
+  integrity sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw==
 
 color-string@^1.6.0:
   version "1.9.1"
@@ -2916,15 +2956,15 @@ combined-stream@^1.0.8:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@6.2.0:
-  version "6.2.0"
-  resolved "https://registry.npmjs.org/commander/-/commander-6.2.0.tgz"
-  integrity sha512-zP4jEKbe8SHzKJYQmq8Y9gYjtO/POJLgIdKgV7B9qNmABVFVc+ctqSX6iXh4mCpJfRBOabiZ2YKPg8ciDw6C+Q==
-
 commander@^10.0.0:
   version "10.0.1"
   resolved "https://registry.npmjs.org/commander/-/commander-10.0.1.tgz"
   integrity sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==
+
+commander@6.2.0:
+  version "6.2.0"
+  resolved "https://registry.npmjs.org/commander/-/commander-6.2.0.tgz"
+  integrity sha512-zP4jEKbe8SHzKJYQmq8Y9gYjtO/POJLgIdKgV7B9qNmABVFVc+ctqSX6iXh4mCpJfRBOabiZ2YKPg8ciDw6C+Q==
 
 commondir@^1.0.1:
   version "1.0.1"
@@ -2969,11 +3009,11 @@ convert-source-map@^2.0.0:
   integrity sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==
 
 cookie-parser@^1.4.6:
-  version "1.4.6"
-  resolved "https://registry.npmjs.org/cookie-parser/-/cookie-parser-1.4.6.tgz"
-  integrity sha512-z3IzaNjdwUC2olLIB5/ITd0/setiaFMLYiZJle7xg5Fe9KWAceil7xszYfHHBtDFYLSgJduS2Ty0P1uJdPDJeA==
+  version "1.4.7"
+  resolved "https://registry.npmjs.org/cookie-parser/-/cookie-parser-1.4.7.tgz"
+  integrity sha512-nGUvgXnotP3BsjiLX2ypbQnWoGUPIIfHQNZkkC668ntrzGWEZVW70HDEB1qnNGMicPje6EttlIgzo51YSwNQGw==
   dependencies:
-    cookie "0.4.1"
+    cookie "0.7.2"
     cookie-signature "1.0.6"
 
 cookie-signature@1.0.6:
@@ -2981,15 +3021,15 @@ cookie-signature@1.0.6:
   resolved "https://registry.npmjs.org/cookie-signature/-/cookie-signature-1.0.6.tgz"
   integrity sha512-QADzlaHc8icV8I7vbaJXJwod9HWYp8uCqf1xa4OfNu1T7JVxQIrUgOWtHdNDtPiywmFbiS12VjotIXLrKM3orQ==
 
-cookie@0.4.1:
-  version "0.4.1"
-  resolved "https://registry.npmjs.org/cookie/-/cookie-0.4.1.tgz"
-  integrity sha512-ZwrFkGJxUR3EIoXtO+yVE69Eb7KlixbaeAWfBQB9vVsNn/o+Yw69gBWSSDK825hQNdN+wF8zELf3dFNl/kxkUA==
+cookie@0.7.1:
+  version "0.7.1"
+  resolved "https://registry.npmjs.org/cookie/-/cookie-0.7.1.tgz"
+  integrity sha512-6DnInpx7SJ2AK3+CTUE/ZM0vWTUboZCegxhC2xiIydHR9jNuTAASBrfEpHhiGOZw/nX51bHt6YQl8jsGo4y/0w==
 
-cookie@0.6.0:
-  version "0.6.0"
-  resolved "https://registry.npmjs.org/cookie/-/cookie-0.6.0.tgz"
-  integrity sha512-U71cyTamuh1CRNCfpGY6to28lxvNwPG4Guz/EVjgf3Jmzv0vlDp1atT9eS5dDjMYHucpHbWns6Lwf3BKz6svdw==
+cookie@0.7.2:
+  version "0.7.2"
+  resolved "https://registry.npmjs.org/cookie/-/cookie-0.7.2.tgz"
+  integrity sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==
 
 cookiejar@^2.1.4:
   version "2.1.4"
@@ -3027,14 +3067,28 @@ create-require@^1.1.0:
   resolved "https://registry.npmjs.org/create-require/-/create-require-1.1.1.tgz"
   integrity sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==
 
+cron-parser@^4.2.0:
+  version "4.9.0"
+  resolved "https://registry.npmjs.org/cron-parser/-/cron-parser-4.9.0.tgz"
+  integrity sha512-p0SaNjrHOnQeR8/VnfGbmg9te2kfyYSQ7Sc/j/6DtPL3JQvKxmjO9TSjNFpujqV3vEYYBvNNvXSxzyksBWAx1Q==
+  dependencies:
+    luxon "^3.2.1"
+
 cross-spawn@^7.0.3:
   version "7.0.6"
-  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.6.tgz#8a58fe78f00dcd70c370451759dfbfaf03e8ee9f"
+  resolved "https://registry.npmjs.org/cross-spawn/-/cross-spawn-7.0.6.tgz"
   integrity sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==
   dependencies:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
     which "^2.0.1"
+
+debug@^4, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.4, debug@^4.3.5, debug@4, debug@4.x:
+  version "4.3.7"
+  resolved "https://registry.npmjs.org/debug/-/debug-4.3.7.tgz"
+  integrity sha512-Er2nc/H7RrMXZBFCEim6TCmMk02Z8vLC2Rbi1KEBggpo0fS6l0S1nnapwmIi3yW/+GOJap1Krg4w0Hg80oCqgQ==
+  dependencies:
+    ms "^2.1.3"
 
 debug@2.6.9:
   version "2.6.9"
@@ -3042,13 +3096,6 @@ debug@2.6.9:
   integrity sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==
   dependencies:
     ms "2.0.0"
-
-debug@4, debug@4.x, debug@^4, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.4, debug@^4.3.5:
-  version "4.3.7"
-  resolved "https://registry.npmjs.org/debug/-/debug-4.3.7.tgz"
-  integrity sha512-Er2nc/H7RrMXZBFCEim6TCmMk02Z8vLC2Rbi1KEBggpo0fS6l0S1nnapwmIi3yW/+GOJap1Krg4w0Hg80oCqgQ==
-  dependencies:
-    ms "^2.1.3"
 
 dedent@^1.0.0:
   version "1.5.3"
@@ -3202,11 +3249,6 @@ escape-html@~1.0.3:
   resolved "https://registry.npmjs.org/escape-html/-/escape-html-1.0.3.tgz"
   integrity sha512-NiSupZ4OeuGwr68lGIeym/ksIZMJodUGOSCZ/FSnTxcrekbvqrgdUxlJOMpijaKZVjAJrWrGs/6Jy8OMuyj9ow==
 
-escape-string-regexp@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz"
-  integrity sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg==
-
 escape-string-regexp@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz"
@@ -3263,17 +3305,17 @@ expect@^29.0.0, expect@^29.7.0:
     jest-message-util "^29.7.0"
     jest-util "^29.7.0"
 
-express@^4.19.2:
-  version "4.21.0"
-  resolved "https://registry.npmjs.org/express/-/express-4.21.0.tgz"
-  integrity sha512-VqcNGcj/Id5ZT1LZ/cfihi3ttTn+NJmkli2eZADigjq29qTlWi/hAQ43t/VLPq8+UX06FCEx3ByOYet6ZFblng==
+express@^4.19.2, "express@>=4.0.0 || >=5.0.0-beta":
+  version "4.21.2"
+  resolved "https://registry.npmjs.org/express/-/express-4.21.2.tgz"
+  integrity sha512-28HqgMZAmih1Czt9ny7qr6ek2qddF4FclbMzwhCREB6OFfH+rXAnuNCwo1/wFvrtbgsQDb4kSbX9de9lFbrXnA==
   dependencies:
     accepts "~1.3.8"
     array-flatten "1.1.1"
     body-parser "1.20.3"
     content-disposition "0.5.4"
     content-type "~1.0.4"
-    cookie "0.6.0"
+    cookie "0.7.1"
     cookie-signature "1.0.6"
     debug "2.6.9"
     depd "2.0.0"
@@ -3287,7 +3329,7 @@ express@^4.19.2:
     methods "~1.1.2"
     on-finished "2.4.1"
     parseurl "~1.3.3"
-    path-to-regexp "0.1.10"
+    path-to-regexp "0.1.12"
     proxy-addr "~2.0.7"
     qs "6.13.0"
     range-parser "~1.2.1"
@@ -3305,7 +3347,7 @@ fast-fifo@^1.2.0, fast-fifo@^1.3.2:
   resolved "https://registry.npmjs.org/fast-fifo/-/fast-fifo-1.3.2.tgz"
   integrity sha512-/d9sfos4yxzpwkDkuN7k2SqFKtYNmCTzgfEpz82x34IM9/zc8KGxQoXg1liNC/izpRM/MBdt44Nmx41ZWqk+FQ==
 
-fast-json-stable-stringify@2.x, fast-json-stable-stringify@^2.1.0:
+fast-json-stable-stringify@^2.1.0, fast-json-stable-stringify@2.x:
   version "2.1.0"
   resolved "https://registry.npmjs.org/fast-json-stable-stringify/-/fast-json-stable-stringify-2.1.0.tgz"
   integrity sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==
@@ -3411,6 +3453,11 @@ formidable@^3.5.1:
     hexoid "^1.0.0"
     once "^1.4.0"
 
+forwarded-parse@2.1.2:
+  version "2.1.2"
+  resolved "https://registry.npmjs.org/forwarded-parse/-/forwarded-parse-2.1.2.tgz"
+  integrity sha512-alTFZZQDKMporBH77856pXgzhEzaUVmLCDk+egLgIgHst3Tpndzz8MnKe+GzRJRfvVdn69HhpW7cmXzvtLvJAw==
+
 forwarded@0.2.0:
   version "0.2.0"
   resolved "https://registry.npmjs.org/forwarded/-/forwarded-0.2.0.tgz"
@@ -3425,11 +3472,6 @@ fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   integrity sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==
-
-fsevents@^2.3.2, fsevents@~2.3.2:
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.3.tgz#cac6407785d03675a2a5e1a5305c697b347d90d6"
-  integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
 function-bind@^1.1.2:
   version "1.1.2"
@@ -3474,18 +3516,6 @@ glob-parent@~5.1.2:
   dependencies:
     is-glob "^4.0.1"
 
-glob@7.1.6:
-  version "7.1.6"
-  resolved "https://registry.npmjs.org/glob/-/glob-7.1.6.tgz"
-  integrity sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA==
-  dependencies:
-    fs.realpath "^1.0.0"
-    inflight "^1.0.4"
-    inherits "2"
-    minimatch "^3.0.4"
-    once "^1.3.0"
-    path-is-absolute "^1.0.0"
-
 glob@^7.1.3, glob@^7.1.4:
   version "7.2.3"
   resolved "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz"
@@ -3495,6 +3525,18 @@ glob@^7.1.3, glob@^7.1.4:
     inflight "^1.0.4"
     inherits "2"
     minimatch "^3.1.1"
+    once "^1.3.0"
+    path-is-absolute "^1.0.0"
+
+glob@7.1.6:
+  version "7.1.6"
+  resolved "https://registry.npmjs.org/glob/-/glob-7.1.6.tgz"
+  integrity sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA==
+  dependencies:
+    fs.realpath "^1.0.0"
+    inflight "^1.0.4"
+    inherits "2"
+    minimatch "^3.0.4"
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
@@ -3610,22 +3652,12 @@ immediate@~3.0.5:
   resolved "https://registry.npmjs.org/immediate/-/immediate-3.0.6.tgz"
   integrity sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==
 
-import-in-the-middle@1.7.1:
-  version "1.7.1"
-  resolved "https://registry.npmjs.org/import-in-the-middle/-/import-in-the-middle-1.7.1.tgz"
-  integrity sha512-1LrZPDtW+atAxH42S6288qyDFNQ2YCty+2mxEPRtfazH6Z5QwkaBSTS2ods7hnVJioF6rkRfNoA6A/MstpFXLg==
+import-in-the-middle@^1.11.2, import-in-the-middle@^1.8.1:
+  version "1.13.1"
+  resolved "https://registry.npmjs.org/import-in-the-middle/-/import-in-the-middle-1.13.1.tgz"
+  integrity sha512-k2V9wNm9B+ysuelDTHjI9d5KPc4l8zAZTGqj+pcynvWkypZd857ryzN8jNC7Pg2YZXNMJcHRPpaDyCBbNyVRpA==
   dependencies:
-    acorn "^8.8.2"
-    acorn-import-assertions "^1.9.0"
-    cjs-module-lexer "^1.2.2"
-    module-details-from-path "^1.0.3"
-
-import-in-the-middle@^1.11.0, import-in-the-middle@^1.8.1:
-  version "1.11.0"
-  resolved "https://registry.npmjs.org/import-in-the-middle/-/import-in-the-middle-1.11.0.tgz"
-  integrity sha512-5DimNQGoe0pLUHbR9qK84iWaWjjbsxiqXnw6Qz64+azRgleqv9k2kTt5fw7QsOpmaGYtuxxursnPPsnTKEx10Q==
-  dependencies:
-    acorn "^8.8.2"
+    acorn "^8.14.0"
     acorn-import-attributes "^1.9.5"
     cjs-module-lexer "^1.2.2"
     module-details-from-path "^1.0.3"
@@ -3651,7 +3683,7 @@ inflight@^1.0.4:
     once "^1.3.0"
     wrappy "1"
 
-inherits@2, inherits@2.0.4, inherits@^2.0.3, inherits@~2.0.3, inherits@~2.0.4:
+inherits@^2.0.3, inherits@~2.0.3, inherits@~2.0.4, inherits@2, inherits@2.0.4:
   version "2.0.4"
   resolved "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
@@ -3994,7 +4026,7 @@ jest-resolve-dependencies@^29.7.0:
     jest-regex-util "^29.6.3"
     jest-snapshot "^29.7.0"
 
-jest-resolve@^29.7.0:
+jest-resolve@*, jest-resolve@^29.7.0:
   version "29.7.0"
   resolved "https://registry.npmjs.org/jest-resolve/-/jest-resolve-29.7.0.tgz"
   integrity sha512-IOVhZSrg+UvVAshDSDtHyFCCBUl/Q3AAJv8iZ6ZjnZ74xzvwuzLXid9IIIPgTnY62SJjfuupMKZsZQRsCvxEgA==
@@ -4138,7 +4170,7 @@ jest-worker@^29.7.0:
     merge-stream "^2.0.0"
     supports-color "^8.0.0"
 
-jest@^29.7.0:
+jest@^29.0.0, jest@^29.7.0:
   version "29.7.0"
   resolved "https://registry.npmjs.org/jest/-/jest-29.7.0.tgz"
   integrity sha512-NIy3oAFp9shda19hy4HK0HRTWKtPJmGdnvywu01nOqNC2vZg+Z+fvJDxpMQA88eb2I9EcafcdjYgsDthnYTvGw==
@@ -4329,12 +4361,22 @@ logform@^2.6.0, logform@^2.6.1:
     safe-stable-stringify "^2.3.1"
     triple-beam "^1.3.0"
 
+long-timeout@0.1.1:
+  version "0.1.1"
+  resolved "https://registry.npmjs.org/long-timeout/-/long-timeout-0.1.1.tgz"
+  integrity sha512-BFRuQUqc7x2NWxfJBCyUrN8iYUYznzL9JROmRz1gZ6KlOIgmoD+njPVbb+VNn2nGMKggMsK79iUNErillsrx7w==
+
 lru-cache@^5.1.1:
   version "5.1.1"
   resolved "https://registry.npmjs.org/lru-cache/-/lru-cache-5.1.1.tgz"
   integrity sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==
   dependencies:
     yallist "^3.0.2"
+
+luxon@^3.2.1:
+  version "3.6.1"
+  resolved "https://registry.npmjs.org/luxon/-/luxon-3.6.1.tgz"
+  integrity sha512-tJLxrKJhO2ukZ5z0gyjY1zPh3Rh88Ej9P7jNrZiHMUXHae1yvI2imgOZtL1TO8TW6biMMKfTtAOoEJANgtWBMQ==
 
 make-dir@^3.0.2:
   version "3.1.0"
@@ -4487,23 +4529,23 @@ mongodb-memory-server@*, mongodb-memory-server@^10.0.0:
     mongodb-memory-server-core "10.0.0"
     tslib "^2.6.3"
 
-mongodb@^6.7.0, mongodb@~6.10.0:
-  version "6.10.0"
-  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-6.10.0.tgz#20a9f1cf3c6829e75fc39e6d8c1c19f164209c2e"
-  integrity sha512-gP9vduuYWb9ZkDM546M+MP2qKVk5ZG2wPF63OvSRuUbqCR+11ZCAE1mOfllhlAG0wcoJY5yDL/rV3OmYEwXIzg==
+mongodb@^6.7.0, mongodb@~6.13.0:
+  version "6.13.1"
+  resolved "https://registry.npmjs.org/mongodb/-/mongodb-6.13.1.tgz"
+  integrity sha512-gdq40tX8StmhP6akMp1pPoEVv+9jTYFSrga/g23JxajPAQhH39ysZrHGzQCSd9PEOnuEQEdjIWqxO7ZSwC0w7Q==
   dependencies:
-    "@mongodb-js/saslprep" "^1.1.5"
-    bson "^6.7.0"
+    "@mongodb-js/saslprep" "^1.1.9"
+    bson "^6.10.3"
     mongodb-connection-string-url "^3.0.0"
 
 mongoose@^8.8.3:
-  version "8.8.3"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-8.8.3.tgz#066953497c116b876178a843c4ba8f7e88c85987"
-  integrity sha512-/I4n/DcXqXyIiLRfAmUIiTjj3vXfeISke8dt4U4Y8Wfm074Wa6sXnQrXN49NFOFf2mM1kUdOXryoBvkuCnr+Qw==
+  version "8.11.0"
+  resolved "https://registry.npmjs.org/mongoose/-/mongoose-8.11.0.tgz"
+  integrity sha512-xaQSuaLk2JKmXI5zDVVWXVCQTnWhAe8MFOijMnwOuP/wucKVphd3f+ouDKivCDMGjYBDrR7dtoyV0U093xbKqA==
   dependencies:
-    bson "^6.7.0"
+    bson "^6.10.1"
     kareem "2.6.3"
-    mongodb "~6.10.0"
+    mongodb "~6.13.0"
     mpath "0.9.0"
     mquery "5.0.0"
     ms "2.1.3"
@@ -4521,15 +4563,15 @@ mquery@5.0.0:
   dependencies:
     debug "4.x"
 
+ms@^2.1.1, ms@^2.1.3, ms@2.1.3:
+  version "2.1.3"
+  resolved "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz"
+  integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz"
   integrity sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==
-
-ms@2.1.3, ms@^2.1.1, ms@^2.1.3:
-  version "2.1.3"
-  resolved "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz"
-  integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
 multer-s3@^3.0.1:
   version "3.0.1"
@@ -4588,6 +4630,15 @@ node-releases@^2.0.18:
   resolved "https://registry.npmjs.org/node-releases/-/node-releases-2.0.18.tgz"
   integrity sha512-d9VeXT4SJ7ZeOqGX6R5EM022wpL+eWPooLI+5UpWn2jCT1aosUQEhQP214x33Wkwx3JQMvIm+tIoVOdodFS40g==
 
+node-schedule@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.npmjs.org/node-schedule/-/node-schedule-2.1.1.tgz"
+  integrity sha512-OXdegQq03OmXEjt2hZP33W2YPs/E5BcFQks46+G2gAxs4gHOIVD1u7EqlYLYSKsaIpyKCK9Gbk0ta1/gjRSMRQ==
+  dependencies:
+    cron-parser "^4.2.0"
+    long-timeout "0.1.1"
+    sorted-array-functions "^1.3.0"
+
 nodemailer@^6.9.13:
   version "6.9.15"
   resolved "https://registry.npmjs.org/nodemailer/-/nodemailer-6.9.15.tgz"
@@ -4631,11 +4682,6 @@ object-inspect@^1.13.1:
   resolved "https://registry.npmjs.org/object-inspect/-/object-inspect-1.13.2.tgz"
   integrity sha512-IRZSRuzJiynemAXPYtPe5BoI/RESNYR7TYm50MC5Mqbd3Jmw5y790sErYw3V6SryFJD64b74qQQs9wn5Bg/k3g==
 
-obuf@~1.1.2:
-  version "1.1.2"
-  resolved "https://registry.npmjs.org/obuf/-/obuf-1.1.2.tgz"
-  integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
-
 on-finished@2.4.1:
   version "2.4.1"
   resolved "https://registry.npmjs.org/on-finished/-/on-finished-2.4.1.tgz"
@@ -4664,13 +4710,10 @@ onetime@^5.1.2:
   dependencies:
     mimic-fn "^2.1.0"
 
-opentelemetry-instrumentation-fetch-node@1.2.3:
-  version "1.2.3"
-  resolved "https://registry.npmjs.org/opentelemetry-instrumentation-fetch-node/-/opentelemetry-instrumentation-fetch-node-1.2.3.tgz"
-  integrity sha512-Qb11T7KvoCevMaSeuamcLsAD+pZnavkhDnlVL0kRozfhl42dKG5Q3anUklAFKJZjY3twLR+BnRa6DlwwkIE/+A==
-  dependencies:
-    "@opentelemetry/instrumentation" "^0.46.0"
-    "@opentelemetry/semantic-conventions" "^1.17.0"
+openapi-types@>=7:
+  version "12.1.3"
+  resolved "https://registry.npmjs.org/openapi-types/-/openapi-types-12.1.3.tgz"
+  integrity sha512-N4YtSYJqghVu4iek2ZUvcN/0aqH1kRDuNqzcycDxhOUpg7GdvLa2F3DgS6yBNhInhv2r/6I0Flkn7CqL8+nIcw==
 
 p-limit@^2.2.0:
   version "2.3.0"
@@ -4733,10 +4776,10 @@ path-parse@^1.0.7:
   resolved "https://registry.npmjs.org/path-parse/-/path-parse-1.0.7.tgz"
   integrity sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==
 
-path-to-regexp@0.1.10:
-  version "0.1.10"
-  resolved "https://registry.npmjs.org/path-to-regexp/-/path-to-regexp-0.1.10.tgz"
-  integrity sha512-7lf7qcQidTku0Gu3YDPc8DJ1q7OOucfa/BSsIwjuh56VU7katFvuM8hULfkwB3Fns/rsVF7PwPKVw1sl5KQS9w==
+path-to-regexp@0.1.12:
+  version "0.1.12"
+  resolved "https://registry.npmjs.org/path-to-regexp/-/path-to-regexp-0.1.12.tgz"
+  integrity sha512-RA1GjUVMnvYFxuqovrEqZoxxW5NUZqbwKtYz/Tt7nXerk0LbLblQmrsgdeOxV5SFHf0UDggjS/bSeOZwt1pmEQ==
 
 pend@~1.2.0:
   version "1.2.0"
@@ -4748,15 +4791,10 @@ pg-int8@1.0.1:
   resolved "https://registry.npmjs.org/pg-int8/-/pg-int8-1.0.1.tgz"
   integrity sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==
 
-pg-numeric@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/pg-numeric/-/pg-numeric-1.0.2.tgz"
-  integrity sha512-BM/Thnrw5jm2kKLE5uJkXqqExRUY/toLHda65XgFTBTFYZyopbKjBe29Ii3RbkvlsMoFwD+tHeGaCjjv0gHlyw==
-
 pg-protocol@*:
-  version "1.6.1"
-  resolved "https://registry.npmjs.org/pg-protocol/-/pg-protocol-1.6.1.tgz"
-  integrity sha512-jPIlvgoD63hrEuihvIg+tJhoGjUsLPn6poJY9N5CnlPd91c2T18T/9zBtLxZSb1EhYxBRoZJtzScCaWlYLtktg==
+  version "1.7.1"
+  resolved "https://registry.npmjs.org/pg-protocol/-/pg-protocol-1.7.1.tgz"
+  integrity sha512-gjTHWGYWsEgy9MsY0Gp6ZJxV24IjDqdpTW7Eh0x+WfJLFsm/TJx1MzL6T0D88mBvkpxotCQ6TwW6N+Kko7lhgQ==
 
 pg-types@^2.2.0:
   version "2.2.0"
@@ -4768,19 +4806,6 @@ pg-types@^2.2.0:
     postgres-bytea "~1.0.0"
     postgres-date "~1.0.4"
     postgres-interval "^1.1.0"
-
-pg-types@^4.0.1:
-  version "4.0.2"
-  resolved "https://registry.npmjs.org/pg-types/-/pg-types-4.0.2.tgz"
-  integrity sha512-cRL3JpS3lKMGsKaWndugWQoLOCoP+Cic8oseVcbr0qhPzYD5DWXK+RZ9LY9wxRf7RQia4SCwQlXk0q6FCPrVng==
-  dependencies:
-    pg-int8 "1.0.1"
-    pg-numeric "1.0.2"
-    postgres-array "~3.0.1"
-    postgres-bytea "~3.0.0"
-    postgres-date "~2.1.0"
-    postgres-interval "^3.0.0"
-    postgres-range "^1.1.1"
 
 picocolors@^1.0.0, picocolors@^1.0.1:
   version "1.1.0"
@@ -4809,32 +4834,15 @@ postgres-array@~2.0.0:
   resolved "https://registry.npmjs.org/postgres-array/-/postgres-array-2.0.0.tgz"
   integrity sha512-VpZrUqU5A69eQyW2c5CA1jtLecCsN2U/bD6VilrFDWq5+5UIEVO7nazS3TEcHf1zuPYO/sqGvUvW62g86RXZuA==
 
-postgres-array@~3.0.1:
-  version "3.0.2"
-  resolved "https://registry.npmjs.org/postgres-array/-/postgres-array-3.0.2.tgz"
-  integrity sha512-6faShkdFugNQCLwucjPcY5ARoW1SlbnrZjmGl0IrrqewpvxvhSLHimCVzqeuULCbG0fQv7Dtk1yDbG3xv7Veog==
-
 postgres-bytea@~1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/postgres-bytea/-/postgres-bytea-1.0.0.tgz"
   integrity sha512-xy3pmLuQqRBZBXDULy7KbaitYqLcmxigw14Q5sj8QBVLqEwXfeybIKVWiqAXTlcvdvb0+xkOtDbfQMOf4lST1w==
 
-postgres-bytea@~3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npmjs.org/postgres-bytea/-/postgres-bytea-3.0.0.tgz"
-  integrity sha512-CNd4jim9RFPkObHSjVHlVrxoVQXz7quwNFpz7RY1okNNme49+sVyiTvTRobiLV548Hx/hb1BG+iE7h9493WzFw==
-  dependencies:
-    obuf "~1.1.2"
-
 postgres-date@~1.0.4:
   version "1.0.7"
   resolved "https://registry.npmjs.org/postgres-date/-/postgres-date-1.0.7.tgz"
   integrity sha512-suDmjLVQg78nMK2UZ454hAG+OAW+HQPZ6n++TNDUX+L0+uUlLywnoxJKDou51Zm+zTCjrCl0Nq6J9C5hP9vK/Q==
-
-postgres-date@~2.1.0:
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/postgres-date/-/postgres-date-2.1.0.tgz"
-  integrity sha512-K7Juri8gtgXVcDfZttFKVmhglp7epKb1K4pgrkLxehjqkrgPhfG6OO8LHLkfaqkbpjNRnra018XwAr1yQFWGcA==
 
 postgres-interval@^1.1.0:
   version "1.2.0"
@@ -4842,16 +4850,6 @@ postgres-interval@^1.1.0:
   integrity sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==
   dependencies:
     xtend "^4.0.0"
-
-postgres-interval@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npmjs.org/postgres-interval/-/postgres-interval-3.0.0.tgz"
-  integrity sha512-BSNDnbyZCXSxgA+1f5UU2GmwhoI0aU5yMxRGO8CdFEcY2BQF9xm/7MqKnYoM1nJDk8nONNWDk9WeSmePFhQdlw==
-
-postgres-range@^1.1.1:
-  version "1.1.4"
-  resolved "https://registry.npmjs.org/postgres-range/-/postgres-range-1.1.4.tgz"
-  integrity sha512-i/hbxIE9803Alj/6ytL7UHQxRvZkI9O4Sy+J3HGc4F4oo/2eQAjTSNJ0bfxyse3bH0nuVesCk+3IRLaMtG3H6w==
 
 pretty-format@^29.0.0, pretty-format@^29.7.0:
   version "29.7.0"
@@ -4903,7 +4901,7 @@ pure-rand@^6.0.0:
   resolved "https://registry.npmjs.org/pure-rand/-/pure-rand-6.1.0.tgz"
   integrity sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==
 
-qs@6.13.0, qs@^6.11.0:
+qs@^6.11.0, qs@6.13.0:
   version "6.13.0"
   resolved "https://registry.npmjs.org/qs/-/qs-6.13.0.tgz"
   integrity sha512-+38qI9SOr8tfZ4QmJNplMUxqjbe7LKvvZgWdExBOmd+egZTtjLB67Gu0HRX3u/XOq7UU2Nx6nsjvS16Z9uwfpg==
@@ -4975,9 +4973,9 @@ require-directory@^2.1.1:
   integrity sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==
 
 require-in-the-middle@^7.1.1:
-  version "7.4.0"
-  resolved "https://registry.npmjs.org/require-in-the-middle/-/require-in-the-middle-7.4.0.tgz"
-  integrity sha512-X34iHADNbNDfr6OTStIAHWSAvvKQRYgLO6duASaVf7J2VA3lvmNYboAHOuLC2huav1IwgZJtyEcJCKVzFxOSMQ==
+  version "7.5.2"
+  resolved "https://registry.npmjs.org/require-in-the-middle/-/require-in-the-middle-7.5.2.tgz"
+  integrity sha512-gAZ+kLqBdHarXB64XpAe2VCjB7rIRv+mU8tfRWziHRJ5umKsIHN2tLLv6EtMw7WCdP19S0ERVMldNvxYCHnhSQ==
   dependencies:
     debug "^4.3.5"
     module-details-from-path "^1.0.3"
@@ -5016,7 +5014,7 @@ run-parallel@^1.1.6:
   dependencies:
     queue-microtask "^1.2.2"
 
-safe-buffer@5.2.1, safe-buffer@^5.0.1, safe-buffer@~5.2.0:
+safe-buffer@^5.0.1, safe-buffer@~5.2.0, safe-buffer@5.2.1:
   version "5.2.1"
   resolved "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.2.1.tgz"
   integrity sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==
@@ -5036,7 +5034,17 @@ safe-stable-stringify@^2.3.1:
   resolved "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-semver@^6.0.0, semver@^6.3.0, semver@^6.3.1:
+semver@^6.0.0:
+  version "6.3.1"
+  resolved "https://registry.npmjs.org/semver/-/semver-6.3.1.tgz"
+  integrity sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==
+
+semver@^6.3.0:
+  version "6.3.1"
+  resolved "https://registry.npmjs.org/semver/-/semver-6.3.1.tgz"
+  integrity sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==
+
+semver@^6.3.1:
   version "6.3.1"
   resolved "https://registry.npmjs.org/semver/-/semver-6.3.1.tgz"
   integrity sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==
@@ -5153,6 +5161,11 @@ slash@^3.0.0:
   resolved "https://registry.npmjs.org/slash/-/slash-3.0.0.tgz"
   integrity sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
 
+sorted-array-functions@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.npmjs.org/sorted-array-functions/-/sorted-array-functions-1.3.0.tgz"
+  integrity sha512-2sqgzeFlid6N4Z2fUQ1cvFmTOLRi/sEDzSQ0OKYchqgoPmQBVyM3959qYx3fpS6Esef80KjmpgPeEr028dP3OA==
+
 source-map-support@0.5.13:
   version "0.5.13"
   resolved "https://registry.npmjs.org/source-map-support/-/source-map-support-0.5.13.tgz"
@@ -5219,6 +5232,20 @@ streamx@^2.15.0:
   optionalDependencies:
     bare-events "^2.2.0"
 
+string_decoder@^1.1.1:
+  version "1.3.0"
+  resolved "https://registry.npmjs.org/string_decoder/-/string_decoder-1.3.0.tgz"
+  integrity sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==
+  dependencies:
+    safe-buffer "~5.2.0"
+
+string_decoder@~1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/string_decoder/-/string_decoder-1.1.1.tgz"
+  integrity sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==
+  dependencies:
+    safe-buffer "~5.1.0"
+
 string-length@^4.0.1:
   version "4.0.2"
   resolved "https://registry.npmjs.org/string-length/-/string-length-4.0.2.tgz"
@@ -5235,20 +5262,6 @@ string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
     emoji-regex "^8.0.0"
     is-fullwidth-code-point "^3.0.0"
     strip-ansi "^6.0.1"
-
-string_decoder@^1.1.1:
-  version "1.3.0"
-  resolved "https://registry.npmjs.org/string_decoder/-/string_decoder-1.3.0.tgz"
-  integrity sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==
-  dependencies:
-    safe-buffer "~5.2.0"
-
-string_decoder@~1.1.1:
-  version "1.1.1"
-  resolved "https://registry.npmjs.org/string_decoder/-/string_decoder-1.1.1.tgz"
-  integrity sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==
-  dependencies:
-    safe-buffer "~5.1.0"
 
 strip-ansi@^6.0.0, strip-ansi@^6.0.1:
   version "6.0.1"
@@ -5300,7 +5313,7 @@ supertest@^7.0.0:
     methods "^1.1.2"
     superagent "^9.0.1"
 
-supports-color@^5.3.0, supports-color@^5.5.0:
+supports-color@^5.5.0:
   version "5.5.0"
   resolved "https://registry.npmjs.org/supports-color/-/supports-color-5.5.0.tgz"
   integrity sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==
@@ -5345,7 +5358,7 @@ swagger-parser@^10.0.3:
   dependencies:
     "@apidevtools/swagger-parser" "10.0.3"
 
-swagger-ui-dist@>=5.0.0, swagger-ui-dist@^5.17.14:
+swagger-ui-dist@^5.17.14, swagger-ui-dist@>=5.0.0:
   version "5.17.14"
   resolved "https://registry.npmjs.org/swagger-ui-dist/-/swagger-ui-dist-5.17.14.tgz"
   integrity sha512-CVbSfaLpstV65OnSjbXfVd6Sta3q3F7Cj/yYuvHMp1P90LztOLs6PfUnKEVAeiIVQt9u2SaPwv0LiH/OyMjHRw==
@@ -5392,11 +5405,6 @@ tmpl@1.0.5:
   resolved "https://registry.npmjs.org/tmpl/-/tmpl-1.0.5.tgz"
   integrity sha512-3f0uOEAQwIqGuWW2MVzYg8fV/QNnc/IpuJNG837rLuczAaLVHslWHZQj4IGiEl5Hs3kkbhwL9Ab7Hrsmuj+Smw==
 
-to-fast-properties@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/to-fast-properties/-/to-fast-properties-2.0.0.tgz"
-  integrity sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==
-
 to-regex-range@^5.0.1:
   version "5.0.1"
   resolved "https://registry.npmjs.org/to-regex-range/-/to-regex-range-5.0.1.tgz"
@@ -5441,7 +5449,7 @@ ts-jest@^29.2.5:
     semver "^7.6.3"
     yargs-parser "^21.1.1"
 
-ts-node@^10.9.2:
+ts-node@^10.9.2, ts-node@>=9.0.0:
   version "10.9.2"
   resolved "https://registry.npmjs.org/ts-node/-/ts-node-10.9.2.tgz"
   integrity sha512-f0FFpIdcHgn8zcPSbf1dRevwt047YMnaiJM3u2w2RewrB+fob/zePZcrOyQoLMMO7aBIddLcQIEK5dYjkLnGrQ==
@@ -5488,7 +5496,7 @@ typedarray@^0.0.6:
   resolved "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
-typescript@^5.4.5:
+typescript@^5.4.5, typescript@>=2.7, "typescript@>=4.3 <6":
   version "5.5.4"
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.5.4.tgz"
   integrity sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==
@@ -5503,7 +5511,7 @@ undici-types@~6.19.2:
   resolved "https://registry.npmjs.org/undici-types/-/undici-types-6.19.8.tgz"
   integrity sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==
 
-unpipe@1.0.0, unpipe@~1.0.0:
+unpipe@~1.0.0, unpipe@1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/unpipe/-/unpipe-1.0.0.tgz"
   integrity sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==
