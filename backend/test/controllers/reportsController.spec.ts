@@ -1,7 +1,7 @@
 import { getSanctionedSellersReport } from '../../src/controllers/admin/reportsController';
 import * as reportService from '../../src/services/admin/report.service';
 
-jest.mock('../../../src/services/admin/report.service', () => ({
+jest.mock('../../src/services/admin/report.service', () => ({
   reportSanctionedSellers: jest.fn(),
 }));
 

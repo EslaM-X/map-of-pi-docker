@@ -10,8 +10,8 @@ import { SellerType } from "../../../../src/models/enums/sellerType";
 import { ISanctionedRegion, ISeller, SanctionedSellerStatus } from "../../../../src/types";
 import { RestrictedArea } from "../../../../src/models/enums/restrictedArea";
 
-jest.mock("../../../src/models/Seller");
-jest.mock("../../../src/services/admin/report.service");
+jest.mock("../../../../src/models/Seller");
+jest.mock("../../../../src/services/admin/report.service");
 
 describe("getSellersToEvaluate function", () => {
   const mockedSeller = Seller as jest.Mocked<typeof Seller>;

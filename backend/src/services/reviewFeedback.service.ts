@@ -50,9 +50,9 @@ const computeRatings = async (user_settings_id: string) => {
     // Update the user's rating value in the database
     await UserSettings.findOneAndUpdate({ user_settings_id }, { trust_meter_rating: value });
     return value;
-  } catch (error) {
-    logger.error(`Failed to compute ratings for userSettingsID ${ user_settings_id }:`, error);
-    throw new Error('Failed to compute ratings; please try again later');
+  } catch (error: any) {
+    logger.error(`Failed to compute ratings for userSettingsID ${ user_settings_id }: ${ error.message }`);
+    throw error;
   }
 };
 
@@ -111,9 +111,9 @@ export const getReviewFeedback = async (
       givenReviews: updatedGivenFeedbackList,
       receivedReviews: updatedReceivedFeedbackList
     } as unknown as CompleteFeedback;
-  } catch (error) {
-    logger.error(`Failed to retrieve reviews for reviewReceiverID ${review_receiver_id}:`, error);
-    throw new Error('Failed to retrieve reviews; please try again later');
+  } catch (error: any) {
+    logger.error(`Failed to retrieve reviews for reviewReceiverID ${ review_receiver_id }: ${ error.message }`);
+    throw error;
   }
 };
 
@@ -164,9 +164,9 @@ export const getReviewFeedbackById = async (review_id: string): Promise<{
       review: mainReview as unknown as IReviewFeedbackOutput,
       replies: updatedReplyList as unknown as IReviewFeedbackOutput[],
     };
-  } catch (error) {
-    logger.error(`Failed to retrieve review for reviewID ${review_id}:`, error);
-    throw new Error('Failed to retrieve review; please try again later');
+  } catch (error: any) {
+    logger.error(`Failed to retrieve review for reviewID ${ review_id }: ${ error.message }`);
+    throw error;
   }
 };
 
@@ -188,8 +188,8 @@ export const addReviewFeedback = async (authUser: IUser, formData: any, image: s
     logger.info(`Computed review rating: ${computedValue}`);
 
     return savedReviewFeedback as IReviewFeedback;
-  } catch (error) {
-    logger.error('Failed to add review:', error);
-    throw new Error('Failed to add review; please try again later');
+  } catch (error: any) {
+    logger.error(`Failed to add review: ${ error.message }`);
+    throw error;
   }
 };

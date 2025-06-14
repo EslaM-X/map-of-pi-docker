@@ -15,6 +15,7 @@ export const env = {
   LOG_LEVEL: process.env.LOG_LEVEL || '',
   PI_API_KEY: process.env.PI_API_KEY || '',
   PLATFORM_API_URL: process.env.PLATFORM_API_URL || '',
+  WALLET_PRIVATE_SEED: process.env.WALLET_PRIVATE_SEED || '',
   ADMIN_API_USERNAME: process.env.ADMIN_API_USERNAME || '',
   ADMIN_API_PASSWORD: process.env.ADMIN_API_PASSWORD || '',
   UPLOAD_PATH: process.env.UPLOAD_PATH || '', // TODO: Remove when Map of Pi is no longer using Vercel/Cloudinary image hosting solution
