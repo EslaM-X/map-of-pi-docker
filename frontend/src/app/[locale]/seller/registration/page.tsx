@@ -15,6 +15,7 @@ import {
 } from '@/components/shared/Forms/Inputs/Inputs';
 import ConfirmDialog from '@/components/shared/confirm';
 import OnlineShopping from '@/components/shared/Seller/ShopItem';
+import { ListOrder } from '@/components/shared/Seller/OrderList';
 import ToggleCollapse from '@/components/shared/Seller/ToggleCollapse';
 import Skeleton from '@/components/skeleton/skeleton';
 import { itemData } from '@/constants/demoAPI';
@@ -23,7 +24,13 @@ import { fetchSellerRegistration, registerSeller } from '@/services/sellerApi';
 import { fetchUserSettings } from '@/services/userSettingsApi';
 import { fetchToggle } from '@/services/toggleApi';
 import { checkAndAutoLoginUser } from '@/utils/auth';
+import { 
+  translateSellerCategory, 
+  getFulfillmentMethodOptions,
+  getSellerCategoryOptions 
+} from '@/utils/translate';
 import removeUrls from '../../../../utils/sanitize';
+
 import { AppContext } from '../../../../../context/AppContextProvider';
 import logger from '../../../../../logger.config.mjs';
 
@@ -133,7 +140,7 @@ const SellerRegistrationForm = () => {
       setFormData({
         sellerName: dbSeller.name || currentUser?.user_name || '',
         sellerType:
-          dbSeller.seller_type || translatedSellerTypeOptions[2].value,
+          dbSeller.seller_type || getSellerCategoryOptions(t)[2].value,
         sellerDescription: dbSeller.description || '',
         sellerAddress: dbSeller.address || '',
         email: dbUserSettings?.email || '',
@@ -145,7 +152,7 @@ const SellerRegistrationForm = () => {
     } else {
       setFormData({
         sellerName: currentUser?.pi_username || '',
-        sellerType: translatedSellerTypeOptions[2].value,
+        sellerType: getSellerCategoryOptions(t)[2].value,
         sellerDescription: translatedPreFilledText['seller-description'],
         sellerAddress: translatedPreFilledText['seller-address'],
         email: '',
@@ -279,21 +286,6 @@ const SellerRegistrationForm = () => {
     }
   };
 
-  const translateSellerCategory = (category: string): string => {
-    switch (category) {
-      case 'activeSeller':
-        return t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.ACTIVE_SELLER');
-      case 'inactiveSeller':
-        return t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.INACTIVE_SELLER');
-      case 'testSeller':
-        return t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.TEST_SELLER');
-      case 'restrictedSeller':
-        return t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.RESTRICTED_SELLER');
-      default:
-        return '';
-    }
-  };
-
   const translatedPreFilledText = {
     'seller-description': t('SCREEN.SELLER_REGISTRATION.SELLER_DETAILS_PLACEHOLDER'),
     'seller-address': t('SCREEN.SELLER_REGISTRATION.SELLER_ADDRESS_LOCATION_PLACEHOLDER'),
@@ -320,36 +312,6 @@ const SellerRegistrationForm = () => {
       formData[fieldName] = updatedValue;
     }
   };
-  
-  const translatedSellerTypeOptions = [
-    {
-      value: 'activeSeller',
-      name: t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.ACTIVE_SELLER'),
-    },
-    {
-      value: 'inactiveSeller',
-      name: t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.INACTIVE_SELLER'),
-    },
-    {
-      value: 'testSeller',
-      name: t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.TEST_SELLER'),
-    }
-  ];
-
-  const translatedFulfillmentMethod = [
-    {
-      value: 'pickup',
-      name: t(
-        'SCREEN.SELLER_REGISTRATION.FULFILLMENT_METHOD_TYPE.FULFILLMENT_METHOD_TYPE_OPTIONS.COLLECTION_BY_BUYER',
-      ),
-    },
-    {
-      value: 'delivery',
-      name: t(
-        'SCREEN.SELLER_REGISTRATION.FULFILLMENT_METHOD_TYPE.FULFILLMENT_METHOD_TYPE_OPTIONS.DELIVERED_TO_BUYER',
-      ),
-    },
-  ];
 
   if (loading) {
     logger.info('Loading Seller Registration Form.');
@@ -367,7 +329,7 @@ const SellerRegistrationForm = () => {
             {t('SCREEN.SELLER_REGISTRATION.SELLER_REGISTRATION_HEADER')}
           </h1>
           <p className="text-gray-400 text-sm">
-            {dbSeller ? translateSellerCategory(dbSeller.seller_type) : ''}
+            {dbSeller ? translateSellerCategory(dbSeller.seller_type, t) : ''}
           </p>
         </div>
 
@@ -442,7 +404,7 @@ const SellerRegistrationForm = () => {
                   name="sellerType"
                   value={formData.sellerType}
                   onChange={handleChange}
-                  options={translatedSellerTypeOptions}
+                  options={getSellerCategoryOptions(t)}
                 />
               ) : (
                 <Input
@@ -596,9 +558,10 @@ const SellerRegistrationForm = () => {
             </div>
           </ToggleCollapse>
 
+          {/* List Items | Online Shopping */}
           {isOnlineShoppingEnabled && (
             <ToggleCollapse
-              header={t('SCREEN.SELLER_REGISTRATION.SELLER_ONLINE_SHOPPING_LABEL')}
+              header={t('SCREEN.SELLER_REGISTRATION.SELLER_ONLINE_SHOPPING_ITEMS_LIST_LABEL')}
               open={false}>
               {dbSeller && <OnlineShopping dbSeller={dbSeller} />}
               <div>
@@ -607,7 +570,7 @@ const SellerRegistrationForm = () => {
                     'SCREEN.SELLER_REGISTRATION.FULFILLMENT_METHOD_TYPE.FULFILLMENT_METHOD_TYPE_LABEL',
                   )}
                   name="fulfillment_method"
-                  options={translatedFulfillmentMethod}
+                  options={getFulfillmentMethodOptions(t)}
                   value={formData.fulfillment_method}
                   onChange={handleChange}
                 />
@@ -616,10 +579,10 @@ const SellerRegistrationForm = () => {
                 </h2>
                 <TextArea
                   label={t(
-                    'SCREEN.SELLER_REGISTRATION.FULFILLMENT_INSTRUCTIONS_LABEL',
+                    'SCREEN.SELLER_REGISTRATION.SELLER_TO_BUYER_FULFILLMENT_INSTRUCTIONS_LABEL',
                   )}
                   placeholder={t(
-                    'SCREEN.SELLER_REGISTRATION.FULFILLMENT_INSTRUCTIONS_PLACEHOLDER',
+                    'SCREEN.SELLER_REGISTRATION.SELLER_TO_BUYER_FULFILLMENT_INSTRUCTIONS_PLACEHOLDER',
                   )}
                   name="fulfillment_description"
                   type="text"
@@ -642,7 +605,16 @@ const SellerRegistrationForm = () => {
             </ToggleCollapse>
           )}
 
+          {/*Order Fulfillment | Online Shopping */}
+          {isOnlineShoppingEnabled && (
+            <ToggleCollapse
+                header={t('SCREEN.SELLER_REGISTRATION.SELLER_ONLINE_SHOPPING_ORDER_FULFILLMENT_LABEL')}
+                open={false}>
+              {dbSeller && <ListOrder user_id={dbSeller.seller_id} user_name={dbSeller.name}  seller_type={dbSeller.seller_type}/>}
+            </ToggleCollapse>
+          )}
         </div>
+
         <ConfirmDialog
           show={showConfirmDialog}
           onClose={() => setShowConfirmDialog(false)}
@@ -650,6 +622,7 @@ const SellerRegistrationForm = () => {
           message={t('SHARED.CONFIRM_DIALOG')}
           url={linkUrl}
         />
+
       </div>
     </>
   );
