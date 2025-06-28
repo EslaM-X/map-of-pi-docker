@@ -11,8 +11,9 @@ import { ImSpinner2 } from 'react-icons/im';
 import { IoMdArrowBack, IoMdClose } from 'react-icons/io';
 import { MdHome } from 'react-icons/md';
 
-import Sidebar from '../sidebar/sidebar';
 import styles from './Navbar.module.css';
+import MembershipIcon from '../membership/MembershipIcon';
+import Sidebar from '../sidebar/sidebar';
 import { AppContext } from '../../../../context/AppContextProvider';
 import logger from '../../../../logger.config.mjs';
 
@@ -55,23 +56,30 @@ function Navbar() {
   return (
     <>
       <div className="w-full h-[76.19px] z-500 px-[16px] py-[5px] bg-primary fixed top-0 left-0 right-0">
-        <div className="text-center text-secondary text-[1.3rem] whitespace-nowrap">
-          {/* Display alert message with spinner if present, otherwise display 'Map of Pi' */}
-          {alertMessage ? (
-            <div className="alert-message flex items-center justify-center">
-              {alertMessage}
-            </div>
-          ) : (
-            isSigningInUser || reload ? (
-              <div className="flex items-center justify-center">
-                <ImSpinner2 className="animate-spin mr-2 ml-1" /> {/* Spinner Icon */}
-                {t('SHARED.LOADING_SCREEN_MESSAGE')}
+        <div className="w-full flex justify-between items-center">
+          <div className="flex-1"></div>
+          <div className="text-center text-secondary text-[1.3rem] whitespace-nowrap flex-1">
+            {/* Display alert message with spinner if present, otherwise display 'Map of Pi' */}
+            {alertMessage ? (
+              <div className="alert-message flex items-center justify-center">
+                {alertMessage}
               </div>
             ) : (
-              "Map of Pi"
-            )
-          )}
+              isSigningInUser || reload ? (
+                <div className="flex items-center justify-center">
+                  <ImSpinner2 className="animate-spin mr-2 ml-1" /> {/* Spinner Icon */}
+                  {t('SHARED.LOADING_SCREEN_MESSAGE')}
+                </div>
+              ) : (
+                "Map of Pi"
+              )
+            )}
+          </div>
+          <div className="flex-1">
+            <MembershipIcon category='triple_gold' />
+          </div>
         </div>
+        
         <div className="flex justify-between">
           <div className={`${styles.nav_item} ${(isHomePage || isSaveLoading) && 'disabled'}`}>
             <Link href="/" onClick={handleBackBtn}>
