@@ -42,7 +42,7 @@ const fileFilter = (
       code: "INVALID_FILE_TYPE",
       message: "Wrong format for file",
     };
-    cb(new Error(error.message));
+    cb(new Error(error));
     return;
   }
   cb(null, true);
