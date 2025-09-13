@@ -21,7 +21,7 @@
     "@sentry/browser": "^8.33.1",
     "@sentry/nextjs": "^8.52.0",
     "@sentry/node": "^8.52.0",
-    "axios": "^1.7.5",
+    "axios": "^1.12.1",
     "clsx": "^2.1.1",
     "cookies-next": "^4.1.1",
     "date-fns": "^3.6.0",
