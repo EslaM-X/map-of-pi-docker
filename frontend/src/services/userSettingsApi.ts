@@ -1,5 +1,4 @@
 import axiosClient from "@/config/client";
-import { handleAxiosError } from "@/utils/error";
 import { getMultipartFormDataHeaders } from "@/utils/api";
 
 import logger from '../../logger.config.mjs';
@@ -18,10 +17,9 @@ export const fetchUserSettings = async () => {
       logger.error(`Fetch user settings failed with Status ${response.status}`);
       return null;
     }
-  } catch (error: any) {
-    logger.error('Fetch user settings encountered an error:', { error });
-    handleAxiosError(error);
-    throw error;
+  } catch (error) {
+    logger.error('Fetch user settings encountered an error:', error);
+    throw new Error('Failed to fetch user settings. Please try again later.');
   }
 };
 
@@ -39,10 +37,9 @@ export const fetchSingleUserSettings = async (sellerId: String) => {
       logger.error(`Fetch single user settings failed with Status ${response.status}`);
       return null;
     }
-  } catch (error: any) {
-    logger.error('Fetch single user settings encountered an error:', { error, sellerId });
-    handleAxiosError(error);
-    throw error;
+  } catch (error) {
+    logger.error('Fetch single user settings encountered an error:', error);
+    throw new Error('Failed to fetch single user settings. Please try again later.');
   }
 };
 
@@ -63,9 +60,29 @@ export const createUserSettings = async (formData: FormData) => {
       logger.error(`Create or update user settings failed with Status ${response.status}`);
       return null;
     }
-  } catch (error: any) {
-    logger.error('Create or update user settings encountered an error:', { error, formData });
-    handleAxiosError(error);
+  } catch (error) {
+    logger.error('Create or update user settings encountered an error:', error);
+    throw new Error('Failed to create or update user settings. Please try again later.');
+  }
+};
+
+// Fetch the user location of the user
+export const fetchUserLocation = async () => {
+  try {
+    logger.info('Fetching user location..');
+    const headers = getMultipartFormDataHeaders();
+    const response = await axiosClient.get(`/user-preferences/location/me`, { headers });
+    if (response.status === 200) {
+      logger.info(`Fetch user location successful with Status ${response.status}`, {
+        data: response.data
+      });
+      return response.data;
+    } else {
+      logger.error(`Fetch user location failed with Status ${response.status}`);
+      return null;
+    }
+  } catch (error) {
+    logger.error('Fetch user location encountered an error:', error);
     throw error;
   }
 };

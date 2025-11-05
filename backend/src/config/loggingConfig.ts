@@ -17,7 +17,11 @@ export const getLoggerConfig = (): { level: string; format: any; transports: any
     loggerTransports.push(consoleLogTransport);
   } else if (env.NODE_ENV === 'production') {
     defaultLogLevel = 'error';
-    logFormat = format.combine(format.timestamp(), format.json());
+    logFormat = format.combine(
+      format.errors({ stack: true }),
+      format.timestamp(),
+      format.json()
+    );
     loggerTransports.push(new SentryTransport({ stream: process.stdout })); // Log to Sentry
     loggerTransports.push(consoleLogTransport); // Log to pod as well
   } 

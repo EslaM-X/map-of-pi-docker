@@ -5,10 +5,9 @@ module.exports = {
     testMatch: ["**/**/*.spec.ts"],
     verbose: true,
     forceExit: true,
-    clearMocks: true,
     resetMocks: true,
     restoreMocks: true,
-    clearMocks:true,
+    clearMocks: true,
     setupFilesAfterEnv: ['<rootDir>/test/jest.setup.ts']
   };
   

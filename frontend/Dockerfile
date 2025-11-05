@@ -11,10 +11,11 @@ COPY ./package-lock.json /app/package-lock.json
 
 WORKDIR /app
 
-RUN npm install
+RUN npm ci
 
 # Copy the resources needed to build the app
 COPY ./src /app/src
+COPY ./i18n /app/i18n
 COPY ./messages /app/messages
 COPY ./public /app/public
 COPY ./tsconfig.json /app/tsconfig.json

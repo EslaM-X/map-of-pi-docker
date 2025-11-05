@@ -14,6 +14,8 @@ import userPreferencesRoutes from "../routes/userPreferences.routes";
 import sellerRoutes from "../routes/seller.routes";
 import reviewFeedbackRoutes from "../routes/reviewFeedback.routes";
 import mapCenterRoutes from "../routes/mapCenter.routes";
+import reportRoutes from "../routes/report.routes";
+import toggleRoutes from "../routes/toggle.routes";
 
 dotenv.config();
 
@@ -31,9 +33,6 @@ app.use(cookieParser());
 
 // serve static files for Swagger documentation
 app.use('/api/docs', express.static(path.join(__dirname, '../config/docs')));
-app.use('/api/docs/enum', express.static(path.join(__dirname, '../config/docs/enum')));
-// Serve Swagger UI static files
-app.use('/api/docs/swagger-ui', express.static(path.join(__dirname, '../node_modules/swagger-ui-dist')));
 
 // Swagger OpenAPI documentation
 app.use("/api/docs", docRouter);
@@ -44,6 +43,8 @@ app.use("/api/v1/user-preferences", userPreferencesRoutes);
 app.use("/api/v1/sellers", sellerRoutes);
 app.use("/api/v1/review-feedback", reviewFeedbackRoutes);
 app.use("/api/v1/map-center", mapCenterRoutes);
+app.use("/api/v1/reports", reportRoutes);
+app.use("/api/v1/toggles", toggleRoutes);
 
 app.use("/", homeRoutes);
 

@@ -3,6 +3,7 @@ import multerS3 from "multer-s3";
 import { S3 } from "@aws-sdk/client-s3";
 
 import path from "path";
+import crypto from "crypto";
 
 import { env } from "./env";
 
@@ -12,17 +13,21 @@ const s3 = new S3({
   endpoint: env.DIGITAL_OCEAN_BUCKET_ORIGIN_ENDPOINT,
   region: "us-east-1",
   credentials: {
-    accessKeyId: env.DIGITAL_OCEAN_KEY_ID,
-    secretAccessKey: env.DIGITAL_OCEAN_SECRET_ACCESS_KEY
+    accessKeyId: env.DIGITAL_OCEAN_BUCKET_ACCESS_KEY,
+    secretAccessKey: env.DIGITAL_OCEAN_BUCKET_SECRET_KEY
   }
 });
+
+const getExtension = (fileName: string) => path.extname(fileName).toLowerCase();
 
 const storage = multerS3({
   s3,
   bucket: env.DIGITAL_OCEAN_BUCKET_NAME,
   acl: 'public-read',
+  contentType: multerS3.AUTO_CONTENT_TYPE,
   key: function (request: any, file: any, callback: any) {
-    callback(null, file.originalname);
+    const extension = getExtension(file.originalname);
+    callback(null, `${crypto.randomUUID()}${extension}`);
   }
 });
 
@@ -31,13 +36,13 @@ const fileFilter = (
   file: Express.Multer.File,
   cb: multer.FileFilterCallback
 ): void => {
-  const extension = path.extname(file.originalname).toLowerCase();
+  const extension = getExtension(file.originalname);
   if (!(extension === ".jpg" || extension === ".jpeg" || extension === ".png")) {
     const error: any = {
       code: "INVALID_FILE_TYPE",
       message: "Wrong format for file",
     };
-    cb(new Error(error.message));
+    cb(new Error(error));
     return;
   }
   cb(null, true);

@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 import { IUserSettings } from "../types";
+import { DeviceLocationType } from "./enums/deviceLocationType";
 import { TrustMeterScale } from "./enums/trustMeterScale";
 
 const userSettingsSchema = new Schema<IUserSettings>(
@@ -17,19 +18,23 @@ const userSettingsSchema = new Schema<IUserSettings>(
     email: {
       type: String,
       required: false,
+      default: null, 
     },
     phone_number: {
       type: String,
       required: false,
+      default: null, 
     },
     image: {
       type: String,
       required: false,
+      default: ''
     },
     findme: {
       type: String,
+      enum: Object.values(DeviceLocationType).filter(value => typeof value === 'string'),
       required: true,
-      default: 'deviceGPS'
+      default: DeviceLocationType.SearchCenter
     },
     trust_meter_rating: {
       type: Number,
@@ -49,7 +54,20 @@ const userSettingsSchema = new Schema<IUserSettings>(
         required: false,
         default: [0, 0]
       },
-    }
+    },
+    search_filters: {
+      type: {
+        include_active_sellers: { type: Boolean, default: true },
+        include_inactive_sellers: { type: Boolean, default: false },
+        include_test_sellers: { type: Boolean, default: false },
+        include_trust_level_100: { type: Boolean, default: true },
+        include_trust_level_80: { type: Boolean, default: true },
+        include_trust_level_50: { type: Boolean, default: true },
+        include_trust_level_0: { type: Boolean, default: false },
+      },
+      required: true,
+      default: {},
+    },
   }
 );
 

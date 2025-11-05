@@ -28,7 +28,7 @@ export const verifyToken = async (
 
   if (!token) {
     logger.warn("Authentication token is missing.");
-    return res.status(401).json({ message: "Authentication token is required" });
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
   try {
@@ -37,15 +37,41 @@ export const verifyToken = async (
 
     if (!currentUser) {
       logger.warn("Authentication token is invalid or expired.");
-      return res.status(401).json({ message: "Authentication token is invalid or expired" });
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
     // Attach currentUser to the request object
     req.currentUser = currentUser;
     req.token = token;
     next();
-  } catch (error: any) {
-    logger.error("Failed to verify token:", error);
-    return res.status(500).json({ message: error.message });
+  } catch (error) {
+    logger.error('Failed to verify token:', error);
+    return res.status(500).json({ message: 'Failed to verify token; please try again later' });
   }
+};
+
+export const verifyAdminToken = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { ADMIN_API_USERNAME, ADMIN_API_PASSWORD } = process.env;
+
+  const authHeader = req.headers.authorization;
+  const base64Credentials = authHeader && authHeader.split(" ")[1];
+  if (!base64Credentials) {
+    logger.warn("Admin credentials are missing.");
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  const credentials = Buffer.from(base64Credentials, "base64").toString("ascii");
+  const [username, password] = credentials.split(":");
+
+  if (username !== ADMIN_API_USERNAME || password !== ADMIN_API_PASSWORD) {
+    logger.warn("Admin credentials are invalid.");
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  logger.info("Admin credentials verified successfully.");
+  next();
 };

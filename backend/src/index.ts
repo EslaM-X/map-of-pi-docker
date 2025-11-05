@@ -24,9 +24,8 @@ const startServer = async () => {
     });
 
     logger.info("Server setup initiated.");
-  } catch (error: any) {
-    // Log any errors that occur during server setup
-    logger.error(`Server failed to initiate: ${error.message}`);
+  } catch (error) {
+    logger.error('Server failed to initialize:', error);
   }
 };
 

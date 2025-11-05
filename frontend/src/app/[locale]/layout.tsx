@@ -1,13 +1,18 @@
 import { NextIntlClientProvider, useMessages } from 'next-intl';
+import { setRequestLocale } from 'next-intl/server';
 import { Lato } from 'next/font/google';
-
+import { locales } from '../../../i18n/i18n';
 import { Providers } from '../providers';
-
 import Navbar from '@/components/shared/navbar/Navbar';
-
 import logger from '../../../logger.config.mjs';
 
+export const dynamic = 'force-dynamic';
+
 const lato = Lato({ weight: '400', subsets: ['latin'], display: 'swap' });
+
+export async function generateStaticParams() {
+  return locales.map((locale) => { locale })
+};
 
 export default function LocaleLayout({
   children,
@@ -16,6 +21,9 @@ export default function LocaleLayout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
+  // Enable static rendering
+  setRequestLocale(locale);
+
   // Receive messages provided in `i18n.ts`
   const messages = useMessages();
 
@@ -88,6 +96,17 @@ export default function LocaleLayout({
         />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <script src={process.env.NEXT_PUBLIC_PI_SDK_URL}></script>
+
+        {/* Google tag (gtag.js) */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-SVNC88Q13K"></script>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-SVNC88Q13K');
+          `,
+        }} />
       </head>
       <body
         className={`bg-background text-black ${lato.className}`}>

@@ -29,22 +29,9 @@ const userRoutes = Router();
  *   post:
  *     tags:
  *       - User
- *     summary: Authenticate the user's access token
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties: 
- *               pioneerAuth:
- *                 type: object
- *                 properties:
- *                   accessToken:  
- *                     type: string
- *                     example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjZiYmFlNGEwNWJjYzNkOGRmYWI1NjMiLCJpYXQiOjE3MTgzMzk0MDksImV4cCI6MTcyMDkzMTQwOX0.gFz-EdHoOqz3-AuFX5R4uGtruFaTMH8sTOXEX-3c7yw
- *                 required:
- *                   - pioneerAuth    
+ *     summary: Authenticate the user's access token *
+ *     security:
+ *       - BearerAuth: []     
  *     responses:
  *       200:
  *         description: Successful response
@@ -78,7 +65,7 @@ userRoutes.post("/authenticate", isPioneerFound, userController.authenticateUser
  *       404:
  *         description: User not found | Pioneer not found
  *       401:
- *         description: Unauthorized | Authentication token is required | Authentication token is invalid or expired
+ *         description: Unauthorized
  *       400:
  *         description: Bad request
  *       500:
@@ -118,18 +105,11 @@ userRoutes.get("/:pi_uid", userController.getUser);
 
 /**
  * @swagger
- * /api/v1/users/{pi_uid}:
+ * /api/v1/users/delete:
  *   delete:
  *     tags:
  *       - User
- *     summary: Delete a user and user associated data by Pi UID *
- *     parameters:
- *       - name: pi_uid
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *         description: The Pi UID of the user to delete
+ *     summary: Delete a user and user associated data using Bearer Auth token *
  *     responses:
  *       200:
  *         description: Successful response | User deleted successfully
@@ -139,17 +119,15 @@ userRoutes.get("/:pi_uid", userController.getUser);
  *               $ref: '/api/docs/UsersSchema.yml#/components/schemas/DeleteUserRs'
  *       404:
  *         description: User not found
- *       403:
- *         description: User deletion is only restricted to the account owner
  *       401:
- *         description: Unauthorized | Authentication token is required | Authentication token is invalid or expired
+ *         description: Unauthorized
  *       400:
  *         description: Bad request
  *       500:
  *         description: Internal server error
  */
 userRoutes.delete(
-  "/:pi_uid",
+  "/delete",
   verifyToken,
   userController.deleteUser
 );

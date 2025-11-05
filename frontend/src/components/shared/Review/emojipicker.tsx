@@ -1,15 +1,15 @@
 "use client";
 
 import { useTranslations } from 'next-intl';
-import { useState, useEffect } from 'react';
-
-import { TextArea } from '../Forms/Inputs/Inputs';
-import { FileInput } from '../Forms/Inputs/Inputs';
-import { createReview } from '@/services/reviewsApi';
+import { useState, useEffect, useContext } from 'react';
 import { toast } from 'react-toastify';
 
-import logger from '../../../../logger.config.mjs';
 import { IReviewFeedback } from '@/constants/types';
+import { createReview } from '@/services/reviewsApi';
+import removeUrls from '@/utils/sanitize';
+import { FileInput, TextArea } from '../Forms/Inputs/Inputs';
+import { AppContext } from '../../../../context/AppContextProvider';
+import logger from '../../../../logger.config.mjs';
 
 interface Emoji {
   name: string;
@@ -37,6 +37,8 @@ export default function EmojiPicker(props: any) {
   const [comments, setComments] = useState('');
   const [reviewEmoji, setReviewEmoji] = useState<number | null>(null);
   const [selectedEmoji, setSelectedEmoji] = useState<number | null>(null);
+
+  const { showAlert, setAlertMessage, isSaveLoading, setIsSaveLoading } = useContext(AppContext);
 
   // function preview image upload
   useEffect(() => {
@@ -68,6 +70,10 @@ export default function EmojiPicker(props: any) {
   };
 
   const handleAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (isSaveLoading) {
+      return;
+    }
+
     const selectedFile = e.target.files?.[0]; // only take the first file
     if (selectedFile) {
       setFile(selectedFile);
@@ -81,30 +87,33 @@ export default function EmojiPicker(props: any) {
   };
 
   const resetReview = () => {
-    setSelectedEmoji(null)
-    setReviewEmoji(null)
+    setSelectedEmoji(null);
+    setReviewEmoji(null);
     setComments('');
     setPreviewImage('');
     setFile(null);
     setIsSaveEnabled(false);
-    props.setIsSaveEnabled(false)
+    props.setIsSaveEnabled(false);
   }
 
   const handleSave = async () => {
     try {
       if (props.currentUser) {
-        if (props.currentUser.pi_uid === props.sellerId) {
+        if (props.currentUser.pi_uid === props.userId) {
           logger.warn(`Attempted self review by user ${props.currentUser.pi_uid}`);
-          toast.error(t('SCREEN.REPLY_TO_REVIEW.VALIDATION.SELF_REVIEW_PROHIBITED'));
+          return toast.error(t('SCREEN.REPLY_TO_REVIEW.VALIDATION.SELF_REVIEW_NOT_POSSIBLE'));
         }
         if (reviewEmoji === null) {
           logger.warn('Attempted to save review without selecting an emoji.');
-          return window.alert(t('SHARED.REACTION_RATING.VALIDATION.SELECT_EMOJI_EXPRESSION'));
+          return toast.warn(t('SHARED.REACTION_RATING.VALIDATION.SELECT_EMOJI_EXPRESSION'));
         } else {
+          setIsSaveEnabled(false);
+          setIsSaveLoading(true);
+          setAlertMessage(t('SHARED.SAVING_SCREEN_MESSAGE'));
           const formDataToSend = new FormData();
-          formDataToSend.append('comment', comments);
+          formDataToSend.append('comment', removeUrls(comments));
           formDataToSend.append('rating', reviewEmoji.toString());
-          formDataToSend.append('review_receiver_id', props.sellerId);
+          formDataToSend.append('review_receiver_id', props.userId);
           formDataToSend.append('reply_to_review_id', props.replyToReviewId || '');
 
           // add the image if it exists
@@ -118,8 +127,13 @@ export default function EmojiPicker(props: any) {
 
           const newReview = await createReview(formDataToSend);
           if (newReview) {
-            toast.success(t('SHARED.REACTION_RATING.VALIDATION.SUCCESSFUL_REVIEW_SUBMISSION'));
+            setAlertMessage(null);
+            resetReview();
+            props.setReload(true);
+            props.refresh();
             logger.info('Review submitted successfully');
+          } else {
+            setAlertMessage(t('SHARED.REACTION_RATING.VALIDATION.UNSUCCESSFUL_REVIEW_SUBMISSION'));
           }
           resetReview();
         }
@@ -128,12 +142,19 @@ export default function EmojiPicker(props: any) {
         toast.error(t('SHARED.VALIDATION.SUBMISSION_FAILED_USER_NOT_AUTHENTICATED'));
       }
     } catch (error) {
-      logger.error('Error saving review:', { error });
+      logger.error('Error saving review:', error);
+    } finally {
+      setIsSaveLoading(false);
+      setAlertMessage(null);
     }
   };
   
   // Function to handle the click of an emoji
   const handleEmojiClick = (emojiValue: number) => {
+    if (isSaveLoading) {
+      return;
+    }
+
     if (selectedEmoji === emojiValue) {
       setSelectedEmoji(null);
       setReviewEmoji(null); // return null when no emoji is sellected
@@ -152,7 +173,7 @@ export default function EmojiPicker(props: any) {
   const emojiBtnClass = 'rounded-md w-full outline outline-[0.5px] flex justify-center items-center cursor-pointer p-1'
   return (
     <div className="mb-3">
-        <p>{t('SCREEN.BUY_FROM_SELLER.FACE_SELECTION_REVIEW_MESSAGE')}</p>
+      <p>{t('SCREEN.REPLY_TO_REVIEW.FACE_SELECTION_REVIEW_MESSAGE')}</p>
       <div className='flex sm:overflow-hidden overflow-auto gap-3 w-full text-center justify-center my-2'>
         <div className='bg-[#DF2C2C33] flex-grow-[0.5] rounded-md p-2'>
           <p className='text-red-700 mb-2'>{t('SHARED.REACTION_RATING.UNSAFE')}</p>
@@ -194,12 +215,14 @@ export default function EmojiPicker(props: any) {
         <TextArea placeholder={t('SCREEN.BUY_FROM_SELLER.ADDITIONAL_COMMENTS_PLACEHOLDER')} 
         value={comments} 
         onChange={handleCommentsChange} 
-        maxLength={100}
+        maxLength={250}
+        disabled={isSaveLoading}
         />
       </div>
       <div className="mb-2">
         <FileInput 
-          label={t('SHARED.PHOTO.MISC_LABELS.REVIEW_FEEDBACK_IMAGE_LABEL')} 
+          label={t('SHARED.PHOTO.MISC_LABELS.REVIEW_FEEDBACK_IMAGE_LABEL')}
+          describe={t('SHARED.PHOTO.UPLOAD_PHOTO_REVIEW_PLACEHOLDER')} 
           imageUrl={previewImage} 
           handleAddImage={handleAddImage} 
         />
@@ -210,8 +233,8 @@ export default function EmojiPicker(props: any) {
         <button
           onClick={handleSave}
           disabled={!isSaveEnabled}
-          className={`${isSaveEnabled ? 'opacity-100' : 'opacity-50'} px-6 py-2 bg-primary text-white text-xl rounded-md flex justify-right ms-auto text-[15px]`}>
-          {t('SHARED.SAVE')}
+          className={`${isSaveEnabled ? 'opacity-100' : 'opacity-50'} px-6 py-2 bg-primary text-white text-xl rounded-md flex justify-right ms-auto text-[15px]`}> 
+            {t('SHARED.SAVE')}
         </button>
       </div>
     </div>

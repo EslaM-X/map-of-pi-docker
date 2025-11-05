@@ -1,109 +1,72 @@
-import mongoose from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-
+import Seller from '../../src/models/Seller';
+import UserSettings from '../../src/models/UserSettings';
 import { getMapCenterById, createOrUpdateMapCenter } from '../../src/services/mapCenter.service';
-import MapCenter from '../../src/models/MapCenter';
-import { IMapCenter } from '../../src/types';
-
-let mongoServer: MongoMemoryServer;
-
-const mockMapCenters = [
-  {
-    map_center_id: '0a0a0a-0a0a-0a0a',
-    search_map_center: { type: 'Point', coordinates: [-74.0060, 40.7128] },
-    sell_map_center: { type: 'Point', coordinates: [-118.2437, 34.0522] }
-  },
-  {
-    map_center_id: '0b0b0b-0b0b-0b0b',
-    search_map_center: { type: 'Point', coordinates: [-87.6298, 41.8781] },
-    sell_map_center: { type: 'Point', coordinates: [-122.4194, 37.7749] }
-  }
- ] as IMapCenter[];
-
-beforeAll(async () => {
-  try {
-    mongoServer = await MongoMemoryServer.create();
-    const uri = mongoServer.getUri();
-    await mongoose.connect(uri, { dbName: 'test' });
-
-    // initialize in-memory MongoDB by inserting mock data records
-    await MapCenter.insertMany(mockMapCenters);
-  } catch (error) {
-    console.error('Failed to start MongoMemoryServer', error);
-    throw error;
-  }
-});
-
-afterAll(async () => {
-  await mongoose.disconnect();
-  await mongoServer.stop();
-});
 
 describe('getMapCenterById function', () => {
-  it('should fetch the seller associated with the map center ID', async () => {
-    const result = await getMapCenterById('0a0a0a-0a0a-0a0a');
+  it('should fetch the sell map center for the given seller ID', async () => {
+    const sellerData = await Seller.findOne({ seller_id: '0a0a0a-0a0a-0a0a' });
 
-    const expectedMockMapCenter = mockMapCenters.find(
-      mapCenter => mapCenter.map_center_id === '0a0a0a-0a0a-0a0a'
-    );
+    const result = await getMapCenterById('0a0a0a-0a0a-0a0a', 'sell');
 
     expect(result).toBeDefined();
-    // assert if result matches the expected map center object
-    expect(result).toEqual(expect.objectContaining({
-      ...expectedMockMapCenter
-    }));
+    // assert that the result matches the expected sell map center
+    expect(result).toEqual(expect.objectContaining(sellerData!.sell_map_center));
   });
 
-  it('should not fetch any sellers not associated with the map center ID', async () => {
-    const result = await getMapCenterById('0x0x0x-0x0x-0x0x');
+  it('should fetch the search map center for the given user settings ID', async () => {
+    const userSettingsData = await UserSettings.findOne({ user_settings_id: '0b0b0b-0b0b-0b0b' });
+
+    const result = await getMapCenterById('0b0b0b-0b0b-0b0b', 'search');
+
+    expect(result).toBeDefined();
+    // assert that the result matches the expected search map center
+    expect(result).toEqual(expect.objectContaining(userSettingsData!.search_map_center));
+  });
+
+  it('should return null for a non-existent map center ID', async () => {
+    const randomType = ['sell', 'search'][Math.floor(Math.random() * 2)];
+
+    const result = await getMapCenterById('0x0x0x-0x0x-0x0x', randomType);
     expect(result).toBeNull();
   });
 });
 
 describe('createOrUpdateMapCenter function', () => {
-  it('should update the appropriate search_map_center instance if the entry type is search', async () => {
+  it('should update the appropriate search_map_center instance for the given user settings ID', async () => {
     const updatedSearchMapCenter = {
       map_center_id: '0b0b0b-0b0b-0b0b',
-      longitude: -88.6298,
-      latitude: 42.8781
+      latitude: 42.8781,
+      longitude: -88.6298
     };
 
     const result = await createOrUpdateMapCenter(
       '0b0b0b-0b0b-0b0b',
-      updatedSearchMapCenter.longitude,
       updatedSearchMapCenter.latitude,
+      updatedSearchMapCenter.longitude,
       'search'
     ); 
 
     expect(result).toBeDefined();
-    // assert if result matches the expected map center object
-    expect(result.map_center_id).toEqual(mockMapCenters[1].map_center_id);
-    // assert GeoJSON coordinates directly
-    expect(result.search_map_center?.coordinates).toEqual([
-      updatedSearchMapCenter.longitude, updatedSearchMapCenter.latitude
-    ]);
+    // assert that the search_map_center has been updated with new coordinates
+    expect(result?.coordinates).toEqual([updatedSearchMapCenter.longitude, updatedSearchMapCenter.latitude]);
   });
 
-  it('should update the appropriate sell_map_center instance if the entry type is sell', async () => {
+  it('should update the appropriate sell_map_center instance for the given seller ID', async () => {
     const updatedSellMapCenter = {
-      map_center_id: '0b0b0b-0b0b-0b0b',
+      map_center_id: '0a0a0a-0a0a-0a0a',
       longitude: -88.6298,
       latitude: 42.8781
     };
 
     const result = await createOrUpdateMapCenter(
-      '0b0b0b-0b0b-0b0b',
-      updatedSellMapCenter.longitude,
+      '0a0a0a-0a0a-0a0a',
       updatedSellMapCenter.latitude,
+      updatedSellMapCenter.longitude,
       'sell'
     ); 
 
     expect(result).toBeDefined();
-    // assert if result matches the expected map center object
-    expect(result.map_center_id).toEqual(mockMapCenters[1].map_center_id);
-    // assert GeoJSON coordinates directly
-    expect(result.search_map_center?.coordinates).toEqual([
-      updatedSellMapCenter.longitude, updatedSellMapCenter.latitude
-    ]);
+    // assert that the sell_map_center has been updated with new coordinates
+    expect(result?.coordinates).toEqual([updatedSellMapCenter.longitude, updatedSellMapCenter.latitude]);
   });
 });

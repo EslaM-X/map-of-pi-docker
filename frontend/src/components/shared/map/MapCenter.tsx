@@ -3,6 +3,7 @@
 import 'leaflet/dist/leaflet.css';
 import './MapCenter.css';
 
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useState, useEffect, useContext, useRef } from 'react';
 import {
@@ -27,12 +28,13 @@ import logger from '../../../../logger.config.mjs';
 // Define the crosshair icon for the center of the map
 const crosshairIcon = new L.Icon({
   iconUrl: '/images/icons/crosshair.png',
-  iconSize: [80, 80],
-  iconAnchor: [40, 40],
+  iconSize: [100, 100],
+  iconAnchor: [60, 60],
 });
 
 interface MapCenterProps {
   entryType: 'search' | 'sell';
+  locale: string;
 }
 
 const MapCenter = ({ entryType }: MapCenterProps) => {
@@ -45,6 +47,8 @@ const MapCenter = ({ entryType }: MapCenterProps) => {
   const { currentUser, autoLoginUser } = useContext(AppContext);
   const mapRef = useRef<L.Map | null>(null);
 
+  const isSigningInUser = false;
+
   useEffect(() => {
     if (!currentUser) {
       logger.info("User not logged in; attempting auto-login..");
@@ -55,7 +59,7 @@ const MapCenter = ({ entryType }: MapCenterProps) => {
     const getMapCenter = async () => {
       if (currentUser?.pi_uid) {
         try {
-          const mapCenter = await fetchMapCenter();
+          const mapCenter = await fetchMapCenter(entryType);
           if (mapCenter?.latitude !== undefined && mapCenter.longitude !== undefined) {
             setCenter({ lat: mapCenter.latitude, lng: mapCenter.longitude });
             logger.info(`Map center set to longitude: ${mapCenter.longitude}, latitude: ${mapCenter.latitude}}`
@@ -65,7 +69,7 @@ const MapCenter = ({ entryType }: MapCenterProps) => {
             setCenter({ lat: 50.064192, lng: 19.944544 });
           }
         } catch (error) {
-          logger.error('Error fetching map center:', { error });
+          logger.error('Error fetching map center:', error);
         }
       }
     };
@@ -91,7 +95,7 @@ const MapCenter = ({ entryType }: MapCenterProps) => {
         }
       });
     } catch (error) {
-      logger.error('Error during geocoding:', { error });
+      logger.error('Error during geocoding:', error);
     }
   };
 
@@ -133,7 +137,7 @@ const MapCenter = ({ entryType }: MapCenterProps) => {
         setShowPopup(true);
         logger.info('Map center successfully saved.');
       } catch (error) {
-        logger.error('Error saving map center:', { error });
+        logger.error('Error saving map center:', error);
       }
     }
   };
@@ -143,6 +147,10 @@ const MapCenter = ({ entryType }: MapCenterProps) => {
   };
 
   const bounds = L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180));
+
+  const handleLocationButtonClick = () => {
+    logger.info('Location button clicked');
+  } 
 
   return (
     <div className="search-container">
@@ -175,31 +183,61 @@ const MapCenter = ({ entryType }: MapCenterProps) => {
         <MapHandler />
         <RecenterAutomatically position={center} />
       </MapContainer>
-      <div className="absolute bottom-8 z-10 flex justify-center px-6 right-0 left-0 m-auto">
-        <Button
-          label={entryType === 'sell'
-            ? t('SCREEN.SELLER_REGISTRATION.SELLER_SELL_CENTER')
-            : t('SHARED.SEARCH_CENTER')
-          }
-          onClick={setMapCenter}
-          styles={{
-            borderRadius: '10px',
-            color: '#ffc153',
-            paddingLeft: '50px',
-            paddingRight: '50px',
-          }}
+      
+      <div className="absolute bottom-8 z-10 flex justify-start px-6 right-0 left-0 m-auto pointer-events-none">
+        {/* Add Set Map Center Button */}
+        <div className="pointer-events-auto">
+          <Button
+            label={entryType === 'sell'
+              ? t('SCREEN.SELLER_REGISTRATION.SELLER_SELL_CENTER')
+              : t('SHARED.SEARCH_CENTER')}
+            onClick={setMapCenter}
+            styles={{
+              color: '#ffc153',
+              height: '50px',
+              padding: '20px',
+              fontSize: '22px',
+            }}
+          />
+        </div>
+      </div>
+      <div className="absolute bottom-8 z-10 flex justify-end px-6 right-0 left-0 m-auto pointer-events-none">
+        {/* Find Me Button */}
+        <div className="pointer-events-auto">
+          <Button
+            icon={
+              <Image
+                src="/images/shared/my_location.png"
+                width={40}
+                height={40}
+                alt="my location"
+              />
+            }
+            styles={{
+              borderRadius: '50%',
+              width: '55px',
+              height: '55px',
+              padding: '0px',
+            }}
+            onClick={handleLocationButtonClick}
+            disabled={isSigningInUser}
+          />
+        </div>
+      </div>
+      {/* Static Scope - should always be centered */}
+      <div className="absolute z-10 pointer-events-none top-[53.5%] left-[47.3%] transform -translate-x-1/2 -translate-y-1/2" style={{ width: '65px', height: '65px' }}>
+        <Image
+          src="/images/icons/scope.png"
+          className="w-full h-full object-contain" // Ensure proper scaling
+          layout="fill"
+          alt="Scope"
         />
       </div>
       {showPopup && (
         <ConfirmDialogX
           toggle={() => setShowPopup(false)}
           handleClicked={handleClickDialog}
-          // Dynamically set the message based on entryType
-          message={
-            entryType === 'sell'
-              ? t('SHARED.MAP_CENTER.VALIDATION.SELL_CENTER_SUCCESS_MESSAGE')
-              : t('SHARED.MAP_CENTER.VALIDATION.SEARCH_CENTER_SUCCESS_MESSAGE')
-          }
+          message={t('SHARED.MAP_CENTER.VALIDATION.MAP_CENTER_SUCCESS_MESSAGE')}
         />
       )}
     </div>

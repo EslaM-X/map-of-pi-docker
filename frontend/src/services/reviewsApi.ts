@@ -1,6 +1,5 @@
 import axiosClient from "@/config/client";
 import { getMultipartFormDataHeaders } from "@/utils/api";
-import { handleAxiosError } from "@/utils/error";
 
 import logger from '../../logger.config.mjs';
 
@@ -18,18 +17,19 @@ export const fetchSingleReview = async (reviewID: string) => {
       logger.error(`Fetch single review failed with Status ${response.status}`);
       return null;
     }
-  } catch (error: any) {
-    logger.error('Fetch single review encountered an error:', { error, reviewID });
-    handleAxiosError(error);
-    throw error;
+  } catch (error) {
+    logger.error(`Fetch single review for ${ reviewID } encountered an error:`, error);
+    throw new Error('Failed to fetch single review. Please try again later.');
   }
 };
   
 // Fetch reviews for a seller
-export const fetchReviews = async (sellerId:string) => {
+export const fetchReviews = async (userId:string, searchQuery:string='') => {
   try {
-    logger.info(`Fetching reviews for seller with ID: ${sellerId}`);
-    const response = await axiosClient.get(`/review-feedback/${sellerId}`);
+    logger.info(`Fetching reviews for seller with UID: ${userId}`);
+    const response = await axiosClient.get(`/review-feedback/${userId}`, {
+      params: { searchQuery },
+    });
     if (response.status === 200) {
       logger.info(`Fetch reviews successful with Status ${response.status}`, {
         data: response.data
@@ -39,10 +39,9 @@ export const fetchReviews = async (sellerId:string) => {
       logger.error(`Fetch reviews failed with Status ${response.status}`);
       return null;
     }
-  } catch (error: any) {
-    logger.error('Fetch reviews encountered an error:', { error, sellerId });
-    handleAxiosError(error);
-    throw error;
+  } catch (error) {
+    logger.error(`Fetch reviews for ${ userId } encountered an error:`, error);
+    throw new Error('Failed to fetch reviews. Please try again later.');
   }
 };
   
@@ -63,9 +62,8 @@ export const createReview = async (formData: FormData) => {
       logger.error(`Create review failed with Status ${response.status}`);
       return null;
     }
-  } catch (error: any) {
-    logger.error('Create review encountered an error:', { error });
-    handleAxiosError(error);
-    throw error;
+  } catch (error) {
+    logger.error('Create review encountered an error:', error);
+    throw new Error('Failed to create review. Please try again later.');
   }
 };

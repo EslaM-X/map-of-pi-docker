@@ -1,13 +1,12 @@
 import axiosClient from "@/config/client";
-import { handleAxiosError } from "@/utils/error";
 
 import logger from '../../logger.config.mjs';
 
 // Function to Fetch Map Center
-export const fetchMapCenter = async () => {
+export const fetchMapCenter = async (type: 'search' | 'sell') => {
   try {
     logger.info('Fetching map center...');
-    const response = await axiosClient.get('/map-center');
+    const response = await axiosClient.get(`/map-center/${type}`);
 
     if (response.status === 200) {
       logger.info(`Fetch map center successful with Status ${response.status}`, {
@@ -21,9 +20,9 @@ export const fetchMapCenter = async () => {
       logger.info('Fetched map center details:', mapCenter);
 
       // Access coordinates based on the actual response structure
-      const longitude = mapCenter?.sell_map_center?.coordinates?.[0] ?? mapCenter?.search_map_center?.coordinates?.[0];
-      const latitude = mapCenter?.sell_map_center?.coordinates?.[1] ?? mapCenter?.search_map_center?.coordinates?.[1];
-      const type = mapCenter?.sell_map_center?.type ?? mapCenter?.search_map_center?.type;
+      const longitude = mapCenter?.coordinates[0];
+      const latitude = mapCenter?.coordinates[1];
+      const type = mapCenter?.type;
 
       // Verify extracted values
       logger.info('Extracted coordinates:', { longitude, latitude, type });
@@ -38,10 +37,9 @@ export const fetchMapCenter = async () => {
       logger.error(`Fetch map center failed with Status ${response.status}`);
       return null;
     }
-  } catch (error: any) {
-    logger.error('Fetch map center encountered an error:', { error });
-    handleAxiosError(error);
-    throw error;
+  } catch (error) {
+    logger.error('Fetch map center encountered an error:', error);
+    throw new Error('Failed to fetch map center. Please try again later.');
   }
 };
 
@@ -65,9 +63,8 @@ export const saveMapCenter = async (latitude: number, longitude: number, type: '
       logger.error(`Save map center failed with Status ${response.status}`);
       return null;
     }
-  } catch (error: any) {
-    logger.error('Save map center encountered an error:', { error });
-    handleAxiosError(error);
-    throw error;
+  } catch (error) {
+    logger.error('Save map center encountered an error:', error);
+    throw new Error('Failed to save map center. Please try again later.');
   }
 };

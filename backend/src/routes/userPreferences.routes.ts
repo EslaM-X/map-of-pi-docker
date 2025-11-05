@@ -22,7 +22,7 @@ import upload from "../utils/multer";
  *           type: string
  *           description: Email address of the user
  *         phone_number:
- *           type: number
+ *           type: string
  *           description: Phone number of the user
  *         image:
  *           type: string
@@ -95,7 +95,7 @@ userPreferencesRoutes.get("/:user_settings_id", userPreferencesController.getUse
  *       404:
  *         description: User Preferences not found | User Settings not found
  *       401:
- *         description: Unauthorized | Authentication token is required | Authentication token is invalid or expired
+ *         description: Unauthorized
  *       400:
  *         description: Bad request
  *       500:
@@ -107,7 +107,7 @@ userPreferencesRoutes.post(
   isUserSettingsFound,
   userPreferencesController.fetchUserPreferences);
 
-  /**
+/**
  * @swagger
  * /api/v1/user-preferences/add:
  *   put:
@@ -128,7 +128,7 @@ userPreferencesRoutes.post(
  *             schema:
  *               $ref: '/api/docs/UserPreferencesSchema.yml#/components/schemas/AddUserPreferencesRs'
  *       401:
- *         description: Unauthorized | Authentication token is required | Authentication token is invalid or expired
+ *         description: Unauthorized
  *       400:
  *         description: Bad request
  *       500:
@@ -165,7 +165,7 @@ userPreferencesRoutes.put(
  *       404:
  *         description: User Preferences not found
  *       401:
- *         description: Unauthorized | Authentication token is required | Authentication token is invalid or expired
+ *         description: Unauthorized
  *       400:
  *         description: Bad request
  *       500:
@@ -177,5 +177,34 @@ userPreferencesRoutes.delete(
   isUserSettingsFound,
   userPreferencesController.deleteUserPreferences
 );
+
+/**
+ * @swagger
+ * /api/v1/user-preferences/location/me:
+ *   get:
+ *     tags:
+ *       - User Preferences
+ *     summary: Fetch the user's current location using Bearer Auth token *
+ *     responses:
+ *       200:
+ *         description: Successful response
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '/api/docs/UserPreferencesSchema.yml#/components/schemas/GetUserLocationRs'
+ *       404:
+ *         description: User location not found
+ *       401:
+ *         description: Unauthorized
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ */
+userPreferencesRoutes.get(
+  '/location/me',
+  verifyToken,
+  userPreferencesController.getUserLocation
+)
 
 export default userPreferencesRoutes;

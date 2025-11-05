@@ -1,7 +1,7 @@
 import createNextIntlPlugin from 'next-intl/plugin';
 import { withSentryConfig } from "@sentry/nextjs";
 
-const withNextIntl = createNextIntlPlugin();
+const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -11,12 +11,6 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'example.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
         protocol: 'http',
         hostname: 'localhost',
         port: '8001',
@@ -24,16 +18,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'tse3.mm.bing.net',
+        hostname: process.env.IMAGE_BUCKET_HOST,
         port: '',
         pathname: '/**',
       },
-      {
-        protocol: 'https',
-        hostname: 'res.cloudinary.com',
-        port: '',
-        pathname: '/**',
-      }
     ],
   },
   async rewrites() {
@@ -43,7 +31,7 @@ const nextConfig = {
         destination: 'http://localhost:8001/api/v1/:path*',
       },
     ];
-  },
+  }
 };
 
 const sentryWebpackPluginOptions = {

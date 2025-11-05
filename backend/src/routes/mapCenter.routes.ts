@@ -23,11 +23,18 @@ const mapCenterRoutes = Router();
 
 /**
  * @swagger
- * /api/v1/map-center:
+ * /api/v1/map-center/{type}:
  *   get:
  *     tags:
  *       - Map Center
- *     summary: Get the user's map center *
+ *     summary: Get the user's map center by type *
+ *     parameters:
+ *       - name: type
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The type of the map center to retrieve
  *     responses:
  *       200:
  *         description: Successful response
@@ -38,14 +45,14 @@ const mapCenterRoutes = Router();
  *       404:
  *         description: Map Center not found | User not found
  *       401:
- *         description: Unauthorized | Authentication token is required | Authentication token is invalid or expired    
+ *         description: Unauthorized    
  *       400:
  *         description: Bad request
  *       500:
  *         description: Internal server error
  */
 mapCenterRoutes.get(
-  '/', 
+  '/:type', 
   verifyToken, 
   mapCenterController.getMapCenter
 );
@@ -73,7 +80,7 @@ mapCenterRoutes.get(
  *       404:
  *         description: User not found | Seller not found; Map Center failed to save
  *       401:
- *         description: Unauthorized | Authentication token is required | Authentication token is invalid or expired
+ *         description: Unauthorized
  *       400:
  *         description: Bad request
  *       500:

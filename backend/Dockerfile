@@ -15,12 +15,17 @@ COPY ./tsconfig.json ./tsconfig.json
 
 # Build the app
 RUN yarn build
+# Copy swagger docs yml files into build folder for serving
+RUN cp -r ./src/config/docs ./build/src/config/docs
 
 # Install PM2
 RUN yarn global add pm2
 
 # Copy PM2 configuration
 COPY ./docker/ecosystem.config.js ./ecosystem.config.js
+
+# Copy Node scripts
+COPY ./tasks ./tasks
 
 # Create log directory
 RUN mkdir -p log && touch log/.keep

@@ -6,6 +6,7 @@ import PhoneInput from 'react-phone-number-input'
 
 export const Input = (props: any) => {
   const { label, icon, ...input } = props;
+
   return (
     <>
       <div className="relative">
@@ -18,7 +19,7 @@ export const Input = (props: any) => {
         />
         {icon && (
           <div className="absolute right-1 bottom-[4px]">
-            <Image src="/favicon-32x32.png" alt="icon" width={32} height={32} />
+            <Image src="/images/icons/map-of-pi-icon.png" alt="icon" />
           </div>
         )}
       </div>
@@ -27,7 +28,7 @@ export const Input = (props: any) => {
 };
 
 export const TelephoneInput = (props: any) => {
-  const { label, ...input } = props;
+  const { label, smartCaret, ...input } = props;
   return (
     <div className="">
       {props.label && (
@@ -35,7 +36,8 @@ export const TelephoneInput = (props: any) => {
       )}
       <PhoneInput 
         {...input}
-        className={`flex mt-1 p-[10px] block w-full rounded-xl border-[#BDBDBD] bg-transparent outline-0 focus:border-[#1d724b] border-[2px] mb-4`}
+        smartCaret={smartCaret}
+        className={`flex mt-1 p-[10px] w-full rounded-xl border-[#BDBDBD] bg-transparent outline-0 focus:border-[#1d724b] border-[2px] mb-4`}
       />
     </div>
   );
@@ -69,13 +71,13 @@ export const FileInput = (props: any) => {
   return (
     <div className="">
       {props.label && (
-        <label className="block text-[17px] text-[#333333]">{imageLabel}</label>
+        <label className="block text-[17px] text-[#333333] font-bold">{imageLabel}</label>
       )}
       {props.describe && (
         <label className="block pb-3 text-sm text-gray-400">{props.describe}</label>
       )}
-      <div className="flex flex-col items-center justify-center overflow-hidden p-3 pt-5 pb-5 rounded-md relative">
-        <div className="w-full h-[200px] relative mb-4">
+      <div className="flex flex-col items-center justify-center overflow-hidden p-3 rounded-md relative">
+        <div className={`w-full ${props.height? props.height: 'h-[200px]'} relative mb-4`}>
           <Image
             src={isImageUploaded ? props.imageUrl : '/images/shared/upload.png'}
             alt="Upload image"
@@ -84,7 +86,7 @@ export const FileInput = (props: any) => {
             style={{ objectFit: 'contain', maxHeight: '200px', maxWidth: '100%' }}
           />
         </div>
-        {!isImageUploaded && (
+        {!props.hideCaption && !isImageUploaded && (
           <div className="text-center text-[#828282]">
             <div>
               {t('SHARED.PHOTO.IMAGE_DROP_UPLOAD_MESSAGE')}

@@ -1,51 +1,46 @@
 import { useTranslations } from 'next-intl';
-
-import React, { useEffect, useState, useCallback, useContext } from 'react';
+import Image from 'next/image';
+import React, { useEffect, useState, useCallback, useContext, useRef } from 'react';
 import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
 import L, { LatLngExpression, LatLngBounds, LatLngTuple } from 'leaflet';
 import _ from 'lodash';
 
 import { ISeller, ISellerWithSettings } from '@/constants/types';
 import { fetchSellers } from '@/services/sellerApi';
-import { toLatLngLiteral } from '@/utils/map';
 
-import MapMarkerPopup from './MapMarkerPopup'
+import MapMarkerPopup from './MapMarkerPopup';
 
 import { AppContext } from '../../../../context/AppContextProvider';
 import logger from '../../../../logger.config.mjs';
 
-// Utility function to ensure coordinates are within valid ranges
-const sanitizeCoordinates = (lat: number, lng: number) => {
-  const sanitizedLat = Math.min(Math.max(lat, -90), 90);
-  const sanitizedLng = ((lng + 180) % 360 + 360) % 360 - 180; // Ensures -180 < lng <= 180
-  return { lat: sanitizedLat, lng: sanitizedLng };
-};
-
-// Function to fetch seller coordinates based on origin, radius, and optional search query
-const fetchSellerCoordinates = async (origin: LatLngTuple, radius: number, searchQuery?: string): Promise<ISellerWithSettings[]> => {
-  const { lat, lng } = sanitizeCoordinates(origin[0], origin[1]);
-  const formattedOrigin = toLatLngLiteral([lat, lng]);
-
+// Function to fetch seller coordinates based on bounds and optional search query
+const fetchSellerCoordinates = async (
+  bounds: L.LatLngBounds,
+  searchQuery?: string
+): Promise<ISellerWithSettings[]> => {
   try {
-    const sellersData = await fetchSellers(formattedOrigin, radius, searchQuery);
+    const sellersData = await fetchSellers(bounds, searchQuery);
+
+    // Map the seller data to include coordinates in the desired format
     const sellersWithCoordinates = sellersData?.map((seller: any) => {
       const [lng, lat] = seller.sell_map_center.coordinates;
       return {
         ...seller,
-        coordinates: [lat, lng] as LatLngTuple
+        coordinates: [lat, lng] as LatLngTuple,
       };
     });
 
     logger.info('Fetched sellers data:', { sellersWithCoordinates });
-    
+
     return sellersWithCoordinates;
   } catch (error) {
-    logger.error('Error fetching seller coordinates:', { error });
+    logger.error('Error fetching seller coordinates:', error);
     throw error;
   }
 };
 
-// Function to remove duplicate sellers based on seller_id
+/* TODO: Analyze to see if we need this function to remove duplicates if sellers are already
+restricted to one shop at the time of registration. */
 const removeDuplicates = (sellers: ISellerWithSettings[]): ISellerWithSettings[] => {
   const uniqueSellers: { [key: string]: ISellerWithSettings } = {};
   sellers.forEach(seller => {
@@ -54,168 +49,240 @@ const removeDuplicates = (sellers: ISellerWithSettings[]): ISellerWithSettings[]
   return Object.values(uniqueSellers);
 };
 
-const Map = ({ center, zoom, searchQuery, searchResults }: { center: LatLngExpression, zoom: number, searchQuery: string, searchResults: ISeller[] }) => {
+const Map = ({
+  center,
+  zoom,
+  mapRef,
+  searchQuery,
+  isSearchClicked,
+  searchResults,
+}: {
+  center: LatLngExpression | null;
+  zoom: number;
+  mapRef: React.MutableRefObject<L.Map | null>;   
+  searchQuery: string;
+  isSearchClicked: boolean;
+  searchResults: ISeller[];
+}) => {
   const t = useTranslations();
-  const {isSigningInUser} = useContext(AppContext)
+  const { isSigningInUser } = useContext(AppContext);
 
   const customIcon = L.icon({
-    iconUrl: '/favicon-32x32.png',
-    iconSize: [32, 32],
+    iconUrl: 'images/icons/map-of-pi-icon.png',
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
   });
 
+  // Define the crosshair icon for the center of the map
+  const crosshairIcon = new L.Icon({
+    iconUrl: '/images/icons/crosshair.png',
+    iconSize: [100, 100],
+    iconAnchor: [60, 60],
+  });
+
   const [position, setPosition] = useState<L.LatLng | null>(null);
   const [sellers, setSellers] = useState<ISellerWithSettings[]>([]);
-  const [origin, setOrigin] = useState(center);
-  const [radius, setRadius] = useState(10);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [locationError, setLocationError] = useState(false);
   const [isLocationAvailable, setIsLocationAvailable] = useState(false);
   const [initialLocationSet, setInitialLocationSet] = useState(false);
-  
-  // Fetch initial seller coordinates when component mounts
-  useEffect(() => {
-    logger.info('Component mounted, fetching initial coordinates..');
-    fetchInitialCoordinates();
-    requestLocation();
-  }, []);
-
-  // Update origin when center prop changes
-  useEffect(() => {
-    if (center) {
-      setOrigin(center);
-    }
-  }, [center]);
 
   useEffect(() => {
-    if (searchQuery) {
-      setLoading(true);
-  
-      const sellersWithCoordinates = searchResults
-        .map((seller: any) => {
-          const [lng, lat] = seller.sell_map_center.coordinates;
-          return {
-            ...seller,
-            coordinates: [lat, lng] as LatLngTuple
-          };
-        });
-            
-      // Remove duplicates
-      const uniqueSellers = removeDuplicates(sellersWithCoordinates);
-  
-      // Update the sellers state
+    if (searchResults.length > 0) {
+      const sellersWithCoordinates = searchResults.map((seller: any) => {
+        const [lng, lat] = seller.sell_map_center.coordinates;
+        return {
+          ...seller,
+          coordinates: [lat, lng] as LatLngTuple,
+        };
+      });
+
+      // Remove duplicates and limit to 36 sellers
+      const uniqueSellers = removeDuplicates(sellersWithCoordinates).slice(0, 36);
+
       setSellers(uniqueSellers);
-      setLoading(false);
+    } else if (!searchQuery) {
+      // If no search results and no search query, fetch initial sellers
+      fetchInitialCoordinates();
+    } else {
+      setSellers([]); // Clear sellers when search yields no results
     }
-  }, [searchQuery, searchResults]);
+  }, [searchResults]);
+
+  // Effect to zoom to fit all sellers when the search button is clicked
+  useEffect(() => {
+    if (isSearchClicked && searchResults.length > 0) {
+      // Ensure that only valid coordinates are used to create bounds
+      const validCoordinates = searchResults
+        .map((seller) => seller.coordinates)
+        .filter((coordinates) => coordinates && coordinates.length === 2);
+  
+      if (validCoordinates.length > 0) {
+        const bounds = L.latLngBounds(validCoordinates);
+        mapRef.current?.fitBounds(bounds, { padding: [50, 50] }); // zoom to fit all sellers
+      } else {
+        logger.warn("No valid coordinates found to fit bounds.");
+      }
+    }
+  }, [isSearchClicked, searchResults]);
 
   // Log sellers array for debugging
   useEffect(() => {
     logger.debug('Sellers Array:', { sellers });
   }, [sellers]);
 
-  // Function to fetch initial coordinates
+  const useMarkerZoomHandler = (mapRef: React.RefObject<L.Map>) => {
+    const lastClickedMarker = useRef<string | null>(null);
+
+    // Function to handle marker click
+    const handleMarkerClick = (sellerCoordinates: LatLngTuple) => {
+      if (!mapRef.current) return;
+
+      const map = mapRef.current;
+      const currentZoom = map.getZoom();
+      const maxZoom = map.getMaxZoom();
+
+      const coordKey = sellerCoordinates.join(',');
+
+      // Prevent zooming again on the same marker
+      if (lastClickedMarker.current === coordKey) return;
+
+      // Update the last clicked marker
+      lastClickedMarker.current = coordKey;
+
+      // Calculate target zoom
+      const targetZoom = Math.min(currentZoom + 3, maxZoom);
+
+      // Convert lat/lng to pixel position
+      const markerPoint = map.latLngToContainerPoint(sellerCoordinates);
+
+      // Offset to move popup up and left
+      const OFFSET_X = -3;
+      const OFFSET_Y = 28;
+      const panOffset = L.point(OFFSET_X, OFFSET_Y);
+
+      // New center for map
+      const newCenter = map.containerPointToLatLng(markerPoint.subtract(panOffset));
+
+      // Zoom and pan with animation
+      map.setView(newCenter, targetZoom, { animate: true });
+    };
+
+    return handleMarkerClick;
+  };
+
+  useEffect(() => {
+    if (mapRef.current) {
+      fetchInitialCoordinates();  // Fetch sellers when map is ready
+    }
+  }, [mapRef.current]);
+
+  const handleMarkerClick = useMarkerZoomHandler(mapRef);
+
+  const saveMapState = () => {
+    try{
+      if (!mapRef.current) {
+        return;
+      }
+      logger.debug('called handle navigation');
+      const currentCenter = mapRef.current.getCenter();
+      const currentZoom = mapRef.current.getZoom();
+      sessionStorage.setItem('prevMapCenter', JSON.stringify(currentCenter));
+      sessionStorage.setItem('prevMapZoom', currentZoom.toString());
+      
+    } catch (error) {
+      logger.warn('map not ready');
+    }
+  };
+  
   const fetchInitialCoordinates = async () => {
+    if (searchQuery) {
+      return;
+    }
+  
     setLoading(true);
     setError(null);
+  
     try {
-      const originLiteral = toLatLngLiteral(origin);
-      const originLatLngTuple: LatLngTuple = [originLiteral.lat, originLiteral.lng];
-      let sellersData = await fetchSellerCoordinates(originLatLngTuple, radius, searchQuery);
-      sellersData = removeDuplicates(sellersData);
-      setSellers(sellersData);
+      const mapInstance = mapRef.current;
+  
+      if (!mapInstance) {
+        logger.warn('Map instance is not ready yet');
+        return;
+      }
+  
+      let prevCenter = sessionStorage.getItem('prevMapCenter');
+      let prevZoom = sessionStorage.getItem('prevMapZoom');
+  
+      if (prevCenter && prevZoom) {
+        // Parse prevCenter to LatLngExpression type
+        const parsedPrevCenter = JSON.parse(prevCenter) as { lat: number; lng: number };
+        const parsedPrevZoom = parseInt(prevZoom);
+        logger.info("prev map center is focused to previous center:", parsedPrevCenter?.toString());  
+        mapInstance.setView(parsedPrevCenter, parsedPrevZoom, { animate: false });
+      } else if (center) {
+        logger.info("initial map center is focused to user center:", center.toString());
+        mapInstance.setView(center, 8, { animate: false });
+      } else {
+        const worldCenter = mapRef.current?.getCenter();
+        logger.info("initial map center focused to world:", worldCenter?.toString());
+        worldCenter
+          ? mapInstance.setView(worldCenter, 2, { animate: false })
+          : (mapRef.current = mapInstance);
+      }
+  
+      const bounds = mapInstance.getBounds();
+      if (bounds) {
+        let sellersData = await fetchSellerCoordinates(bounds, '');
+        sellersData = removeDuplicates(sellersData);
+        setSellers(sellersData);
+      }
     } catch (error) {
-      logger.error('Failed to fetch initial coordinates:', { error });
+      logger.error('Failed to fetch initial coordinates:', error);
       setError('Failed to fetch initial coordinates');
     } finally {
       setLoading(false);
     }
   };
+  
+  // Function to handle map interactions (only when there's no search query)
+  const handleMapInteraction = async (newBounds: L.LatLngBounds, mapInstance: L.Map) => {
+    const newCenter = newBounds.getCenter();
+    if (searchQuery) return;
 
-  // Function to handle map interactions (zoom and move); lazy-loading implementation
-const handleMapInteraction = async (newBounds: L.LatLngBounds, mapInstance: L.Map) => {
-  const newCenter = newBounds.getCenter();
-  const newRadius = calculateRadius(newBounds, mapInstance);
-  const largerRadius = newRadius * 2; // Increase radius by 100% for fetching
+    logger.info('Handling map interaction with new center:', { newCenter });
+    setLoading(true);
+    setError(null);
 
-  logger.info('Handling map interaction with new center and radius:', { newCenter, newRadius });
-  setLoading(true);
-  setError(null);
+    try {
+      let additionalSellers = await fetchSellerCoordinates(newBounds, searchQuery);
+      additionalSellers = removeDuplicates(additionalSellers);
 
-  try {
-    let additionalSellers = await fetchSellerCoordinates([newCenter.lat, newCenter.lng], largerRadius, searchQuery);
-    additionalSellers = removeDuplicates(additionalSellers);
+      logger.info('Fetched additional sellers:', { additionalSellers });
 
-    logger.info('Fetched additional sellers:', { additionalSellers });
+      setSellers(additionalSellers); // Cap the total sellers to 50
 
-    // Filter sellers within the new bounds, checking if coordinates are defined
-    const filteredSellers = additionalSellers.filter(
-      seller => seller.coordinates && newBounds.contains([seller.coordinates[0], seller.coordinates[1]])
-    );
-    logger.info('Filtered sellers within bounds', { filteredSellers });
+      logger.info('Sellers after capping at 36:', {
+        additionalSellers: additionalSellers,
+      });
 
-    // Filter out sellers that are not within the new bounds from the existing sellers, checking if coordinates are defined
-    const remainingSellers = sellers.filter(
-      seller => seller.coordinates && newBounds.contains([seller.coordinates[0], seller.coordinates[1]])
-    );
-    logger.info('Remaining sellers within bounds:', { remainingSellers });
-
-    const updatedSellers = removeDuplicates([...remainingSellers, ...filteredSellers]);
-    logger.info('Updated sellers array:', { updatedSellers });
-
-    setSellers(updatedSellers);
-  } catch (error) {
-    logger.error('Failed to fetch additional data:', { error });
-    setError('Failed to fetch additional data');
-  } finally {
-    setLoading(false);
-  }
-};
-
-
-  // Function to calculate radius from bounds
-  const calculateRadius = (bounds: L.LatLngBounds, mapInstance: L.Map) => {
-    logger.info(`Calculating radius for bounds: ${bounds.toBBoxString()}`);
-    const northEast = bounds.getNorthEast();
-    const southWest = bounds.getSouthWest();
-    const distance = mapInstance.distance(northEast, southWest) / 2;
-    return distance / 1000; // Convert to kilometers
+    } catch (error) {
+      logger.error('Failed to fetch additional data:', error);
+      setError('Failed to fetch additional data');
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Debounced function to handle map interactions
   const debouncedHandleMapInteraction = useCallback(
     _.debounce((bounds: LatLngBounds, mapInstance: L.Map) => {
       handleMapInteraction(bounds, mapInstance);
+      saveMapState();
     }, 500),
     [sellers] // Dependency array ensures the debounced function is updated with the latest sellers
   );
-
-  // Request user location
-  const requestLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          const newLatLng = L.latLng(latitude, longitude);
-          logger.info(`Real-time location updated: ${newLatLng.toString()}`);
-          setPosition(newLatLng);
-          setOrigin(newLatLng);
-          setIsLocationAvailable(true);
-        },
-        (error) => {
-          logger.warn('Location not found:', { error });
-          setLocationError(true);
-          setTimeout(() => setLocationError(false), 3000);
-        }
-      );
-    } else {
-      logger.warn('Geolocation is not supported by this browser.');
-      setLocationError(true);
-      setTimeout(() => setLocationError(false), 3000);
-    }
-  };
 
   // Component to handle location and map events
   function LocationMarker() {
@@ -224,10 +291,8 @@ const handleMapInteraction = async (newBounds: L.LatLngBounds, mapInstance: L.Ma
         logger.info(`Location found: ${e.latlng.toString()}`);
         setPosition(e.latlng);
         setLocationError(false);
-        if (!initialLocationSet) {
-          console.log('in location');
-          map.setView(e.latlng, zoom, { animate: false });
-          setInitialLocationSet(true);
+        if (center) {
+          map.setView(center, zoom, { animate: false });
         }
       },
       locationerror() {
@@ -245,28 +310,31 @@ const handleMapInteraction = async (newBounds: L.LatLngBounds, mapInstance: L.Ma
       },
     });
 
+    useEffect(() => {
+      mapRef.current = map;
+    }, [map]);
+
     // Initially set the view to user location without animation
     useEffect(() => {
       if (position && !initialLocationSet) {
         map.setView(position, zoom, { animate: false });
         setInitialLocationSet(true); // Prevent further automatic view resets
+        setIsLocationAvailable(true);
       }
     }, [position, map, initialLocationSet]);
 
-    return position === null ? null : (
-      <Marker position={position} />
-    );
+    return center === null ? null : <Marker position={center} />;
   }
 
-  // define map boundaries
+  // Define map boundaries
   const bounds = L.latLngBounds(
     L.latLng(-90, -180), // SW corner
-    L.latLng(90, 180)  // NE corner
+    L.latLng(90, 180) // NE corner
   );
 
   return (
     <>
-      {loading && <div className="loading">Loading...</div>}
+      {loading && <div className="loading">{t('SHARED.LOADING_SCREEN_MESSAGE')}</div>}
       {error && <div className="error">{error}</div>}
       {locationError && (
         <div
@@ -288,21 +356,31 @@ const handleMapInteraction = async (newBounds: L.LatLngBounds, mapInstance: L.Ma
           {t('HOME.LOCATION_SERVICES.DISABLED_LOCATION_SERVICES_MESSAGE')}
         </div>
       )}
-      {isSigningInUser ?
-        <div className='w-full flex-1 fixed bottom-0 h-[calc(100vh-76.19px)] left-0 right-0 bg-[#f5f1e6] '>
+      {isSigningInUser ? (
+        <div className="w-full flex-1 fixed bottom-0 h-[calc(100vh-76.19px)] left-0 right-0 bg-[#f5f1e6] ">
           <div className="flex justify-center items-center w-full h-full">
-           <img src="/default.png" width={120} height={140} alt="splashscreen"/>
+            <Image 
+              src="/default.png" 
+              width={120} 
+              height={140} 
+              alt="splashscreen" 
+            />
           </div>
-        </div> :
+        </div>
+        ) : (
         <MapContainer
-          center={isLocationAvailable ? origin : [0, 0]}
-          zoom={isLocationAvailable ? zoom : 2}
+          center={center ? center : [0,0]}
+          zoom={center ? zoom : 2}
           zoomControl={false}
           minZoom={2}
           maxZoom={18}
-          // maxBounds={bounds}
-          // maxBoundsViscosity={1.0}
-          className="w-full flex-1 fixed bottom-0 h-[calc(100vh-76.19px)] left-0 right-0">
+          whenReady={
+            ((mapInstance: L.Map) => {
+              mapRef.current = mapInstance;
+            }) as unknown as () => void // utilize Type assertion
+          }
+          className="w-full flex-1 fixed bottom-0 h-[calc(100vh-76.19px)] left-0 right-0"
+        >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -310,14 +388,27 @@ const handleMapInteraction = async (newBounds: L.LatLngBounds, mapInstance: L.Ma
           />
           <LocationMarker />
           {sellers.map((seller) => (
-            <Marker position={seller.coordinates as LatLngExpression} key={seller.seller_id} icon={customIcon}>
-              <Popup closeButton={false} minWidth={300}>
+            <Marker
+              position={seller.coordinates as LatLngExpression}
+              key={seller.seller_id}
+              icon={customIcon}
+              eventHandlers={{
+                click: () => handleMarkerClick(seller.coordinates as LatLngTuple),
+              }}
+            >
+              <Popup
+                closeButton={true}
+                minWidth={200}
+                maxWidth={250}
+                className="custom-popup"
+                offset={L.point(0, -3)} // Ensures the popup is slightly lower than the marker
+              >
                 <MapMarkerPopup seller={seller} />
               </Popup>
             </Marker>
           ))}
         </MapContainer>
-      }
+      )}
     </>
   );
 };
