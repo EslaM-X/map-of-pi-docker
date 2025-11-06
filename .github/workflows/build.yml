@@ -31,14 +31,12 @@ jobs:
 
       # Backend CI Process
       - name: Install Backend Dependencies
-        run: | 
-          cd backend
-          npm ci
+        run: yarn install --frozen-lockfile
+        working-directory: backend
       
       - name: Build Backend
-        run: |
-          cd backend
-          npm run build
+        run: yarn build
+        working-directory: backend
 
       # Frontend CI Process
       - name: Install Frontend Dependencies
@@ -66,11 +64,9 @@ jobs:
           node-version: 18.x
 
       - name: Install Backend Dependencies
-        run: | 
-          cd backend
-          npm ci
+        run: yarn install --frozen-lockfile
+        working-directory: backend
 
       - name: Execute Backend Tests
-        run: | 
-          cd backend
-          npm run test -- --passWithNoTests
+        run: yarn test -- --passWithNoTests
+        working-directory: backend
