@@ -19,14 +19,15 @@ describe('getAllSellers function', () => {
     ne_lng: -73.8000
   };
 
-  it('should fetch all applicable sellers when all parameters are empty', async () => {
+  it('should fetch all unrestricted sellers when all parameters are empty w/ all search filters enabled', async () => {
     const userData = await User.findOne({ pi_username: 'TestUser1' }) as IUser;
     const sellersData = await getAllSellers(undefined, undefined, userData.pi_uid);
 
-    expect(sellersData).toHaveLength(await Seller.countDocuments());
+    const expectedCount = await Seller.countDocuments({ isRestricted: { $ne: true } });
+    expect(sellersData).toHaveLength(expectedCount);
   });
 
-  it('should fetch all applicable sellers when all parameters are empty and userSettings does not exist', async () => {
+  it('should fall back to default search filters when userSettings do not exist', async () => {
     const userData = await User.findOne({ pi_username: 'TestUser17' }) as IUser;
     const userSettings = await UserSettings.findOne({ user_settings_id: userData.pi_uid });
     expect(userSettings).toBeNull();
@@ -37,7 +38,7 @@ describe('getAllSellers function', () => {
     expect(sellersData).toHaveLength(1);
   });
 
-  it('should fetch all applicable filtered sellers when all parameters are empty', async () => {
+  it('should fetch all unrestricted and applicable filtered sellers when all parameters are empty', async () => {
     const userData = await User.findOne({ pi_username: 'TestUser2' }) as IUser;
     const sellersData = await getAllSellers(undefined, undefined, userData.pi_uid);
 
@@ -45,7 +46,7 @@ describe('getAllSellers function', () => {
     expect(sellersData).toHaveLength(2);
   });
 
-  it('should fetch all applicable sellers when search query is provided and bounding box params are empty', async () => {
+  it('should fetch all unrestricted and applicable sellers when search query is provided and bounding box params are empty', async () => {
     const searchQuery = 'Vendor';
     const userData = await User.findOne({ pi_username: 'TestUser1' }) as IUser;
     
@@ -54,12 +55,12 @@ describe('getAllSellers function', () => {
     // filter seller records to include those with "Vendor"
     expect(sellersData).toHaveLength(
       await Seller.find({
-        $text: { $search: searchQuery, $caseSensitive: false },
+        $text: { $search: searchQuery },
       }).countDocuments()
     ); // Ensure length matches expected sellers
   });
 
-  it('should fetch all applicable sellers when bounding box params are provided and search query param is empty', async () => {
+  it('should fetch all unrestricted and applicable sellers when bounding box params are provided and search query param is empty', async () => {
     const userData = await User.findOne({ pi_username: 'TestUser1' }) as IUser;
     const sellersData = await getAllSellers(mockBoundingBox, undefined, userData.pi_uid);
     
@@ -78,7 +79,7 @@ describe('getAllSellers function', () => {
     ); // Ensure length matches expected sellers
   });
 
-  it('should fetch all applicable sellers when all parameters are provided', async () => {
+  it('should fetch all unrestricted and applicable sellers when all parameters are provided', async () => {
     const searchQuery = 'Seller';
     const userData = await User.findOne({ pi_username: 'TestUser1' }) as IUser;
 
@@ -88,7 +89,7 @@ describe('getAllSellers function', () => {
        + include those with sell_map_center within geospatial bounding box */
     expect(sellersData).toHaveLength(
       await Seller.countDocuments({
-        $text: { $search: searchQuery, $caseSensitive: false },
+        $text: { $search: searchQuery },
         'sell_map_center.coordinates': {
           $geoWithin: {
             $box: [
@@ -100,19 +101,49 @@ describe('getAllSellers function', () => {
       })
     ); // Ensure length matches expected sellers
   });
-});
 
-it('should throw an error when an exception occurs', async () => { 
-  const userData = await User.findOne({ pi_username: 'TestUser13' }) as IUser;
+  it('should throw an error when an exception occurs', async () => { 
+    const userData = await User.findOne({ pi_username: 'TestUser13' }) as IUser;
+    
+    // Mock the Seller model to throw an error
+    jest.spyOn(Seller, 'aggregate').mockImplementationOnce(() => {
+      throw new Error('Mock database error');
+    });
 
-  // Mock the Seller model to throw an error
-  jest.spyOn(Seller, 'find').mockImplementationOnce(() => {
-    throw new Error('Mock database error');
+    await expect(getAllSellers(undefined, undefined, userData.pi_uid)).rejects.toThrow(
+      'Mock database error'
+    );
   });
 
-  await expect(getAllSellers(undefined, undefined, userData.pi_uid)).rejects.toThrow(
-    'Mock database error'
-  );
+  describe('Additional Search query lookup cases', () => {
+    it('should fetch the appropriate seller when search query matches a User field i.e., pi_username', async () => {
+      const userData = await User.findOne({ pi_username: 'TestUser1' }) as IUser;
+
+      const result = await getAllSellers(undefined, 'TestUser2', userData.pi_uid);
+
+      const expectedSeller = await Seller.findOne({ seller_id: '0b0b0b-0b0b-0b0b' });
+      
+      expect(result).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ seller_id: expectedSeller?.seller_id })
+        ])
+      );
+    });
+
+    it('should fetch the appropriate seller when search query matches a UserSettings field i.e., user_name)', async () => {
+      const userData = await User.findOne({ pi_username: 'TestUser1' }) as IUser;
+
+      const result = await getAllSellers(undefined, 'Test Three', userData.pi_uid);
+
+      const expectedSeller = await Seller.findOne({ seller_id: '0c0c0c-0c0c-0c0c' });
+
+      expect(result).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ seller_id: expectedSeller?.seller_id })
+        ])
+      );
+    });
+  });
 });
 
 describe('registerOrUpdateSeller function', () => {
@@ -432,7 +463,7 @@ describe('deleteSellerItem function', () => {
       image: 'http://example.com/testSellerTwoItemTwo.jpg',
       createdAt: '2025-01-10T00:00:00.000Z',
       updatedAt: '2025-01-10T00:00:00.000Z',
-      expired_by: '2025-01-17T00:00:00.000Z'
+      expired_by: '2026-01-17T00:00:00.000Z'
     } as unknown as ISellerItem;
 
     const sellerItemData = await deleteSellerItem(sellerItem._id) as ISellerItem;
