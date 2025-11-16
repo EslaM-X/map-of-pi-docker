@@ -147,8 +147,8 @@ const AppContextProvider = ({ children }: AppContextProviderProps) => {
 
   useEffect(() => {
     logger.info('AppContextProvider mounted.');
-    
-    autoLoginUser();
+
+    if (isSigningInUser || currentUser) return;
 
     // attempt to load and initialize Pi SDK in parallel
     loadPiSdk()
@@ -158,7 +158,9 @@ const AppContextProvider = ({ children }: AppContextProviderProps) => {
       })
       .then(features => setAdsSupported(features.includes("ad_network")))
       .catch(err => logger.error('Pi SDK load/ init error:', err));
-  }, []);
+
+    autoLoginUser();
+  }, [isSigningInUser, currentUser]);
 
   return (
     <AppContext.Provider 
