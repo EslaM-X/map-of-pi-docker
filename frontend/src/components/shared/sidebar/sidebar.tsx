@@ -401,7 +401,7 @@ function Sidebar(props: any) {
                 fontSize: '18px',
               }}
               onClick={() => {
-                router.push(`/${locale}/map-center?entryType=search`);
+                router.push('/map-center?entryType=search');
                 props.setToggleDis(false); // Close sidebar on click
               }}
             />
