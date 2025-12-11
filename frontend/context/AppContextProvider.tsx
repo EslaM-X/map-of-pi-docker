@@ -7,7 +7,8 @@ import {
   useState,
   SetStateAction,
   ReactNode,
-  useEffect
+  useEffect,
+  useRef
 } from 'react';
 
 import axiosClient, { setAuthToken } from '@/config/client';
@@ -63,6 +64,8 @@ const AppContextProvider = ({ children }: AppContextProviderProps) => {
   const [isSaveLoading, setIsSaveLoading] = useState(false);
   const [adsSupported, setAdsSupported] = useState(false);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
+
+  const piSdkLoaded = useRef(false);
 
   const showAlert = (message: string) => {
     setAlertMessage(message);
@@ -145,18 +148,34 @@ const AppContextProvider = ({ children }: AppContextProviderProps) => {
     });
   };
 
+  const ensurePiSdkLoaded = async () => {
+    if (piSdkLoaded.current) {
+      return window.Pi;
+    }
+
+    const Pi = await loadPiSdk();
+    piSdkLoaded.current = true;
+
+    Pi.init({
+      version: '2.0',
+      sandbox: process.env.NODE_ENV === 'development'
+    });
+
+    return Pi;
+  };
+
   useEffect(() => {
     logger.info('AppContextProvider mounted.');
 
     if (isSigningInUser || currentUser) return;
 
     // attempt to load and initialize Pi SDK in parallel
-    loadPiSdk()
+    ensurePiSdkLoaded()
       .then(Pi => {
-        Pi.init({ version: '2.0', sandbox: process.env.NODE_ENV === 'development' });
-        return Pi.nativeFeaturesList();
+        Pi.nativeFeaturesList().then((features: string | string[]) => {
+          setAdsSupported(features.includes("ad_network"));
+        })
       })
-      .then(features => setAdsSupported(features.includes("ad_network")))
       .catch(err => logger.error('Pi SDK load/ init error:', err));
 
     autoLoginUser();

@@ -1,11 +1,11 @@
+'use client';
+
 import styles from './sidebar.module.css';
 
 import { useTranslations, useLocale } from 'next-intl';
 import { useTheme } from 'next-themes';
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
 
 import { useRef, useState, useContext, useEffect } from 'react';
 import { FaChevronDown } from 'react-icons/fa6';
@@ -26,11 +26,20 @@ import {
 } from '@/components/shared/Forms/Inputs/Inputs';
 import { menu } from '@/constants/menu';
 import { IUserSettings } from '@/constants/types';
+import { usePathname, useRouter } from '@/navigation';
 import { createUserSettings, fetchUserSettings } from '@/services/userSettingsApi';
 import removeUrls from "@/utils/sanitize";
 
 import { AppContext } from '../../../../context/AppContextProvider';
 import logger from '../../../../logger.config.mjs';
+
+import dynamic from 'next/dynamic';
+
+const MapCenter = dynamic(() => 
+  import('@/components/shared/map/MapCenter'), {
+    ssr: false
+  }
+);
 
 interface MenuItem {
   id: number;
@@ -206,12 +215,7 @@ function Sidebar(props: any) {
   const handleChildMenu = (title: any, code: string) => {
     logger.debug(`Child menu item selected: ${title}, Code: ${code}`);
     if (title === 'Languages') {
-      const slipPathname = pathname.split('/').slice(2);
-      slipPathname.unshift(code);
-      const retPathname = slipPathname.join('/');
-      retPathname.toString();
-      router.replace(`/${retPathname}`);
-      props.setToggleDis(false);
+      router.replace(pathname, { locale: code });
     }
     if (title === 'Themes') {
       code === 'dark' ? setTheme('dark') : setTheme('light');
