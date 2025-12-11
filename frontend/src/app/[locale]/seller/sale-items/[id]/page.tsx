@@ -8,7 +8,9 @@ import React, { useEffect, useState, useContext, useRef } from 'react';
 
 import ConfirmDialog from '@/components/shared/confirm';
 import { Button, OutlineBtn } from '@/components/shared/Forms/Buttons/Buttons';
+import { Select, TextArea } from '@/components/shared/Forms/Inputs/Inputs';
 import TrustMeter from '@/components/shared/Review/TrustMeter';
+import { ListItem } from '@/components/shared/Seller/ShopItem';
 import ToggleCollapse from '@/components/shared/Seller/ToggleCollapse';
 import Skeleton from '@/components/skeleton/skeleton';
 import { ISeller, IUserSettings, IUser, SellerItem } from '@/constants/types';
@@ -19,8 +21,6 @@ import { checkAndAutoLoginUser } from '@/utils/auth';
 
 import { AppContext } from '../../../../../../context/AppContextProvider';
 import logger from '../../../../../../logger.config.mjs';
-import { ListItem, ShopItem } from '@/components/shared/Seller/ShopItem';
-import { Select, TextArea } from '@/components/shared/Forms/Inputs/Inputs';
 
 export default function BuyFromSellerForm({ params }: { params: { id: string } }) {
   const SUBHEADER = "font-bold mb-2";
@@ -38,7 +38,7 @@ export default function BuyFromSellerForm({ params }: { params: { id: string } }
   const [dbSellerItems, setDbSellerItems] = useState<SellerItem[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const { currentUser, autoLoginUser } = useContext(AppContext);
+  const { currentUser, authenticateUser } = useContext(AppContext);
   const [pickedItems, setPickedItems] = useState<{ id: string; quantity: number }[]>([]);
   const [isOnlineShoppingEnabled, setOnlineShoppingEnabled] = useState(false);
 
@@ -51,7 +51,7 @@ export default function BuyFromSellerForm({ params }: { params: { id: string } }
   };
 
   useEffect(() => {
-    checkAndAutoLoginUser(currentUser, autoLoginUser);
+    checkAndAutoLoginUser(currentUser, authenticateUser);
     
     const getSellerData = async () => {
       try {

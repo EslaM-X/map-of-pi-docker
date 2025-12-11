@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useContext, useEffect, useState, useRef, ChangeEvent } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 
 import { Button } from '@/components/shared/Forms/Buttons/Buttons';
 import SearchBar from '@/components/shared/SearchBar/SearchBar';
@@ -28,18 +28,20 @@ export default function Page({ params }: { params: { locale: string } }) {
   const mapRef = useRef<L.Map | null>(null);
 
   // State management with proper typing
-  const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | null>(null);
   const [searchCenter, setSearchCenter] = useState<{ lat: number; lng: number } | null>(null);
-  const [findme, setFindme] = useState<DeviceLocationType>(DeviceLocationType.SearchCenter);
   const [dbUserSettings, setDbUserSettings] = useState<IUserSettings | null>(null);
   const [zoomLevel, setZoomLevel] = useState(2);
-  const [locationError, setLocationError] = useState<string | null>(null);
-  const [searchBarValue, setSearchBarValue] = useState('');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isSearchClicked, setSearchClicked] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [showPopup, setShowPopup] = useState<boolean>(false);
-  const { isSigningInUser, currentUser, autoLoginUser, reload, setReload } = useContext(AppContext);
+  const { 
+    isSigningInUser, 
+    currentUser, 
+    authenticateUser, 
+    reload, 
+    setReload 
+  } = useContext(AppContext);
 
   useEffect(() => {
     // clear previous map state when findme option is changed
@@ -49,7 +51,7 @@ export default function Page({ params }: { params: { locale: string } }) {
     }
     setReload(false);
     setShowPopup(false);
-    checkAndAutoLoginUser(currentUser, autoLoginUser);
+    checkAndAutoLoginUser(currentUser, authenticateUser);
 
     const getUserSettingsData = async () => {
       try {
