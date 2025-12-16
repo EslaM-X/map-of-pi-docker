@@ -36,7 +36,7 @@ function SellerReviews({
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isSaveEnabled, setIsSaveEnabled] = useState(false);
-  const { currentUser, reload, setReload, autoLoginUser } = useContext(AppContext);
+  const { currentUser, reload, setReload, authenticateUser } = useContext(AppContext);
   const inputRef = useRef<HTMLInputElement>(null);
   const [searchBarValue, setSearchBarValue] = useState('');
   const [toUser, setToUser] = useState('');
@@ -105,7 +105,7 @@ function SellerReviews({
   };
 
   useEffect(() => {
-    checkAndAutoLoginUser(currentUser, autoLoginUser);
+    checkAndAutoLoginUser(currentUser, authenticateUser);
     fetchUserReviews(userId);
   }, [userId, currentUser]);
 
