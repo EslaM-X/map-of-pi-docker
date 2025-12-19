@@ -18,6 +18,7 @@ const buildDefaultSearchFilters = () => {
     include_active_sellers: true,
     include_inactive_sellers: false,
     include_test_sellers: false,
+    include_holiday_sellers: true,
     include_trust_level_100: true,
     include_trust_level_80: true,
     include_trust_level_50: true,

@@ -6,4 +6,5 @@ components:
         - activeSeller
         - inactiveSeller
         - testSeller
+        - holidaySeller
       description: The type of seller.
