@@ -33,7 +33,8 @@
     "SEARCH_FILTERS": {
       "INCLUDE_ACTIVE_SELLERS": "Tɔxɛviawo siwo le dɔwɔme",
       "INCLUDE_INACTIVE_SELLERS": "Tɔxɛviawo siwo mele dɔwɔme o",
-      "INCLUDE_TEST_SELLERS": "Tɔxɛviawo ƒe nɔnɔme ɖe sia ɖe"
+      "INCLUDE_TEST_SELLERS": "Tɔxɛviawo ƒe nɔnɔme ɖe sia ɖe",
+      "INCLUDE_HOLIDAY_SELLERS": "Ŋkɔkɔeɖe Tɔgbuiwo"
     },
     "CONTACT_MAP_OF_PI": "Kadodo ƒe Map of Pi",
     "VALIDATION": {
@@ -57,7 +58,8 @@
         "SELLER_TYPE_OPTIONS": {
           "ACTIVE_SELLER": "Nudzrala si le dɔ wɔm",
           "INACTIVE_SELLER": "Nudzrala si mele dɔ wɔm o",
-          "TEST_SELLER": "Dodokpɔ ƒe nudzrala"
+          "TEST_SELLER": "Dodokpɔ ƒe nudzrala",
+          "HOLIDAY_SELLER": "Ŋkɔkɔeɖe Tɔgbui"
         }
       },
       "SELLER_ADVANCED_SETTINGS_LABEL": "Nudzrala ƒe Ðoɖo Deŋgɔwo",

@@ -132,6 +132,8 @@ export default function BuyFromSellerForm({ params }: { params: { id: string } }
         return t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.INACTIVE_SELLER');
       case 'testSeller':
         return t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.TEST_SELLER');
+      case 'holidaySeller':
+        return t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.HOLIDAY_SELLER');
       default:
         return '';
     }

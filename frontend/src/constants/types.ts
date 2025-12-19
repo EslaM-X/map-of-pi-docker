@@ -20,6 +20,7 @@ export interface IUserSettings {
     include_active_sellers: boolean | undefined;
     include_inactive_sellers: boolean | undefined;
     include_test_sellers: boolean | undefined;
+    include_holiday_sellers: boolean | undefined;
     include_trust_level_100: boolean | undefined;
     include_trust_level_80: boolean | undefined;
     include_trust_level_50: boolean | undefined;
@@ -77,6 +78,13 @@ export enum DeviceLocationType {
   GPS = 'deviceGPS',
   SearchCenter = 'searchCenter'
 }
+
+export enum SellerType {
+  active_seller = 'activeSeller', 
+  inactive_seller = 'inactiveSeller', 
+  test_seller = 'testSeller',
+  holiday_seller = 'holidaySeller'
+};
 
 export enum FulfillmentType {
   CollectionByBuyer = 'Collection by buyer',

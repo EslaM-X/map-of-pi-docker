@@ -76,6 +76,7 @@ function Sidebar(props: any) {
     { target: 'include_active_sellers', title: t('SIDE_NAVIGATION.SEARCH_FILTERS.INCLUDE_ACTIVE_SELLERS') },
     { target: 'include_inactive_sellers', title: t('SIDE_NAVIGATION.SEARCH_FILTERS.INCLUDE_INACTIVE_SELLERS') },
     { target: 'include_test_sellers', title: t('SIDE_NAVIGATION.SEARCH_FILTERS.INCLUDE_TEST_SELLERS') },
+    { target: 'include_holiday_sellers', title: t('SIDE_NAVIGATION.SEARCH_FILTERS.INCLUDE_HOLIDAY_SELLERS') },
     { target: 'include_trust_level_100', title: 'Trust-o-meter 100%' },
     { target: 'include_trust_level_80', title: 'Trust-o-meter 80%' },
     { target: 'include_trust_level_50', title: 'Trust-o-meter 50%' },
@@ -114,6 +115,7 @@ function Sidebar(props: any) {
     include_active_sellers: false,
     include_inactive_sellers: false,
     include_test_sellers: false,
+    include_holiday_sellers: false,
     include_trust_level_100: false,
     include_trust_level_80: false,
     include_trust_level_50: false,
@@ -464,7 +466,7 @@ function Sidebar(props: any) {
               />
             </Link>
 
-            {/* THIS IS THE THE SEARCH FILTERS */}
+            {/* THIS IS THE SEARCH FILTERS */}
             <div className="flex flex-col justify-items-center text-center mx-auto gap-2 mt-4">
               <ToggleCollapse header={t('SIDE_NAVIGATION.SEARCH_FILTERS_SUBHEADER')}>
                 <div className="h-[110px] overflow-y-scroll overflow-hidden">
