@@ -29,17 +29,12 @@ import { IUserSettings } from '@/constants/types';
 import { usePathname, useRouter } from '@/navigation';
 import { createUserSettings, fetchUserSettings } from '@/services/userSettingsApi';
 import removeUrls from "@/utils/sanitize";
+import { getFindMeOptions } from '@/utils/translate';
 
 import { AppContext } from '../../../../context/AppContextProvider';
 import logger from '../../../../logger.config.mjs';
 
 import dynamic from 'next/dynamic';
-
-const MapCenter = dynamic(() => 
-  import('@/components/shared/map/MapCenter'), {
-    ssr: false
-  }
-);
 
 interface MenuItem {
   id: number;
@@ -151,7 +146,7 @@ function Sidebar(props: any) {
       setFormData({
         user_name: dbUserSettings.user_name || '',
         image: dbUserSettings.image || '',
-        findme: dbUserSettings.findme || translateFindMeOptions[0].value,
+        findme: dbUserSettings.findme || getFindMeOptions(t)[0].value,
         trust_meter_rating: dbUserSettings.trust_meter_rating
       });
     }
@@ -287,21 +282,6 @@ function Sidebar(props: any) {
         return title;
     }
   };
-
-  const translateFindMeOptions = [
-    {
-      value: 'auto',
-      name: t('SIDE_NAVIGATION.FIND_ME_OPTIONS.PREFERRED_AUTO'),
-    },
-    {
-      value: 'deviceGPS',
-      name: t('SIDE_NAVIGATION.FIND_ME_OPTIONS.PREFERRED_DEVICE_GPS'),
-    },
-    {
-      value: 'searchCenter',
-      name: t('SIDE_NAVIGATION.FIND_ME_OPTIONS.PREFERRED_SEARCH_CENTER'),
-    }
-  ];
 
   // Function to save data to the database
   const handleSave = async () => {
@@ -510,7 +490,7 @@ function Sidebar(props: any) {
                   name="findme"
                   value={formData.findme}
                   onChange={handleChange}
-                  options={translateFindMeOptions}
+                  options={getFindMeOptions(t)}
                 />
                 <div key={menu.Languages.id} className="">
                   <div

@@ -23,6 +23,11 @@ import { fetchSellerRegistration, registerSeller } from '@/services/sellerApi';
 import { fetchUserSettings } from '@/services/userSettingsApi';
 import { fetchToggle } from '@/services/toggleApi';
 import { checkAndAutoLoginUser } from '@/utils/auth';
+import { 
+  translateSellerCategory, 
+  getFulfillmentMethodOptions,
+  getSellerCategoryOptions 
+} from '@/utils/translate';
 import removeUrls from '../../../../utils/sanitize';
 import { AppContext } from '../../../../../context/AppContextProvider';
 import logger from '../../../../../logger.config.mjs';
@@ -133,7 +138,7 @@ const SellerRegistrationForm = () => {
       setFormData({
         sellerName: dbSeller.name || currentUser?.user_name || '',
         sellerType:
-          dbSeller.seller_type || translatedSellerTypeOptions[2].value,
+          dbSeller.seller_type || getSellerCategoryOptions(t)[2].value,
         sellerDescription: dbSeller.description || '',
         sellerAddress: dbSeller.address || '',
         email: dbUserSettings?.email || '',
@@ -145,7 +150,7 @@ const SellerRegistrationForm = () => {
     } else {
       setFormData({
         sellerName: currentUser?.pi_username || '',
-        sellerType: translatedSellerTypeOptions[2].value,
+        sellerType: getSellerCategoryOptions(t)[2].value,
         sellerDescription: translatedPreFilledText['seller-description'],
         sellerAddress: translatedPreFilledText['seller-address'],
         email: '',
@@ -279,21 +284,6 @@ const SellerRegistrationForm = () => {
     }
   };
 
-  const translateSellerCategory = (category: string): string => {
-    switch (category) {
-      case 'activeSeller':
-        return t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.ACTIVE_SELLER');
-      case 'inactiveSeller':
-        return t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.INACTIVE_SELLER');
-      case 'testSeller':
-        return t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.TEST_SELLER');
-      case 'holidaySeller':
-        return t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.HOLIDAY_SELLER');
-      default:
-        return '';
-    }
-  };
-
   const translatedPreFilledText = {
     'seller-description': t('SCREEN.SELLER_REGISTRATION.SELLER_DETAILS_PLACEHOLDER'),
     'seller-address': t('SCREEN.SELLER_REGISTRATION.SELLER_ADDRESS_LOCATION_PLACEHOLDER'),
@@ -320,40 +310,6 @@ const SellerRegistrationForm = () => {
       formData[fieldName] = updatedValue;
     }
   };
-  
-  const translatedSellerTypeOptions = [
-    {
-      value: 'activeSeller',
-      name: t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.ACTIVE_SELLER'),
-    },
-    {
-      value: 'inactiveSeller',
-      name: t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.INACTIVE_SELLER'),
-    },
-    {
-      value: 'testSeller',
-      name: t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.TEST_SELLER'),
-    },
-    {
-      value: 'holidaySeller',
-      name: t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.HOLIDAY_SELLER'),
-    },
-  ];
-
-  const translatedFulfillmentMethod = [
-    {
-      value: 'pickup',
-      name: t(
-        'SCREEN.SELLER_REGISTRATION.FULFILLMENT_METHOD_TYPE.FULFILLMENT_METHOD_TYPE_OPTIONS.COLLECTION_BY_BUYER',
-      ),
-    },
-    {
-      value: 'delivery',
-      name: t(
-        'SCREEN.SELLER_REGISTRATION.FULFILLMENT_METHOD_TYPE.FULFILLMENT_METHOD_TYPE_OPTIONS.DELIVERED_TO_BUYER',
-      ),
-    },
-  ];
 
   if (loading) {
     logger.info('Loading Seller Registration Form.');
@@ -371,7 +327,7 @@ const SellerRegistrationForm = () => {
             {t('SCREEN.SELLER_REGISTRATION.SELLER_REGISTRATION_HEADER')}
           </h1>
           <p className="text-gray-400 text-sm">
-            {dbSeller ? translateSellerCategory(dbSeller.seller_type) : ''}
+            {dbSeller ? translateSellerCategory(dbSeller.seller_type, t) : ''}
           </p>
         </div>
 
@@ -445,7 +401,7 @@ const SellerRegistrationForm = () => {
                 name="sellerType"
                 value={formData.sellerType}
                 onChange={handleChange}
-                options={translatedSellerTypeOptions}
+                options={getSellerCategoryOptions(t)}
               />
               <TextArea
                 label={t(
@@ -596,7 +552,7 @@ const SellerRegistrationForm = () => {
                     'SCREEN.SELLER_REGISTRATION.FULFILLMENT_METHOD_TYPE.FULFILLMENT_METHOD_TYPE_LABEL',
                   )}
                   name="fulfillment_method"
-                  options={translatedFulfillmentMethod}
+                  options={getFulfillmentMethodOptions(t)}
                   value={formData.fulfillment_method}
                   onChange={handleChange}
                 />

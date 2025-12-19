@@ -18,6 +18,10 @@ import { fetchSellerItems, fetchSingleSeller } from '@/services/sellerApi';
 import { fetchSingleUserSettings } from '@/services/userSettingsApi';
 import { fetchToggle } from '@/services/toggleApi';
 import { checkAndAutoLoginUser } from '@/utils/auth';
+import {
+  getFulfillmentMethodOptions,
+  translateSellerCategory,
+} from '@/utils/translate';
 
 import { AppContext } from '../../../../../../context/AppContextProvider';
 import logger from '../../../../../../logger.config.mjs';
@@ -124,36 +128,6 @@ export default function BuyFromSellerForm({ params }: { params: { id: string } }
     }
   }, [sellerShopInfo]);
 
-  const translateSellerCategory = (category: string): string => {
-    switch (category) {
-      case 'activeSeller':
-        return t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.ACTIVE_SELLER');
-      case 'inactiveSeller':
-        return t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.INACTIVE_SELLER');
-      case 'testSeller':
-        return t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.TEST_SELLER');
-      case 'holidaySeller':
-        return t('SCREEN.SELLER_REGISTRATION.SELLER_TYPE.SELLER_TYPE_OPTIONS.HOLIDAY_SELLER');
-      default:
-        return '';
-    }
-  };
-
-  const translatedFulfillmentMethod = [
-    {
-      value: 'pickup',
-      name: t(
-        'SCREEN.SELLER_REGISTRATION.FULFILLMENT_METHOD_TYPE.FULFILLMENT_METHOD_TYPE_OPTIONS.COLLECTION_BY_BUYER',
-      ),
-    },
-    {
-      value: 'delivery',
-      name: t(
-        'SCREEN.SELLER_REGISTRATION.FULFILLMENT_METHOD_TYPE.FULFILLMENT_METHOD_TYPE_OPTIONS.DELIVERED_TO_BUYER',
-      ),
-    },
-  ];
-
   // loading condition
   if (loading) {
     logger.info('Loading seller data..');
@@ -182,7 +156,7 @@ export default function BuyFromSellerForm({ params }: { params: { id: string } }
           </div>
           <div className="my-auto">
             <h2 className="font-bold mb-2">{sellerShopInfo.name}</h2>
-            <p className="text-sm">{translateSellerCategory(sellerShopInfo.seller_type)}</p>
+            <p className="text-sm">{translateSellerCategory(sellerShopInfo.seller_type, t)}</p>
           </div>
         </div>
 
@@ -245,7 +219,7 @@ export default function BuyFromSellerForm({ params }: { params: { id: string } }
               <h2 className={SUBHEADER}>{t('SCREEN.SELLER_REGISTRATION.FULFILLMENT_METHOD_TYPE.FULFILLMENT_METHOD_TYPE_LABEL')}</h2>
               <Select
                 name="fulfillment_method"
-                options={translatedFulfillmentMethod}
+                options={getFulfillmentMethodOptions(t)}
                 value={sellerShopInfo.fulfillment_method}
                 disabled={true}
               />
