@@ -28,6 +28,7 @@ export interface IUserSettings extends Document {
     include_active_sellers: Boolean;
     include_inactive_sellers: Boolean;
     include_test_sellers: Boolean;
+    include_holiday_sellers: Boolean;
     include_trust_level_100: Boolean;
     include_trust_level_80: Boolean;
     include_trust_level_50: Boolean;

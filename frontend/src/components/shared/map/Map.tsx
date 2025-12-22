@@ -74,7 +74,7 @@ const Map = ({
   });
 
   const holidayIcon = L.icon({
-    iconUrl: '/images/icons/map-of-pi-christmas-icon.png',
+    iconUrl: 'images/icons/map-of-pi-christmas-icon.png',
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
   });
