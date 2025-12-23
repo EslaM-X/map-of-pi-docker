@@ -33,7 +33,8 @@
     "SEARCH_FILTERS": {
       "INCLUDE_ACTIVE_SELLERS": "Bao gồm người bán hoạt động",
       "INCLUDE_INACTIVE_SELLERS": "Bao gồm người bán không hoạt động",
-      "INCLUDE_TEST_SELLERS": "Bao gồm người bán thử nghiệm"
+      "INCLUDE_TEST_SELLERS": "Bao gồm người bán thử nghiệm",
+      "INCLUDE_HOLIDAY_SELLERS": "Người bán dịp lễ"
     },
     "CONTACT_MAP_OF_PI": "Liên hệ với Map of Pi",
     "VALIDATION": {
@@ -57,7 +58,8 @@
         "SELLER_TYPE_OPTIONS": {
           "ACTIVE_SELLER": "Người bán hoạt động",
           "INACTIVE_SELLER": "Người bán không hoạt động",
-          "TEST_SELLER": "Người bán thử nghiệm"
+          "TEST_SELLER": "Người bán thử nghiệm",
+          "HOLIDAY_SELLER": "Người bán dịp lễ"
         }
       },
       "SELLER_ADVANCED_SETTINGS_LABEL": "Cài đặt nâng cao cho người bán",

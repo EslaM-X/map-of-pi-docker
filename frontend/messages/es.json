@@ -33,7 +33,8 @@
     "SEARCH_FILTERS": {
       "INCLUDE_ACTIVE_SELLERS": "Vendedores activos",
       "INCLUDE_INACTIVE_SELLERS": "Vendedores inactivos",
-      "INCLUDE_TEST_SELLERS": "Vendedores de prueba"
+      "INCLUDE_TEST_SELLERS": "Vendedores de prueba",
+      "INCLUDE_HOLIDAY_SELLERS": "Vendedores festivos"
     },
     "CONTACT_MAP_OF_PI": "Contactar a Map of Pi",
     "VALIDATION": {
@@ -57,7 +58,8 @@
         "SELLER_TYPE_OPTIONS": {
           "ACTIVE_SELLER": "Vendedor activo",
           "INACTIVE_SELLER": "Vendedor inactivo",
-          "TEST_SELLER": "Vendedor de prueba"
+          "TEST_SELLER": "Vendedor de prueba",
+          "HOLIDAY_SELLER": "Vendedor festivo"
         }
       },
       "SELLER_ADVANCED_SETTINGS_LABEL": "Configuración Avanzada del Vendedor",

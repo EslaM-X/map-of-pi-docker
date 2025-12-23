@@ -60,6 +60,7 @@ const userSettingsSchema = new Schema<IUserSettings>(
         include_active_sellers: { type: Boolean, default: true },
         include_inactive_sellers: { type: Boolean, default: false },
         include_test_sellers: { type: Boolean, default: false },
+        include_holiday_sellers: { type: Boolean, default: true },
         include_trust_level_100: { type: Boolean, default: true },
         include_trust_level_80: { type: Boolean, default: true },
         include_trust_level_50: { type: Boolean, default: true },

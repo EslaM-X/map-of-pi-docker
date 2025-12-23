@@ -53,6 +53,7 @@
         "include_active_sellers": true,
         "include_inactive_sellers": true,
         "include_test_sellers": true,
+        "include_holiday_sellers": false,
         "include_trust_level_100": true,
         "include_trust_level_80": true,
         "include_trust_level_50": true,
@@ -75,6 +76,7 @@
         "include_active_sellers": true,
         "include_inactive_sellers": false,
         "include_test_sellers": true,
+        "include_holiday_sellers": false,
         "include_trust_level_100": true,
         "include_trust_level_80": true,
         "include_trust_level_50": false,
@@ -86,8 +88,23 @@
       "user_name": "Test Three",
       "email": "test-three@test.com",
       "phone_number": "333-333-3333",
+      "image": "http://example.com/testThree.jpg",
       "findme": "deviceGPS",
-      "trust_meter_rating": 50
+      "trust_meter_rating": 50,
+      "search_map_center": { 
+        "type": "Point",
+        "coordinates": [-88.6298, 42.8781]
+      },
+      "search_filters": {
+        "include_active_sellers": true,
+        "include_inactive_sellers": false,
+        "include_test_sellers": true,
+        "include_holiday_sellers": true,
+        "include_trust_level_100": true,
+        "include_trust_level_80": true,
+        "include_trust_level_50": false,
+        "include_trust_level_0": false
+      }
     },
     {
       "user_settings_id": "0d0d0d-0d0d-0d0d",
@@ -382,6 +399,18 @@
       "sell_map_center": {
           "type": "Point",
           "coordinates": [60.753873, 80.534107]
+      }
+    },
+    {
+      "seller_id": "0q0q0q-0q0q-0q0q",
+      "name": "Test Seller Holiday",
+      "description": "Test Seller Holiday Event",
+      "address": "Test Seller Holiday Address",
+      "seller_type": "holidaySeller",
+      "isRestricted": false,
+      "sell_map_center": {
+          "type": "Point",
+          "coordinates": [-88.6298, 42.8781]
       }
     }
   ],

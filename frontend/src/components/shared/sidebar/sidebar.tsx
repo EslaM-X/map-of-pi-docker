@@ -29,17 +29,12 @@ import { IUserSettings } from '@/constants/types';
 import { usePathname, useRouter } from '@/navigation';
 import { createUserSettings, fetchUserSettings } from '@/services/userSettingsApi';
 import removeUrls from "@/utils/sanitize";
+import { getFindMeOptions } from '@/utils/translate';
 
 import { AppContext } from '../../../../context/AppContextProvider';
 import logger from '../../../../logger.config.mjs';
 
 import dynamic from 'next/dynamic';
-
-const MapCenter = dynamic(() => 
-  import('@/components/shared/map/MapCenter'), {
-    ssr: false
-  }
-);
 
 interface MenuItem {
   id: number;
@@ -76,6 +71,7 @@ function Sidebar(props: any) {
     { target: 'include_active_sellers', title: t('SIDE_NAVIGATION.SEARCH_FILTERS.INCLUDE_ACTIVE_SELLERS') },
     { target: 'include_inactive_sellers', title: t('SIDE_NAVIGATION.SEARCH_FILTERS.INCLUDE_INACTIVE_SELLERS') },
     { target: 'include_test_sellers', title: t('SIDE_NAVIGATION.SEARCH_FILTERS.INCLUDE_TEST_SELLERS') },
+    { target: 'include_holiday_sellers', title: t('SIDE_NAVIGATION.SEARCH_FILTERS.INCLUDE_HOLIDAY_SELLERS') },
     { target: 'include_trust_level_100', title: 'Trust-o-meter 100%' },
     { target: 'include_trust_level_80', title: 'Trust-o-meter 80%' },
     { target: 'include_trust_level_50', title: 'Trust-o-meter 50%' },
@@ -114,6 +110,7 @@ function Sidebar(props: any) {
     include_active_sellers: false,
     include_inactive_sellers: false,
     include_test_sellers: false,
+    include_holiday_sellers: false,
     include_trust_level_100: false,
     include_trust_level_80: false,
     include_trust_level_50: false,
@@ -149,7 +146,7 @@ function Sidebar(props: any) {
       setFormData({
         user_name: dbUserSettings.user_name || '',
         image: dbUserSettings.image || '',
-        findme: dbUserSettings.findme || translateFindMeOptions[0].value,
+        findme: dbUserSettings.findme || getFindMeOptions(t)[0].value,
         trust_meter_rating: dbUserSettings.trust_meter_rating
       });
     }
@@ -285,21 +282,6 @@ function Sidebar(props: any) {
         return title;
     }
   };
-
-  const translateFindMeOptions = [
-    {
-      value: 'auto',
-      name: t('SIDE_NAVIGATION.FIND_ME_OPTIONS.PREFERRED_AUTO'),
-    },
-    {
-      value: 'deviceGPS',
-      name: t('SIDE_NAVIGATION.FIND_ME_OPTIONS.PREFERRED_DEVICE_GPS'),
-    },
-    {
-      value: 'searchCenter',
-      name: t('SIDE_NAVIGATION.FIND_ME_OPTIONS.PREFERRED_SEARCH_CENTER'),
-    }
-  ];
 
   // Function to save data to the database
   const handleSave = async () => {
@@ -464,7 +446,7 @@ function Sidebar(props: any) {
               />
             </Link>
 
-            {/* THIS IS THE THE SEARCH FILTERS */}
+            {/* THIS IS THE SEARCH FILTERS */}
             <div className="flex flex-col justify-items-center text-center mx-auto gap-2 mt-4">
               <ToggleCollapse header={t('SIDE_NAVIGATION.SEARCH_FILTERS_SUBHEADER')}>
                 <div className="h-[110px] overflow-y-scroll overflow-hidden">
@@ -508,7 +490,7 @@ function Sidebar(props: any) {
                   name="findme"
                   value={formData.findme}
                   onChange={handleChange}
-                  options={translateFindMeOptions}
+                  options={getFindMeOptions(t)}
                 />
                 <div key={menu.Languages.id} className="">
                   <div

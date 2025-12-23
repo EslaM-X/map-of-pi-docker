@@ -33,7 +33,8 @@
     "SEARCH_FILTERS": {
       "INCLUDE_ACTIVE_SELLERS": "Active sellers",
       "INCLUDE_INACTIVE_SELLERS": "Inactive sellers",
-      "INCLUDE_TEST_SELLERS": "Test sellers"
+      "INCLUDE_TEST_SELLERS": "Test sellers",
+      "INCLUDE_HOLIDAY_SELLERS": "Holiday sellers"
     },
     "CONTACT_MAP_OF_PI": "Contact Map of Pi",
     "VALIDATION": {
@@ -57,7 +58,8 @@
         "SELLER_TYPE_OPTIONS": {
           "ACTIVE_SELLER": "Active seller", 
           "INACTIVE_SELLER": "Inactive seller", 
-          "TEST_SELLER": "Test seller"
+          "TEST_SELLER": "Test seller",
+          "HOLIDAY_SELLER": "Holiday seller"
         }
       },
       "SELLER_ADVANCED_SETTINGS_LABEL": "Advanced Seller Settings",

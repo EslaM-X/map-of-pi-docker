@@ -33,7 +33,8 @@
     "SEARCH_FILTERS": {
       "INCLUDE_ACTIVE_SELLERS": "Yan kasuwa masu aiki",
       "INCLUDE_INACTIVE_SELLERS": "Yan kasuwa marasa aiki",
-      "INCLUDE_TEST_SELLERS": "Yan kasuwa na gwaji"
+      "INCLUDE_TEST_SELLERS": "Yan kasuwa na gwaji",
+      "INCLUDE_HOLIDAY_SELLERS": "Masu sayarwa na hutu"
     },
     "CONTACT_MAP_OF_PI": "Tuntubi Map of Pi",
     "VALIDATION": {
@@ -57,7 +58,8 @@
         "SELLER_TYPE_OPTIONS": {
           "ACTIVE_SELLER": "Mai siyarwa mai aiki",
           "INACTIVE_SELLER": "Mai siyarwa mara aiki",
-          "TEST_SELLER": "Mai siyarwa gwaji"
+          "TEST_SELLER": "Mai siyarwa gwaji",
+          "HOLIDAY_SELLER": "Mai sayarwa na hutu"
         }
       },
       "SELLER_ADVANCED_SETTINGS_LABEL": "Saitunan Ci Gaban Mai Siyarwa",

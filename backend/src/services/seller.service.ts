@@ -18,6 +18,7 @@ const buildDefaultSearchFilters = () => {
     include_active_sellers: true,
     include_inactive_sellers: false,
     include_test_sellers: false,
+    include_holiday_sellers: true,
     include_trust_level_100: true,
     include_trust_level_80: true,
     include_trust_level_50: true,
@@ -33,6 +34,7 @@ const buildBaseCriteria = (searchFilters: any): Record<string, any> => {
   if (searchFilters.include_active_sellers) sellerTypeFilters.push(SellerType.Active);
   if (searchFilters.include_inactive_sellers) sellerTypeFilters.push(SellerType.Inactive);
   if (searchFilters.include_test_sellers) sellerTypeFilters.push(SellerType.Test);
+  if (searchFilters.include_holiday_sellers) sellerTypeFilters.push(SellerType.Holiday);
 
   // include filtered seller types
   if (sellerTypeFilters.length > 0) {

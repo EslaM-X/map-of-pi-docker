@@ -23,7 +23,10 @@ describe('getAllSellers function', () => {
     const userData = await User.findOne({ pi_username: 'TestUser1' }) as IUser;
     const sellersData = await getAllSellers(undefined, undefined, userData.pi_uid);
 
-    const expectedCount = await Seller.countDocuments({ isRestricted: { $ne: true } });
+    const expectedCount = await Seller.countDocuments({ 
+      isRestricted: { $ne: true }, 
+      seller_type: { $ne: 'holidaySeller' }
+    });
     expect(sellersData).toHaveLength(expectedCount);
   });
 
