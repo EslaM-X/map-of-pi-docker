@@ -11,6 +11,7 @@ import { Button } from '@/components/shared/Forms/Buttons/Buttons';
 import SearchBar from '@/components/shared/SearchBar/SearchBar';
 import ConfirmDialog from '@/components/shared/confirm';
 import NotificationDialog from '@/components/shared/Notification/NotificationDialog';
+import { getNotifications } from '@/services/notificationApi';
 import { fetchSellers } from '@/services/sellerApi';
 import { fetchUserSettings } from '@/services/userSettingsApi';
 import { DeviceLocationType, IUserSettings } from '@/constants/types';
@@ -35,15 +36,15 @@ export default function Page({ params }: { params: { locale: string } }) {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isSearchClicked, setSearchClicked] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [showSearchCenterPopup, setSearchCenterPopup] = useState<boolean>(false);
+  const [showNotificationPopup, setShowNotificationPopup] = useState<boolean>(false);
+
   const { 
     isSigningInUser, 
     currentUser, 
     authenticateUser, 
     reload, 
-    setReload,
-    toggleNotification,
-    setToggleNotification
+    setReload
   } = useContext(AppContext);
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export default function Page({ params }: { params: { locale: string } }) {
       sessionStorage.removeItem('prevMapZoom');
     }
     setReload(false);
-    setShowPopup(false);
+    setSearchCenterPopup(false);
     checkAndAutoLoginUser(currentUser, authenticateUser);
 
     const getUserSettingsData = async () => {
@@ -62,14 +63,16 @@ export default function Page({ params }: { params: { locale: string } }) {
         if (data) {
           logger.info('Fetched user settings data successfully:', { data });
           setDbUserSettings(data);
-          if (data.search_map_center?.coordinates) {
-            const coordinates = {
-              lat: data.search_map_center.coordinates[1],
-              lng: data.search_map_center.coordinates[0],
+
+          const coordinates = data.search_map_center?.coordinates;
+          if (coordinates) {
+            const searchMapCenter = {
+              lat: coordinates[1],
+              lng: coordinates[0],
             };
-            setSearchCenter(coordinates);
-            if (coordinates.lat === 0 && coordinates.lng === 0) {
-              setShowPopup(true);
+            setSearchCenter(searchMapCenter);
+            if (searchMapCenter.lat === 0 && searchMapCenter.lng === 0) {
+              setSearchCenterPopup(true);
             }
           }
         } else {
@@ -82,7 +85,37 @@ export default function Page({ params }: { params: { locale: string } }) {
       }
     };
 
+    const checkUnclearedNotifications = async () => {
+      if (!currentUser?.pi_uid) return;
+
+      const hasShownNotificationThisSession = sessionStorage.getItem('notificationShown');
+      if (hasShownNotificationThisSession === 'true') return; // Don't show again this session
+
+      try {
+        const notifications = await getNotifications({
+          pi_uid: currentUser.pi_uid,
+          skip: 0,
+          limit: 0,
+          status: 'uncleared'
+        });
+
+        console.log('Uncleared notifications response:', notifications);
+
+        if (notifications?.length > 0) {
+          setShowNotificationPopup(true);
+          sessionStorage.setItem('notificationShown', 'true');
+        } else {
+          setShowNotificationPopup(false);
+        }
+      } catch (error) {
+        logger.error('Error getting new notifications:', error);
+        setShowNotificationPopup(false);
+      }
+    };
+
+    // Only proceed once currentUser is defined with a valid pi_uid
     getUserSettingsData();
+    checkUnclearedNotifications();
   }, [currentUser, reload]);
 
   useEffect(() => {
@@ -91,6 +124,7 @@ export default function Page({ params }: { params: { locale: string } }) {
         const loc = await userLocation(dbUserSettings);
         if (loc) {
           setSearchCenter({ lat: loc[0], lng: loc[1] });
+          logger.info('User location obtained successfully on button click:', {loc});
         } else {
           setSearchCenter(null);
         }
@@ -193,21 +227,22 @@ export default function Page({ params }: { params: { locale: string } }) {
             />
           </div>
         </div>
-        {showPopup && (
+        {showSearchCenterPopup && (
           <ConfirmDialog
-            show={setShowPopup}
-            onClose={() => setShowPopup(false)}
+            show={setSearchCenterPopup}
+            onClose={() => setSearchCenterPopup(false)}
             message={t('HOME.SEARCH_CENTER_DEFAULT_MESSAGE')}
             url={`/map-center?entryType=search`}
           />
         )}
       </div>
-      {toggleNotification && (
+
+      {showNotificationPopup &&  (
         <NotificationDialog
+          setShowDialog={setShowNotificationPopup}
+          onClose={() => setShowNotificationPopup(false)}
           message={t('HOME.NEW_NOTIFICATIONS_MESSAGE')}
-          onClose={() => setShowPopup(false)}
           url={`/${locale}/notification`}
-          setToggleNotification={setToggleNotification}
         />
       )}
     </>
