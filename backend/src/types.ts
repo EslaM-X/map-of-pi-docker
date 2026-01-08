@@ -6,6 +6,9 @@ import { FulfillmentType } from "./models/enums/fulfillmentType";
 import { StockLevelType } from "./models/enums/stockLevelType";
 import { TrustMeterScale } from "./models/enums/trustMeterScale";
 
+// ========================
+// USER MODELS
+// ========================
 export interface IUser extends Document {
   pi_uid: string;
   pi_username: string;
@@ -36,6 +39,20 @@ export interface IUserSettings extends Document {
   };
 }
 
+// Select specific fields from IUserSettings
+export type PartialUserSettings = Pick<IUserSettings, 'user_name' | 'email' | 'phone_number' | 'findme' | 'trust_meter_rating'>;
+
+// ========================
+// MAP / GEOLOCATION TYPES
+// ========================
+export interface IMapCenter {
+  type: 'Point';
+  coordinates: [number, number];
+}
+
+// ========================
+// SELLER MODELS
+// ========================
 export interface ISeller extends Document {
   seller_id: string;
   name: string;
@@ -53,6 +70,9 @@ export interface ISeller extends Document {
   fulfillment_description?: string;
 }
 
+// Combined interface representing a seller with selected user settings
+export interface ISellerWithSettings extends ISeller, PartialUserSettings {}
+
 export interface ISellerItem extends Document {
   _id: string;
   seller_id: string;
@@ -66,6 +86,10 @@ export interface ISellerItem extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+// ========================
+// REVIEW / FEEDBACK MODELS
+// ========================
 export interface IReviewFeedback extends Document {
   _id: string;
   review_receiver_id: string;
@@ -82,17 +106,6 @@ export interface CompleteFeedback {
   receivedReviews: IReviewFeedbackOutput[];
 }
 
-export interface IMapCenter {
-  type: 'Point';
-  coordinates: [number, number];
-}
-
-// Select specific fields from IUserSettings
-export type PartialUserSettings = Pick<IUserSettings, 'user_name' | 'email' | 'phone_number' | 'findme' | 'trust_meter_rating'>;
-
-// Combined interface representing a seller with selected user settings
-export interface ISellerWithSettings extends ISeller, PartialUserSettings {}
-
 export type PartialReview = {
   giver: string;
   receiver: string;
@@ -100,6 +113,21 @@ export type PartialReview = {
 
 export interface IReviewFeedbackOutput extends IReviewFeedback, PartialReview {}
 
+// ========================
+// NOTIFICATION
+// ========================
+export interface INotification extends Document {
+  _id: string;
+  pi_uid: string;
+  is_cleared: boolean;
+  reason: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// ========================
+// TOGGLES
+// ========================
 export interface IToggle extends Document {
   name: string;
   enabled: boolean;
