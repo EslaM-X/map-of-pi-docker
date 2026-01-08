@@ -10,6 +10,7 @@ import { useContext, useEffect, useState, useRef } from 'react';
 import { Button } from '@/components/shared/Forms/Buttons/Buttons';
 import SearchBar from '@/components/shared/SearchBar/SearchBar';
 import ConfirmDialog from '@/components/shared/confirm';
+import NotificationDialog from '@/components/shared/Notification/NotificationDialog';
 import { fetchSellers } from '@/services/sellerApi';
 import { fetchUserSettings } from '@/services/userSettingsApi';
 import { DeviceLocationType, IUserSettings } from '@/constants/types';
@@ -40,7 +41,9 @@ export default function Page({ params }: { params: { locale: string } }) {
     currentUser, 
     authenticateUser, 
     reload, 
-    setReload 
+    setReload,
+    toggleNotification,
+    setToggleNotification
   } = useContext(AppContext);
 
   useEffect(() => {
@@ -104,8 +107,8 @@ export default function Page({ params }: { params: { locale: string } }) {
       const loc = await userLocation(dbUserSettings);
       if (loc) {
         setSearchCenter({ lat: loc[0], lng: loc[1] });
-        logger.info('User location obtained successfully on button click:', { location });
-      } else{
+        logger.info('User location obtained successfully on button click:', {location});
+      } else {
         setSearchCenter(null);
       }
     }
@@ -199,6 +202,14 @@ export default function Page({ params }: { params: { locale: string } }) {
           />
         )}
       </div>
+      {toggleNotification && (
+        <NotificationDialog
+          message={t('HOME.NEW_NOTIFICATIONS_MESSAGE')}
+          onClose={() => setShowPopup(false)}
+          url={`/${locale}/notification`}
+          setToggleNotification={setToggleNotification}
+        />
+      )}
     </>
   );
 }

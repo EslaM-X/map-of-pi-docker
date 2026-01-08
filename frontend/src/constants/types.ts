@@ -138,3 +138,20 @@ export type PartialReview = {
 }
 
 export interface IReviewOutput extends IReviewFeedback, PartialReview {}
+
+// ========================
+// NOTIFICATION MODELS
+// ========================
+export type NotificationType = {
+  _id: string;
+  pi_uid: string;
+  is_cleared: boolean;
+  reason: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface INotification {
+  is_cleared?: boolean;
+  reason: string;
+}
