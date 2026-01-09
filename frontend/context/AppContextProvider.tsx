@@ -15,6 +15,7 @@ import axiosClient, { setAuthToken } from '@/config/client';
 import { AuthResult } from '@/constants/pi';
 import { IUser } from '@/constants/types';
 import { onIncompletePaymentFound } from '@/utils/auth';
+import { getNotifications } from '@/services/notificationApi';
 
 import logger from '../logger.config.mjs';
 
@@ -34,7 +35,11 @@ interface IAppContextProps {
   isSaveLoading: boolean;
   setIsSaveLoading: React.Dispatch<SetStateAction<boolean>>;
   adsSupported: boolean;
-}
+  toggleNotification: boolean;
+  setToggleNotification: React.Dispatch<SetStateAction<boolean>>;
+  setNotificationsCount: React.Dispatch<SetStateAction<number>>;
+  notificationsCount: number;
+};
 
 const initialState: IAppContextProps = {
   currentUser: null,
@@ -48,7 +53,11 @@ const initialState: IAppContextProps = {
   setReload: () => {},
   isSaveLoading: false,
   setIsSaveLoading: () => {},
-  adsSupported: false
+  adsSupported: false,
+  toggleNotification: false,
+  setToggleNotification: () => {},
+  setNotificationsCount: () => {},
+  notificationsCount: 0
 };
 
 const sleep = (ms: number) =>
@@ -75,7 +84,9 @@ const AppContextProvider = ({ children }: AppContextProviderProps) => {
   const [isSaveLoading, setIsSaveLoading] = useState(false);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [adsSupported, setAdsSupported] = useState(false);
-
+  const [toggleNotification, setToggleNotification] = useState<boolean>(true);
+  const [notificationsCount, setNotificationsCount] = useState(0);
+  
   const piSdkLoaded = useRef(false);
 
   const showAlert = (message: string) => {
@@ -215,6 +226,28 @@ const AppContextProvider = ({ children }: AppContextProviderProps) => {
     authenticateUser();
   }, [currentUser]);
 
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const fetchNotificationsCount = async () => {
+      try {
+        const { count } = await getNotifications({
+          skip: 0,
+          limit: 1,
+          status: 'uncleared'
+        });
+        setNotificationsCount(count);
+        setToggleNotification(count > 0);
+      } catch (error) {
+        logger.error('Failed to fetch notification count:', error);
+        setNotificationsCount(0);
+        setToggleNotification(false);
+      }
+    };
+
+    fetchNotificationsCount();
+  }, [currentUser, reload]);
+
   return (
     <AppContext.Provider 
       value={{ 
@@ -229,7 +262,11 @@ const AppContextProvider = ({ children }: AppContextProviderProps) => {
         setAlertMessage, 
         isSaveLoading, 
         setIsSaveLoading, 
-        adsSupported
+        adsSupported,
+        toggleNotification,
+        setToggleNotification,
+        setNotificationsCount,
+        notificationsCount
       }}
     >
       {children}
