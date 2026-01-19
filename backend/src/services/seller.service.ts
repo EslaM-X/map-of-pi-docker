@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { PipelineStage } from "mongoose";
 import Seller from "../models/Seller";
 import User from "../models/User";
 import UserSettings from "../models/UserSettings";
@@ -8,9 +8,14 @@ import { FulfillmentType } from "../models/enums/fulfillmentType";
 import { StockLevelType } from '../models/enums/stockLevelType';
 import { TrustMeterScale } from "../models/enums/trustMeterScale";
 import { getUserSettingsById } from "./userSettings.service";
-import { IUser, IUserSettings, ISeller, ISellerWithSettings, ISellerItem } from "../types";
-
+import { 
+  IUser, 
+  IUserSettings, 
+  ISeller, 
+  ISellerItem 
+} from "../types";
 import logger from "../config/loggingConfig";
+import { env } from "../utils/env";
 
 /* Helper Functions */
 const buildDefaultSearchFilters = () => {
@@ -44,190 +49,272 @@ const buildBaseCriteria = (searchFilters: any): Record<string, any> => {
   return criteria;
 };
 
-const buildTrustLevelFilters = (searchFilters: any): TrustMeterScale[] => {
-  const trustLevels = [
-    { key: "include_trust_level_100", value: TrustMeterScale.HUNDRED },
-    { key: "include_trust_level_80", value: TrustMeterScale.EIGHTY },
-    { key: "include_trust_level_50", value: TrustMeterScale.FIFTY },
-    { key: "include_trust_level_0", value: TrustMeterScale.ZERO },
+const buildTrustLevelFilter = (searchFilters: any): TrustMeterScale[] => {
+  const trustMap: [keyof typeof searchFilters, TrustMeterScale][] = [
+    ["include_trust_level_100", TrustMeterScale.HUNDRED],
+    ["include_trust_level_80", TrustMeterScale.EIGHTY],
+    ["include_trust_level_50", TrustMeterScale.FIFTY],
+    ["include_trust_level_0", TrustMeterScale.ZERO],
   ];
-  return trustLevels
-    .filter(({ key }) => searchFilters[key])
-    .map(({ value }) => value);
-};
-
-const buildSearchQuery = async (
-  baseCriteria: Record<string, any>,
-  search_query?: string
-): Promise<Record<string, any>> => {
-  if (!search_query || !search_query.trim()) return baseCriteria;
-
-  const normalizedQuery = search_query.trim();
-
-  /**
-   * Seller field search
-   */
-  const sellerTextSearch = { $text: { $search: normalizedQuery } };
-
-  /**
-   * TODO: Sellers matched through SellerItems
-   */
-  // const sellerIdsFromItems = await SellerItem.find({
-  //   stock_level: { $ne: StockLevelType.SOLD },
-  //   expired_by: { $gt: new Date() },
-  //   $text: { $search: normalizedQuery }
-  // }).distinct("seller_id");
-
-  /**
-   * Sellers matched through User field i.e., pi_username
-   */
-  const sellerIdsFromUsers = await User.find({
-    $text: { $search: normalizedQuery }
-  }).distinct("pi_uid");
-
-  /**
-   * Sellers matched through UserSetting fields i.e., user_name, email
-   */
-  const sellerIdsFromUserSettings = await UserSettings.find({
-    $text: { $search: normalizedQuery }
-  }).distinct("user_settings_id");
-
-  // Combine all matching IDs from lookups; deduplicated
-  const aggregatedSellerIdMatches = [
-    ...new Set([
-      // TODO ...sellerIdsFromItems,
-      ...sellerIdsFromUsers,
-      ...sellerIdsFromUserSettings,
-    ]),
-  ];
-
-  return {
-    ...baseCriteria,
-    $or: [
-      sellerTextSearch,
-      { seller_id: { $in: aggregatedSellerIdMatches } }
-    ]
-  };
-};
-
-const addGeoFilter = (
-  criteria: Record<string, any>, 
-  bounds?: { sw_lat: number, sw_lng: number, ne_lat: number, ne_lng: number }
-) => {
-  if (!bounds) return;
-  criteria.sell_map_center = {
-    $geoWithin: {
-      $geometry: {
-        type: "Polygon",
-        coordinates: [[
-          [bounds.sw_lng, bounds.sw_lat],
-          [bounds.ne_lng, bounds.sw_lat],
-          [bounds.ne_lng, bounds.ne_lat],
-          [bounds.sw_lng, bounds.ne_lat],
-          [bounds.sw_lng, bounds.sw_lat],
-        ]],
-      },
-    },
-  };
-}; 
-
-// Helper function to get settings for all sellers and merge them into seller objects
-const resolveSellerSettings = async (
-  sellers: ISeller[],
-  trustLevelFilters?: number[]
-): Promise<ISellerWithSettings[]> => {
-
-  if (!sellers.length) return [];
-
-  const sellerIds = sellers.map(seller => seller.seller_id);
-
-  // Batch fetch all relevant user settings
-  const allUserSettings = await UserSettings.find({
-    user_settings_id: { $in: sellerIds }
-  }).select('user_settings_id trust_meter_rating user_name -_id').exec();
-
-  // Create a map for quick user settings lookup
-  const settingsMap = new Map(
-    allUserSettings.map(setting => [setting.user_settings_id, setting])
-  );
-
-  const sellersWithSettings = sellers.map((seller) => {
-    // Safe conversion: if seller is a Mongoose doc, call toObject(), otherwise keep as is
-    const sellerObject = seller.toObject ? seller.toObject() : seller;
-    const userSettings = settingsMap.get(seller.seller_id);
-
-    // Check trust level filter
-    const trustMeterRating = userSettings?.trust_meter_rating ?? -1;
-    if (trustLevelFilters && !trustLevelFilters.includes(trustMeterRating)) {
-      return null;
-    }
-
-    try {
-      return {
-        ...sellerObject,
-        trust_meter_rating: trustMeterRating,
-        user_name: userSettings?.user_name
-      } as ISellerWithSettings;
-    } catch (error) {
-      logger.error(`Failed to resolve settings for sellerID ${ seller.seller_id }:`, error);
-
-      return {
-        ...sellerObject,
-        trust_meter_rating: TrustMeterScale.ZERO,
-        user_name: seller.name,
-      } as unknown as ISellerWithSettings;
-    }
-  });
- 
-  return sellersWithSettings.filter(Boolean) as ISellerWithSettings[];
+  
+  return trustMap
+    .filter(([flag]) => searchFilters[flag])
+    .map(([, value]) => value);
 };
 
 // Fetch all sellers or within a specific bounding box; optional search query.
 export const getAllSellers = async (
-  bounds?: { sw_lat: number, sw_lng: number, ne_lat: number, ne_lng: number },
+  bounds?: { sw_lat: number; sw_lng: number; ne_lat: number; ne_lng: number },
   search_query?: string,
   userId?: string,
-): Promise<ISellerWithSettings[]> => {
+): Promise<any[]> => {
+  const MAX_RESULTS = 50;
+  const now = new Date();
+  const hasSearch = Boolean(search_query?.trim());
+
   try {
-    const maxNumSellers = 50;
+    /** -------------------------------
+     * 1. USER FILTERS (SOURCE OF TRUTH)
+     * --------------------------------*/
+    const userSettings: IUserSettings | null = userId
+      ? await getUserSettingsById(userId)
+      : null;
 
-    // Load user settings with defaults
-    const userSettings: any = userId ? await getUserSettingsById(userId) ?? {} : {};
-    const searchFilters = userSettings.search_filters ?? buildDefaultSearchFilters();
+    const searchFilters =
+      userSettings?.search_filters ?? buildDefaultSearchFilters();
 
-    // Build criteria
-    const baseCriteria = buildBaseCriteria(searchFilters);
-    // [Geo Filter]
-    addGeoFilter(baseCriteria, bounds);
-    // [Trust Level Filters]
-    const trustLevelFilters = buildTrustLevelFilters(searchFilters);
+    const baseCriteria: Record<string, any> = {
+      ...buildBaseCriteria(searchFilters),        // seller filters
+    };
 
-    // Normalize search query
-    const normalizedSearchQuery = search_query?.trim() || "";
+    /** -------------------------------
+     * 2. GEO FILTER (ALWAYS APPLIED)
+     * --------------------------------*/
+    if (bounds) {
+      baseCriteria.sell_map_center = {
+        $geoWithin: {
+          $geometry: {
+            type: "Polygon",
+            coordinates: [[
+              [bounds.sw_lng, bounds.sw_lat],
+              [bounds.ne_lng, bounds.sw_lat],
+              [bounds.ne_lng, bounds.ne_lat],
+              [bounds.sw_lng, bounds.ne_lat],
+              [bounds.sw_lng, bounds.sw_lat],
+            ]],
+          },
+        },
+      };
+    }
+    /** -------------------------------
+     * 3. TRUST LEVEL FILTER
+     * --------------------------------*/
+    const trustLevels = buildTrustLevelFilter(searchFilters);
 
-    // Build seller query
-    const sellerQuery = await buildSearchQuery(baseCriteria, normalizedSearchQuery);
-    // Execute aggregation
-    const finalSellerDocs = await Seller.aggregate([
-      { $match: sellerQuery },
-      // Only include lookups if search query is provided
-      ...(normalizedSearchQuery?.length
-        ? [
-            { $lookup: { from: 'users', localField: 'seller_id', foreignField: 'pi_uid', as: 'user' } },
-            { $unwind: { path: '$user', preserveNullAndEmptyArrays: true } },
-            { $lookup: { from: 'usersettings', localField: 'seller_id', foreignField: 'user_settings_id', as: 'userSettings' } },
-            { $unwind: { path: '$userSettings', preserveNullAndEmptyArrays: true } },
-          ]
-        : []),
+    /** -------------------------------
+     * 4. COMMON LOOKUPS (REUSED)
+     * --------------------------------*/
+    const lookups: PipelineStage[] = [
+      {
+        $lookup: {
+          from: "users",
+          localField: "seller_id",
+          foreignField: "pi_uid",
+          as: "users",
+        },
+      },
+      { $unwind: { path: "$users", preserveNullAndEmptyArrays: false } },
+
+      {
+        $lookup: {
+          from: "memberships",
+          localField: "seller_id",
+          foreignField: "pi_uid",
+          as: "membership",
+        },
+      },
+      { $unwind: { path: "$membership", preserveNullAndEmptyArrays: true } },
+
+      {
+        $lookup: {
+          from: "user-settings",
+          let: { sid: "$seller_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$user_settings_id", "$$sid"] },
+                    ...(trustLevels.length
+                      ? [{ $in: ["$trust_meter_rating", trustLevels] }]
+                      : []),
+                  ],
+                },
+              },
+            },
+            {
+              $project: {
+                trust_meter_rating: 1,
+                user_name: 1,
+              },
+            },
+          ],
+          as: "settings",
+        },
+      },
+      { $unwind: { path: "$settings", preserveNullAndEmptyArrays: false } },
+
+      {
+        $lookup: {
+          from: "seller-items",
+          let: { sid: "$seller_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$seller_id", "$$sid"] },
+                    { $gt: ["$expired_by", now] },
+                    { $ne: ["$stock_level", StockLevelType.SOLD] },
+                  ],
+                },
+              },
+            },
+            {
+              $project: {
+                name: 1,
+                description: 1
+              },
+            },
+          ],
+          as: "items",
+        },
+      },
+    ];
+
+    /** -------------------------------
+     * 5. ATLAS SEARCH PIPELINE
+     * --------------------------------*/
+    if (env.ATLAS_SEARCH_ENABLED && hasSearch) {
+      const pipeline: PipelineStage[] = [
+        {
+          $search: {
+            index: "seller-search",
+            compound: {
+              must: [
+                {
+                  text: {
+                    query: search_query!,
+                    path: [
+                      "name",
+                      "description",
+                      "address",
+                      "users.pi_username",
+                      "settings.user_name",
+                      "items.name",
+                      "items.description",
+                    ],
+                    fuzzy: { maxEdits: 1, prefixLength: 2 },
+                  },
+                },
+              ],
+            },
+          },
+        },
+
+        // ✅ Apply ALL business rules AFTER search
+        { $match: baseCriteria },
+
+        { $addFields: { score: { $meta: "searchScore" } } },
+
+        ...lookups,
+
+        {
+          $addFields: {
+            user_name: "$settings.user_name",
+            trust_meter_rating: "$settings.trust_meter_rating",
+            membership_class: "$membership.membership_class",
+          },
+        },
+
+        { $sort: { score: -1, updatedAt: -1 } },
+        { $limit: MAX_RESULTS },
+
+        {
+          $project: {
+            seller_id: 1,
+            name: 1,
+            image: 1,
+            seller_type: 1,
+            sell_map_center: 1,
+            items: 1,
+            user_name: 1,
+            trust_meter_rating: 1,
+            membership_class: 1,
+            score: 1,
+          },
+        },
+      ];
+
+      return await Seller.aggregate(pipeline).exec();
+    }
+
+    /** -------------------------------
+     * 6. REGEX FALLBACK (NO ATLAS)
+     * --------------------------------*/
+    const regexPipeline: PipelineStage[] = [
+      { $match: baseCriteria },
+      ...lookups,
+    ];
+
+    if (hasSearch) {
+      const tokens = search_query!.trim().split(/\s+/);
+
+      regexPipeline.push({
+        $match: {
+          $or: [
+            { name: { $regex: search_query, $options: "i" } },
+            { description: { $regex: search_query, $options: "i" } },
+            { address: { $regex: search_query, $options: "i" } },
+            { "users.pi_username": { $regex: search_query, $options: "i" } },
+            { "settings.user_name": { $regex: search_query, $options: "i" } },
+            { "items.name": { $regex: search_query, $options: "i" } },
+            { "items.description": { $regex: search_query, $options: "i" } },
+            ...tokens.map((t) => ({
+              name: { $regex: t, $options: "i" },
+            })),
+          ],
+        },
+      });
+    }
+    regexPipeline.push(
+      {
+        $addFields: {
+          user_name: "$settings.user_name",
+          trust_meter_rating: "$settings.trust_meter_rating",
+          membership_class: "$membership.membership_class",
+        },
+      },
       { $sort: { updatedAt: -1 } },
-      { $limit: maxNumSellers },
-    ]);
-
-    // Post-filter + merge settings
-    return await resolveSellerSettings(finalSellerDocs, trustLevelFilters);
-  } catch (error) {
-    logger.error(`Failed to get all sellers: ${ error }`);
-    throw error;
+      { $limit: MAX_RESULTS },
+      {
+        $project: {
+          seller_id: 1,
+          name: 1,
+          image: 1,
+          seller_type: 1,
+          sell_map_center: 1,
+          items: 1,
+          user_name: 1,
+          trust_meter_rating: 1,
+          membership_class: 1,
+        },
+      },
+    );
+    return await Seller.aggregate(regexPipeline).exec();
+  } catch (err: any) {
+    logger.error("Seller aggregation failed", err);
+    throw new Error("Failed to retrieve sellers");
   }
 };
 

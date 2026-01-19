@@ -60,12 +60,12 @@ const notificationRoutes = Router();
  *               type: object
  *               properties:
  *                 items:
- *                  type: array
- *                  items:
- *                    $ref: '/api/docs/NotificationsSchema.yml#/components/schemas/Notification'
- *                count:
- *                  type: integer
- *                  description: Total number of matching notifications
+ *                   type: array
+ *                   items:
+ *                     $ref: '/api/docs/NotificationsSchema.yml#/components/schemas/Notification'
+ *                 count:
+ *                   type: integer
+ *                   description: Total number of matching notifications
  *       401:	
  *         description: Unauthorized	
  *       500:	

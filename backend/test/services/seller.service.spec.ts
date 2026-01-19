@@ -10,8 +10,14 @@ import {
 import User from '../../src/models/User';
 import UserSettings from '../../src/models/UserSettings';
 import { IUser, ISeller, ISellerItem } from '../../src/types';
+import { env } from '../../src/utils/env';
 
-describe('getAllSellers function', () => {
+/**
+ * Atlas Search ($search) cannot run in in-memory MongoDB.
+ * These tests validate the regex fallback behavior.
+ * Atlas Search is validated separately via pipeline inspection.
+ */
+describe('getAllSellers function with Regex fallback', () => {
   const mockBoundingBox = {
     sw_lat: 40.7000,
     sw_lng: -74.0060,
@@ -19,15 +25,42 @@ describe('getAllSellers function', () => {
     ne_lng: -73.8000
   };
 
+  const boundingPolygon = {
+    $geometry: {
+      type: 'Polygon',
+      coordinates: [[
+        [mockBoundingBox.sw_lng, mockBoundingBox.sw_lat],
+        [mockBoundingBox.ne_lng, mockBoundingBox.sw_lat],
+        [mockBoundingBox.ne_lng, mockBoundingBox.ne_lat],
+        [mockBoundingBox.sw_lng, mockBoundingBox.ne_lat],
+        [mockBoundingBox.sw_lng, mockBoundingBox.sw_lat],
+      ]],
+    },
+  };
+
+  beforeAll(() => {
+    env.ATLAS_SEARCH_ENABLED = false; // Regex path (fallback)
+  });
+
+  afterAll(() => {
+    env.ATLAS_SEARCH_ENABLED = true; // Atlas search path (default)
+  });
+
   it('should fetch all unrestricted sellers when all parameters are empty w/ all search filters enabled', async () => {
     const userData = await User.findOne({ pi_username: 'TestUser1' }) as IUser;
-    const sellersData = await getAllSellers(undefined, undefined, userData.pi_uid);
+    const result = await getAllSellers(undefined, undefined, userData.pi_uid);
 
-    const expectedCount = await Seller.countDocuments({ 
-      isRestricted: { $ne: true }, 
-      seller_type: { $ne: 'holidaySeller' }
-    });
-    expect(sellersData).toHaveLength(expectedCount);
+    const expected = await Seller.find({
+      isRestricted: { $ne: true },
+      seller_type: { $ne: 'holidaySeller' },
+    }).select('seller_id');
+
+    expect(result).toHaveLength(expected.length);
+    expect(result).toEqual(
+      expect.arrayContaining(
+        expected.map(s => expect.objectContaining({ seller_id: s.seller_id }))
+      )
+    );
   });
 
   it('should fall back to default search filters when userSettings do not exist', async () => {
@@ -35,77 +68,78 @@ describe('getAllSellers function', () => {
     const userSettings = await UserSettings.findOne({ user_settings_id: userData.pi_uid });
     expect(userSettings).toBeNull();
 
-    const sellersData = await getAllSellers(undefined, undefined, userData.pi_uid);
+    const result = await getAllSellers(undefined, undefined, userData.pi_uid);
 
     // filter out inactive + test sellers and sellers with trust level < 50.
-    expect(sellersData).toHaveLength(1);
+    expect(result).toHaveLength(1);
   });
 
   it('should fetch all unrestricted and applicable filtered sellers when all parameters are empty', async () => {
     const userData = await User.findOne({ pi_username: 'TestUser2' }) as IUser;
-    const sellersData = await getAllSellers(undefined, undefined, userData.pi_uid);
+    const result = await getAllSellers(undefined, undefined, userData.pi_uid);
 
     // filter out inactive sellers and sellers with trust level <= 50. 
-    expect(sellersData).toHaveLength(2);
+    expect(result).toHaveLength(2);
   });
 
   it('should fetch all unrestricted and applicable sellers when search query is provided and bounding box params are empty', async () => {
     const searchQuery = 'Vendor';
     const userData = await User.findOne({ pi_username: 'TestUser1' }) as IUser;
     
-    const sellersData = await getAllSellers(undefined, searchQuery, userData.pi_uid);
+    const result = await getAllSellers(undefined, searchQuery, userData.pi_uid);
     
-    // filter seller records to include those with "Vendor"
-    expect(sellersData).toHaveLength(
-      await Seller.find({
-        $text: { $search: searchQuery },
-      }).countDocuments()
-    ); // Ensure length matches expected sellers
+    const expected = await Seller.find({
+      isRestricted: { $ne: true },
+      $or: [
+        { name: { $regex: searchQuery, $options: 'i' } },
+        { description: { $regex: searchQuery, $options: 'i' } },
+        { address: { $regex: searchQuery, $options: "i" } },
+      ],
+    }).select('seller_id');
+
+    expect(result).toHaveLength(expected.length);
+    expect(result).toEqual(
+      expect.arrayContaining(
+        expected.map(s => expect.objectContaining({ seller_id: s.seller_id }))
+      )
+    );
   });
 
   it('should fetch all unrestricted and applicable sellers when bounding box params are provided and search query param is empty', async () => {
     const userData = await User.findOne({ pi_username: 'TestUser1' }) as IUser;
-    const sellersData = await getAllSellers(mockBoundingBox, undefined, userData.pi_uid);
+    const result = await getAllSellers(mockBoundingBox, undefined, userData.pi_uid);
     
     // filter seller records to include those with sell_map_center within geospatial bounding box
-    expect(sellersData).toHaveLength(
-      await Seller.countDocuments({
-        'sell_map_center.coordinates': {
-          $geoWithin: {
-            $box: [
-              [mockBoundingBox.sw_lng, mockBoundingBox.sw_lat],
-              [mockBoundingBox.ne_lng, mockBoundingBox.ne_lat]
-            ]
-          },
-        },
-      })
-    ); // Ensure length matches expected sellers
+    const expected = await Seller.find({
+      sell_map_center: {
+        $geoWithin: boundingPolygon,
+      },
+    }).select('seller_id');
+
+    expect(result).toHaveLength(expected.length);
   });
 
   it('should fetch all unrestricted and applicable sellers when all parameters are provided', async () => {
     const searchQuery = 'Seller';
     const userData = await User.findOne({ pi_username: 'TestUser1' }) as IUser;
 
-    const sellersData = await getAllSellers(mockBoundingBox, searchQuery, userData.pi_uid);
+    const result = await getAllSellers(mockBoundingBox, searchQuery, userData.pi_uid);
 
-    /* filter seller records to include those with "Vendor"
-       + include those with sell_map_center within geospatial bounding box */
-    expect(sellersData).toHaveLength(
-      await Seller.countDocuments({
-        $text: { $search: searchQuery },
-        'sell_map_center.coordinates': {
-          $geoWithin: {
-            $box: [
-              [mockBoundingBox.sw_lng, mockBoundingBox.sw_lat],
-              [mockBoundingBox.ne_lng, mockBoundingBox.ne_lat]
-            ]
-          },
-        },
-      })
-    ); // Ensure length matches expected sellers
+    const expected = await Seller.find({
+      isRestricted: { $ne: true },
+      sell_map_center: {
+        $geoWithin: boundingPolygon,
+      },
+      $or: [
+        { name: { $regex: searchQuery, $options: 'i' } },
+        { description: { $regex: searchQuery, $options: 'i' } },
+      ],
+    }).select('seller_id');
+
+    expect(result).toHaveLength(expected.length);
   });
 
-  it('should throw an error when an exception occurs', async () => { 
+  it('should throw a controlled error when aggregation fails', async () => { 
     const userData = await User.findOne({ pi_username: 'TestUser13' }) as IUser;
     
     // Mock the Seller model to throw an error
@@ -114,21 +148,59 @@ describe('getAllSellers function', () => {
     });
 
     await expect(getAllSellers(undefined, undefined, userData.pi_uid)).rejects.toThrow(
-      'Mock database error'
+      'Failed to retrieve sellers'
     );
   });
 
-  describe('Additional Search query lookup cases', () => {
+  describe("getAllSellers function with Atlas Search default", () => {
+    beforeEach(() => {
+      env.ATLAS_SEARCH_ENABLED = true;
+    });
+
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+
+    it("should include a $search stage when Atlas Search is enabled", async () => {
+      const aggregateSpy = jest.spyOn(Seller, "aggregate").mockImplementationOnce((pipeline: any[]) => {
+        expect(pipeline).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              $search: expect.any(Object),
+            }),
+          ])
+        );
+
+        return {
+          exec: jest.fn().mockResolvedValue([]),
+        } as any;
+      });
+
+    const userData = await User.findOne({ pi_username: "TestUser1" }) as IUser;
+
+    await getAllSellers(undefined, "Vendor", userData.pi_uid);
+
+    expect(aggregateSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('Additional Search query lookup cases with Regex fallback', () => {
+    beforeAll(() => {
+      env.ATLAS_SEARCH_ENABLED = false;
+    });
+
+    afterAll(() => {
+      env.ATLAS_SEARCH_ENABLED = true;
+    });
+
     it('should fetch the appropriate seller when search query matches a User field i.e., pi_username', async () => {
       const userData = await User.findOne({ pi_username: 'TestUser1' }) as IUser;
 
       const result = await getAllSellers(undefined, 'TestUser2', userData.pi_uid);
-
-      const expectedSeller = await Seller.findOne({ seller_id: '0b0b0b-0b0b-0b0b' });
       
       expect(result).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({ seller_id: expectedSeller?.seller_id })
+          expect.objectContaining({ seller_id: '0b0b0b-0b0b-0b0b' }),
         ])
       );
     });
@@ -138,11 +210,9 @@ describe('getAllSellers function', () => {
 
       const result = await getAllSellers(undefined, 'Test Three', userData.pi_uid);
 
-      const expectedSeller = await Seller.findOne({ seller_id: '0c0c0c-0c0c-0c0c' });
-
       expect(result).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({ seller_id: expectedSeller?.seller_id })
+          expect.objectContaining({ seller_id: '0c0c0c-0c0c-0c0c' }),
         ])
       );
     });

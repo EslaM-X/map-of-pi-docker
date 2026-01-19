@@ -29,5 +29,6 @@ export const env = {
   SENTRY_DSN: process.env.SENTRY_DSN || '',
   DEVELOPMENT_URL: process.env.DEVELOPMENT_URL || '',
   PRODUCTION_URL: process.env.PRODUCTION_URL || '',
-  CORS_ORIGIN_URL: process.env.CORS_ORIGIN_URL || ''
+  CORS_ORIGIN_URL: process.env.CORS_ORIGIN_URL || '',
+  ATLAS_SEARCH_ENABLED: process.env.ATLAS_SEARCH_ENABLED === "true"
 };

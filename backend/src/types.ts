@@ -68,6 +68,7 @@ export interface ISeller extends Document {
   order_online_enabled_pref: boolean;
   fulfillment_method: FulfillmentType;
   fulfillment_description?: string;
+  isRestricted: boolean;
 }
 
 // Combined interface representing a seller with selected user settings
