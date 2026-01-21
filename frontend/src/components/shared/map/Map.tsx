@@ -360,12 +360,13 @@ const Map = ({
       )}
       {isSigningInUser ? (
         <div className="w-full flex-1 fixed bottom-0 h-[calc(100vh-76.19px)] left-0 right-0 bg-[#f5f1e6] ">
-          <div className="flex justify-center items-center w-full h-full">
+          <div className="flex justify-center items-start w-full h-full pt-[16vh] sm:pt-[18vh]">
             <Image 
               src="/default.png" 
-              width={120} 
-              height={140} 
-              alt="splashscreen" 
+              width={150} 
+              height={176}
+              alt="splashscreen"
+              priority
             />
           </div>
         </div>
