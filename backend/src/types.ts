@@ -44,6 +44,10 @@ export interface ISeller extends Document {
   image?: string;
   address?: string;
   average_rating: Types.Decimal128;
+  // --- الحقول الجديدة المضافة للتوثيق ---
+  is_verified: boolean;
+  verification_count: number;
+  // ------------------------------------
   sell_map_center: {
     type: 'Point';
     coordinates: [number, number];
@@ -66,6 +70,7 @@ export interface ISellerItem extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
 export interface IReviewFeedback extends Document {
   _id: string;
   review_receiver_id: string;
