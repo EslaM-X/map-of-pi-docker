@@ -18,7 +18,6 @@ interface Emoji {
   value: number;
 }
 
-// TODO - Isolate EmojiPicker component; move page processing to sale-items\[id]\page.tsx.
 export default function EmojiPicker(props: any) {
   const t = useTranslations();
 
@@ -40,7 +39,6 @@ export default function EmojiPicker(props: any) {
 
   const { showAlert, setAlertMessage, isSaveLoading, setIsSaveLoading } = useContext(AppContext);
 
-  // function preview image upload
   useEffect(() => {
     if (!file) return;
     const objectUrl = URL.createObjectURL(file);
@@ -50,14 +48,12 @@ export default function EmojiPicker(props: any) {
     };
   }, [file]);
 
-  // set the preview image if dbUserSettings changes
   useEffect(() => {
     if (dbReviewFeedback?.image) {
       setPreviewImage(dbReviewFeedback.image);
     }
   }, [dbReviewFeedback]);
 
-  // function to toggle save button
   useEffect(() => {
     const noReview = comments === '' && reviewEmoji === null && file === null;
     setIsSaveEnabled(!noReview);
@@ -70,18 +66,12 @@ export default function EmojiPicker(props: any) {
   };
 
   const handleAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (isSaveLoading) {
-      return;
-    }
-
-    const selectedFile = e.target.files?.[0]; // only take the first file
+    if (isSaveLoading) return;
+    const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
-
       const objectUrl = URL.createObjectURL(selectedFile);
       setPreviewImage(objectUrl);
-      logger.info('Image selected for upload:', { selectedFile });
-
       setIsSaveEnabled(true);
     }
   };
@@ -100,11 +90,9 @@ export default function EmojiPicker(props: any) {
     try {
       if (props.currentUser) {
         if (props.currentUser.pi_uid === props.userId) {
-          logger.warn(`Attempted self review by user ${props.currentUser.pi_uid}`);
           return toast.error(t('SCREEN.REPLY_TO_REVIEW.VALIDATION.SELF_REVIEW_NOT_POSSIBLE'));
         }
         if (reviewEmoji === null) {
-          logger.warn('Attempted to save review without selecting an emoji.');
           return toast.warn(t('SHARED.REACTION_RATING.VALIDATION.SELECT_EMOJI_EXPRESSION'));
         } else {
           setIsSaveEnabled(false);
@@ -116,14 +104,11 @@ export default function EmojiPicker(props: any) {
           formDataToSend.append('review_receiver_id', props.userId);
           formDataToSend.append('reply_to_review_id', props.replyToReviewId || '');
 
-          // add the image if it exists
           if (file) {
             formDataToSend.append('image', file);
           } else {
             formDataToSend.append('image', '');
           }
-
-          logger.info('Review Feedback form data:', { formDataToSend });
 
           const newReview = await createReview(formDataToSend);
           if (newReview) {
@@ -131,14 +116,11 @@ export default function EmojiPicker(props: any) {
             resetReview();
             props.setReload(true);
             props.refresh();
-            logger.info('Review submitted successfully');
           } else {
             setAlertMessage(t('SHARED.REACTION_RATING.VALIDATION.UNSUCCESSFUL_REVIEW_SUBMISSION'));
           }
-          resetReview();
         }
       } else {
-        logger.warn('Unable to submit review; user not authenticated.');
         toast.error(t('SHARED.VALIDATION.SUBMISSION_FAILED_USER_NOT_AUTHENTICATED'));
       }
     } catch (error) {
@@ -149,28 +131,27 @@ export default function EmojiPicker(props: any) {
     }
   };
   
-  // Function to handle the click of an emoji
   const handleEmojiClick = (emojiValue: number) => {
-    if (isSaveLoading) {
-      return;
-    }
-
+    if (isSaveLoading) return;
     if (selectedEmoji === emojiValue) {
       setSelectedEmoji(null);
-      setReviewEmoji(null); // return null when no emoji is sellected
+      setReviewEmoji(null);
     } else {
       setSelectedEmoji(emojiValue);
-      setReviewEmoji(emojiValue);  // return selected emoji value
+      setReviewEmoji(emojiValue);
     }
   };
 
   const getReview = (reviews: { [key: string]: number } | undefined, emojiName: string): number | undefined => {
-    if (reviews) {
-      return reviews[emojiName];
-    }
+    if (reviews) return reviews[emojiName];
     return undefined;
   };
+
   const emojiBtnClass = 'rounded-md w-full outline outline-[0.5px] flex justify-center items-center cursor-pointer p-1'
+  
+  // حساب عدد التقييمات المتبقية (بناءً على التعديلات في Backend)
+  const reviewsLeft = props.seller ? Math.max(0, 10 - (props.seller.verification_count || 0)) : 10;
+
   return (
     <div className="mb-3">
       <p>{t('SCREEN.REPLY_TO_REVIEW.FACE_SELECTION_REVIEW_MESSAGE')}</p>
@@ -184,9 +165,7 @@ export default function EmojiPicker(props: any) {
             <div>
               <p className='text-3xl md:py-2 py-1'>{despairEmoji.unicode}</p>
               <p className={`md:text-[16px] text-[14px] ${selectedEmoji == despairEmoji.value && 'text-white'}`}>{despairEmoji.name}</p>
-              {props.reviews && (
-                <p>{getReview(props.reviews, despairEmoji.name)}</p>
-              )}
+              {props.reviews && <p>{getReview(props.reviews, despairEmoji.name)}</p>}
             </div>
           </div>
         </div>
@@ -202,9 +181,7 @@ export default function EmojiPicker(props: any) {
                 <div>
                   <p className='text-3xl md:py-2 py-1'>{emoji.unicode}</p>
                   <p className='md:text-[16px] text-[14px]'>{emoji.name}</p>
-                  {props.reviews && (
-                    <p>{getReview(props.reviews, emoji.name)}</p>
-                  )}                                 
+                  {props.reviews && <p>{getReview(props.reviews, emoji.name)}</p>}                                 
                 </div>
               </li>
             ))}
@@ -222,11 +199,21 @@ export default function EmojiPicker(props: any) {
       <div className="mb-2">
         <FileInput 
           label={t('SHARED.PHOTO.MISC_LABELS.REVIEW_FEEDBACK_IMAGE_LABEL')}
-          describe={t('SHARED.PHOTO.UPLOAD_PHOTO_REVIEW_PLACEHOLDER')} 
+          describe={t('SHARED.PHOTO.UPLOAD_PHOTO_REVIEW_PLACE_HOLDER')} 
           imageUrl={previewImage} 
           handleAddImage={handleAddImage} 
         />
       </div>
+
+      {/* الجزء المضاف: حافز التوثيق للمجتمع */}
+      {props.seller && !props.seller.is_verified && reviewsLeft > 0 && (
+        <div className="bg-blue-50 border border-blue-200 p-3 rounded-md mb-4 flex items-center gap-2">
+          <span className="text-xl">✨</span>
+          <p className="text-sm text-blue-800">
+             باقي {reviewsLeft} تقييمات إيجابية ليصبح هذا التاجر موثقاً بالعلامة الزرقاء!
+          </p>
+        </div>
+      )}
 
       {/* Save Button */}
       <div className="mb-7">
