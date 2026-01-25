@@ -166,6 +166,7 @@
       "BY_REVIEWER": "By {buyer_id}",
       "REPLY_TO_REVIEW_MESSAGE": "Leave your reply to the above review",
       "FACE_SELECTION_REVIEW_MESSAGE": "Select the face which shows how you feel about your interaction with this pioneer",
+      "VERIFICATION_INCENTIVE": "Help verify this store! Only {count} more positive reviews needed to get the blue verification badge.",
       "ADDITIONAL_COMMENTS_PLACEHOLDER": "Enter additional comments here",
       "FEEDBACK_PHOTO_UPLOAD_LABEL": "Feedback photo upload",
       "VALIDATION": {
