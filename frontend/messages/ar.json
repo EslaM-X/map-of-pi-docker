@@ -166,6 +166,7 @@
       "BY_REVIEWER": "بواسطة {buyer_id}", 
       "REPLY_TO_REVIEW_MESSAGE": "اترك ردك على التقييم أعلاه", 
       "FACE_SELECTION_REVIEW_MESSAGE": "اختر الوجه الذي يعبر عن شعورك حول التفاعل مع هذا المستخدم", 
+      "VERIFICATION_INCENTIVE": "ساعد في توثيق هذا المتجر! يتبقى {count} تقييمات إيجابية فقط ليحصل على علامة التوثيق الزرقاء.",
       "ADDITIONAL_COMMENTS_PLACEHOLDER": "أدخل تعليقات إضافية هنا", 
       "FEEDBACK_PHOTO_UPLOAD_LABEL": "تحميل صورة التقييم", 
       "VALIDATION": { 
