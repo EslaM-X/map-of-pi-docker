@@ -2,13 +2,14 @@ import { Request, Response } from "express";
 
 import * as reviewFeedbackService from "../services/reviewFeedback.service";
 import logger from "../config/loggingConfig";
+// استيراد موديل التاجر لتحديثه
+import Seller from "../models/Seller"; 
 
 export const getReviews = async (req: Request, res: Response) => {
   const { review_receiver_id } = req.params;
   const { searchQuery } = req.query;
 
   try {
-    // Call the service with the review_receiver_id and searchQuery
     const completeReviews = await reviewFeedbackService.getReviewFeedback(
       review_receiver_id, 
       searchQuery as string
@@ -51,12 +52,35 @@ export const addReview = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Self review is prohibited" });
     }
 
-    // image file handling (have to ts-ignore because tsc thinks the file can't have a location property, even though it can and does)
     const file = req.file;
     //@ts-ignore
     const image = file ? file.location : '';
 
     const newReview = await reviewFeedbackService.addReviewFeedback(authUser, formData, image);
+    
+    // --- الجزء الجديد: تحديث حالة التوثيق للتاجر ---
+    try {
+        // بنبحث عن التاجر باستخدام الـ receiver_id اللي جالنا في التقييم
+        const seller = await Seller.findOne({ seller_id: formData.review_receiver_id });
+        
+        if (seller) {
+            // زودنا عدد التأكيدات 1
+            seller.verification_count += 1;
+            
+            // لو وصل لـ 10 تقييمات، السيستم هيوثقه تلقائياً
+            if (seller.verification_count >= 10) {
+                seller.is_verified = true;
+            }
+            
+            await seller.save();
+            logger.info(`Updated verification for seller ${seller.seller_id}. Count: ${seller.verification_count}`);
+        }
+    } catch (updateError) {
+        // لو حصل مشكلة في التحديث، بنطلع error في اللوج بس مش بنوقف العملية الأساسية
+        logger.error(`Failed to update seller verification after review:`, updateError);
+    }
+    // --------------------------------------------
+
     logger.info(`Added new review by user ${authUser.pi_uid} for receiver ID ${newReview.review_receiver_id}`);
     return res.status(200).json({ newReview });
   } catch (error) {
