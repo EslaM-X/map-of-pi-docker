@@ -37,7 +37,19 @@ const sellerSchema = new Schema<ISeller>(
       type: Types.Decimal128,
       required: true,
       default: 5.0,
-    },    
+    },
+    // --- الحقول الجديدة للتوثيق ---
+    is_verified: {
+      type: Boolean,
+      required: true,
+      default: false, // الحالة الافتراضية غير موثق
+    },
+    verification_count: {
+      type: Number,
+      required: true,
+      default: 0, // يبدأ من صفر تأكيدات
+    },
+    // ----------------------------
     sell_map_center: {
       type: {
         type: String,
